@@ -1,0 +1,45 @@
+{
+	// Place your discord_osztaly_szerver workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"module.exports": {
+		"prefix": "moduleExports",
+		"body": [
+		  "const Discord = require('discord.js');",
+		  "",
+		  "module.exports = {",
+		  "    name: '${1:name of the module}',",
+		  "    description: '${2:module description}',",
+		  "    execute(message, args){",
+		  "      ${3:/*the program*/}",
+		  "    }",
+		  "}"
+		],
+		"description": "module.exports"
+	},
+
+	"Message Embed": {
+	"prefix": "MessageEmbed",
+	"body": [
+		"const ${1:the embed variable} = new Discord.MessageEmbed()",
+		".setTitle('${2:the big, upper text}')",
+		".setDescription('${3:the small, lower text}')",
+		".setColor('${4:hex color}');",
+		"message.channel.send(${1:the embed variable});"
+	],
+	"description": "Message Embed"
+	}
+}

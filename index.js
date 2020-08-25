@@ -2,23 +2,24 @@ const Discord = require('discord.js');
 const bot = new Discord.Client({
 	partials: ['MESSAGE']
 });
-const config = require('./config/config.json');
+const config = require(setup.TOKEN_PATH);
+const setup = require('./setup/setup.json');
 const fs = require('fs');
-const prefix = 'gyh!';
+const prefix = setup.PREFIX;
 bot.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./Commands/').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.endsWith('.js'));
 for(const file of commandFiles){
-    const command = require(`./Commands/${file}`);
+    const command = require(setup.COMMANDS_PATH`${file}`);
     bot.commands.set(command.name, command);
 };
 bot.on('ready', ()=>{
     console.log(bot.user.tag + ' bot is active')
-    bot.user.setActivity('Itta segiccség gyálákik', {type: "LISTENING"});
+    bot.user.setActivity(setup.STATUS, {type: setup.ACTIVITY});
 })
 
 bot.on('message', message => {
     if (message.author.bot){return};
-    let args =message.content.substring(' ').split(' ');
+    let args = message.content.substring(' ').split(' ');
 
     switch (args[0].toLowerCase()) {
         case `${prefix}hello`:

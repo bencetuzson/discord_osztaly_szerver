@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: 'ping',
-    descroption: 'says ping!',
+    description: 'says ping!',
     execute(message, args){
         const Embed = new Discord.MessageEmbed()
         .setTitle('Pong!')

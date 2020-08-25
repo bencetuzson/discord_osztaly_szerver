@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: 'csapat',
-    descroption: 'makes teams',
+    description: 'makes teams',
     execute(message, args){
         console.log(args);
         var class_members = ["Fófi", "Nelly", "Gery", "Rozi", "Encsi", "Eszti", "Benedek", "Zoé", "Andriska", "Berci", "Matyi", "Ambi", "Gandi", "Liliána", "Luca", "Frédi", "Áron", "Lilko", "Adri", "Zoli", "Soki", "Adél", "Csöcsi", "Bendi", "Tuzsi", "Marci", "Panka", "Mesi"];
@@ -10,7 +10,7 @@ module.exports = {
         var teams = [];
         for (let index2 = 0; index2 < args[1]; index2++) {
             teams.push(new Array);
-            for (let index3 = 0; index3 < cycle/args[1]; index3++) {
+            for (let index3 = 0; index3 < Math.floor(cycle/args[1]); index3++) {
                 console.log(class_members);
                 console.log(teams);
                 console.log(index2);
@@ -25,6 +25,11 @@ module.exports = {
                 class_members.splice(randomIndex, 1);
                 teams[index2].push(randomElement);
             }
+        }
+        var used = Math.floor(cycle/args[1])*args[1];
+        for (let index5 = 0; index5 < cycle-used; index5++) {
+            teams[index5].push(class_members[index5])
+            
         }
         const randomColour = Math.floor(Math.random() * 0xffffff+1);
         const Embed = new Discord.MessageEmbed()
