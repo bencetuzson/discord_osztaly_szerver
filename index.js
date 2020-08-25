@@ -13,7 +13,7 @@ for(const file of commandFiles){
 };
 bot.on('ready', ()=>{
     console.log(bot.user.tag + ' bot is active')
-    bot.user.setActivity(Itta segiccség gyálákik, {type: "LISTENING"});
+    bot.user.setActivity('Itta segiccség gyálákik', {type: "LISTENING"});
 })
 
 bot.on('message', message => {
