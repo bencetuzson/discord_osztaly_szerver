@@ -30,6 +30,9 @@ bot.on('message', message => {
         case `${prefix}colour`:
             bot.commands.get('colour').execute(message, args);
             break;
+        case `${prefix}random`:
+            bot.commands.get('random').execute(message, args);
+            break;
     }
 })
 
