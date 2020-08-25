@@ -1,0 +1,23 @@
+{
+  "name": "discord_osztaly_szerver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "reactionrole.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bencetuzson/discord_osztaly_szerver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bencetuzson/discord_osztaly_szerver/issues"
+  },
+  "homepage": "https://github.com/bencetuzson/discord_osztaly_szerver#readme",
+  "dependencies": {
+    "discord.js": "github:discordjs/discord.js#master"
+  }
+}
