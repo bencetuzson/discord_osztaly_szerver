@@ -4,7 +4,8 @@
   "description": "",
   "main": "reactionrole.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/bot.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,8 @@
   "homepage": "https://github.com/bencetuzson/discord_osztaly_szerver#readme",
   "dependencies": {
     "discord.js": "github:discordjs/discord.js#master"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
