@@ -7,5 +7,9 @@
     "TOKEN_PATH" : "./config/config.json",
     "COMMANDS_PATH" : "./Commands/",
 
-    "CLASS_MEMBERS" : ["Fófi", "Nelly", "Gery", "Rozi", "Encsi", "Eszti", "Benedek", "Zoé", "Andriska", "Bercusz", "Matyi", "Ambi", "Gandi", "Liliána", "Berci", "Luca", "Frédi", "Áron", "Lilko", "Adri", "Zoli", "Alíz", "Soki", "Adél", "Csöcsi", "Bendi", "Tuzsi", "Marci", "Panka", "Mesi"]
+    "USER_NAME" : "@USER",
+    "SERVER_NAME" : "@SERVER",
+    "WELCOME_MESSAGE" : "Szia, @USER!\nÜdvözöllek a **@SERVER-en**! A moderátorokat már értesítettük az érkezésedről, már csak arra kell várni, hogy beállítsák a rangjaidat...",
+
+    "CATEGORIES" : {"Bot" : "🤖", "Zene" : "🎶", "Gaming" : "🎮", "Teszter" : "🛠"}
 }

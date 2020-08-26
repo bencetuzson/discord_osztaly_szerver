@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/bencetuzson/discord_osztaly_szerver#readme",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js#master"
+    "discord-welcome": "^2.0.2",
+    "discord.js": "github:discordjs/discord.js#master",
+    "mongoose": "^5.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
