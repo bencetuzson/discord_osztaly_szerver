@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'hello',
+    name: 'szia',
     description: 'hello user',
     execute(message, args){
-        message.reply('Hi!')
+        message.reply('Szia!')
     }
 }

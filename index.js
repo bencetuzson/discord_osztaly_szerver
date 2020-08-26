@@ -2,14 +2,14 @@ const Discord = require('discord.js');
 const bot = new Discord.Client({
 	partials: ['MESSAGE']
 });
-const config = require(setup.TOKEN_PATH);
 const setup = require('./setup/setup.json');
+const config = require(setup.TOKEN_PATH);
 const fs = require('fs');
 const prefix = setup.PREFIX;
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.endsWith('.js'));
 for(const file of commandFiles){
-    const command = require(setup.COMMANDS_PATH`${file}`);
+    const command = require(setup.COMMANDS_PATH + file);
     bot.commands.set(command.name, command);
 };
 bot.on('ready', ()=>{
@@ -22,8 +22,8 @@ bot.on('message', message => {
     let args = message.content.substring(' ').split(' ');
 
     switch (args[0].toLowerCase()) {
-        case `${prefix}hello`:
-            bot.commands.get('hello').execute(message, args);
+        case `${prefix}szia`:
+            bot.commands.get('szia').execute(message, args);
             break;
         case `${prefix}ping`:
             bot.commands.get('ping').execute(message, args);
@@ -36,6 +36,9 @@ bot.on('message', message => {
             break;
         case `${prefix}csapat`:
             bot.commands.get('csapat').execute(message, args);
+            break;
+        case `${prefix}parancsok`:
+            bot.commands.get('parancsok').execute(message, args);
             break;
     }
 })
