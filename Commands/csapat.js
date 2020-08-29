@@ -1,11 +1,15 @@
 const Discord = require('discord.js');
 const database = require('../database/database.json');
 
+let classLength = database.CLASS_MEMBERS.length;
 module.exports = {
     name: 'csapat',
     description: 'makes teams',
     execute(message, args){
-        if(args[1] > 0 && args[1] <= database.CLASS_MEMBERS.length){
+        console.log(args[1] > 0 && args[1] <= classLength);
+        console.log(args[1]);
+        console.log(database.CLASS_MEMBERS.length);
+        if(args[1] > 0 && args[1] <= classLength){
             console.log(args);
             var class_members = database.CLASS_MEMBERS;
             var cycle = class_members.length;
@@ -39,11 +43,10 @@ module.exports = {
             for (let index6 = 0; index6 < args[1]; index6++) {
                 teams[index6] = teams[index6].join(", ").replace(":** , ", ":** ");
             }
-            const randomColour = Math.floor(Math.random() * 0xffffff+1);
             const Embed = new Discord.MessageEmbed()
             .setTitle('A csapatok:')
             .setDescription(`${teams.join("\n\n")}`)
-            .setColor(randomColour);
+            .setColor("RANDOM");
             message.channel.send(Embed);
             console.log(class_members);
         } else {

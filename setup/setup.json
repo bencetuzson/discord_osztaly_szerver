@@ -7,9 +7,117 @@
     "TOKEN_PATH" : "./config/config.json",
     "COMMANDS_PATH" : "./Commands/",
 
+    "BOT_ID" : "722486287524692009",
     "USER_NAME" : "@USER",
     "SERVER_NAME" : "@SERVER",
-    "WELCOME_MESSAGE" : "Szia, @USER!\nÜdvözöllek a **@SERVER-en**! A moderátorokat már értesítettük az érkezésedről, már csak arra kell várni, hogy beállítsák a rangjaidat...",
+    "WELCOME_MESSAGE" : "Szia, @USER!\nÜdvözöllek a(z) **@SERVER** nevű szerveren! A moderátorokat már értesítettük az érkezésedről, már csak arra kell várni, hogy beállítsák a rangjaidat...",
+    "NOT_IN_THIS_CLASS_MESSAGE" : "Szia, @USER!\nSajnálom, de nem vagy tagja az osztályunknak, így nem léphetsz be a(z) **@SERVER** nevű szerverre!",
 
-    "CATEGORIES" : {"Bot" : "🤖", "Zene" : "🎶", "Gaming" : "🎮", "Teszter" : "🛠"}
+    "CATEGORIES" : {"Bot" : "🤖", "Zene" : "🎶", "Gaming" : "🎮", "Teszter" : "🛠"},
+
+    "CURRENT_SCHOOLYEAR" : "2020/2021",
+    "CURRENT_CLASS" : "9.gy.",
+    
+    "REACTION_ROLES" : {
+        "BOT" : {"REACTION" : "🤖", "MESSAGE_ID" : "749028451025027133", "ROLE_ID" : "642267346781601822"},
+        "Gaming" : {"REACTION" : "🎮", "MESSAGE_ID" : "749028479894290563", "ROLE_ID" : "642267101049913345"},
+        "Zene" : {"REACTION" : "🎶", "MESSAGE_ID" : "749028512874365079", "ROLE_ID" : "642267533038059530"},
+        "Teszter" : {"REACTION" : "🛠", "MESSAGE_ID" : "749028571040841829", "ROLE_ID" : "633786427678654478"},
+        "Spam" : {"REACTION" : "⚠", "MESSAGE_ID" : "749028540472754276", "ROLE_ID" : "748909512743977020"},
+        "Verified" : {"REACTION" : "✅", "MESSAGE_ID" : "748906960165798058", "ROLE_ID" : "633723315499827200", "CHANNEL_ID" : "748580314296614944"},
+        "Ezek_erdekelnek" : {"REACTION" : "☑", "MESSAGE_ID" : "749029253684789309", "ROLE_ID" : "748693420171722814", "CHANNEL_ID" : "642337017946046464"},
+        "Unverified" : {"ROLE_ID" : "748694555930656791"},
+
+        "Tartsuk_be_legyszi" : {"CHANNEL_ID" : "748870108620914699"}
+    },
+
+    "REACTION_CHANNELS" : {
+        "BOT" : {
+            "bot" : "633776498259787776",
+            "bot_parancsok" : "634115784150351872",
+            "bot_info" : "633701805020151832",
+            "boxbot_szoba" : "633957173562572800",
+            "idlerpg_szoba" : "635095596901859328",
+            "pokecord" : "708638962675089429",
+            "chat_with_cathy" : "748000196033773649",
+            "bot_teszt_beallitas" : "641663554608431138",
+            "szerverspecifikus_bot_update" : "736013584428957828"
+        },
+        "Zene" : {
+            "zene" : "633732734736400384"
+        },
+        "Gaming" : {
+            "minecraft" : "633713336789368854",
+            "paladins" : "633713386596728832",
+            "rocket_league" : "634793357046185984",
+            "pubg" : "633742942326226954",
+            "csgo" : "633743017190359052",
+            "r6s" : "633743162661273601"
+        },
+        "Teszter" : {
+            "teszter" : "636604773788942352"
+        },
+        "Spam" : {
+            "one_word_story_in_english" : "669100828434628618",
+            "comment_chat" : "733039898478641152",
+            "meme_szekcio" : "733364695779508344"
+        },
+        "USERS" : {
+            "BoxBot" : "413728456942288896",
+            "IdleRPG" : "424606447867789312",
+            "Pokecord" : "365975655608745985",
+            "Cathy" : "387435655925596160",
+            "GYH_BOT" : "748859717463441438"
+
+        }
+
+    },
+    "GENDERS" : {
+        "BOY" : "633715223207084042",
+        "GIRL" : "633715398491242506"
+    },
+
+    "TEST" : "748983895499735211",
+
+    "MODIFY" : {
+        "TITLE" : "alma",
+        "DESCRIPTION" : "nem alma",
+        "COLOR" : "RANDOM"
+    },
+
+    "GENDER_ROLES" : [
+        {"USER_NAME" : "Tuzsi", "USER_ID" : "568082396696674307", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Frédi", "USER_ID" : "243646548909490177", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Matyi", "USER_ID" : "227404431979839488", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Benedek", "USER_ID" : "434702544120446976", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Bernát", "USER_ID" : "488897455925100545", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Zoli", "USER_ID" : "393703719629488136", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Ambi", "USER_ID" : "633967791292284931", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Berci", "USER_ID" : "627893535391219723", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Bendi", "USER_ID" : "575304646378389509", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Csöcsi", "USER_ID" : "502457480274640896", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Soki", "USER_ID" : "634357970288771072", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Marci", "USER_ID" : "393374233960513556", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Áron", "USER_ID" : "433969021822697473", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Gery", "USER_ID" : "473427312289775617", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Andriska", "USER_ID" : "", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Gandalf", "USER_ID" : "", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Izebigyo", "USER_ID" : "641777799031554078", "ROLE_ID" : "633715223207084042"},
+
+        {"USER_NAME" : "Liliána", "USER_ID" : "634313752979963944", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Adél", "USER_ID" : "633907217346854932", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Eszti", "USER_ID" : "634310036516241408", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Mesi", "USER_ID" : "634274055167410179", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Adri", "USER_ID" : "633736859272478730", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Panka", "USER_ID" : "633913040714072069", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Fófi", "USER_ID" : "634432368911974402", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Nelly", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Rozi", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Encsi", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Luca", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Alíz", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Zoé", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
+        {"USER_NAME" : "Lilko", "USER_ID" : "", "ROLE_ID" : "633715398491242506"}
+    ]
+    
 }

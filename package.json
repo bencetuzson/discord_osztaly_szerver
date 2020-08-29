@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bot": "nodemon ./src/index.js"
+    "bot": "nodemon ./index.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   "dependencies": {
     "discord-welcome": "^2.0.2",
     "discord.js": "github:discordjs/discord.js#master",
-    "mongoose": "^5.10.0"
+    "mongoose": "^5.10.0",
+    "reaction-role": "^2.1.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

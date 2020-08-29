@@ -8,7 +8,7 @@ module.exports = {
         const randomColour = Math.floor(Math.random() * 0xffffff+1);
         const Embed = new Discord.MessageEmbed()
         .setTitle('A parancsok, amiket tudsz használni:')
-        .setDescription('**gyh!random** - random kiválaszt a gép egy személyt az osztályból\n**gyh!csapat #** - a gép kisorsolja a csapatokat annyi felé, amennyit a *#* helyére írsz be')
+        .setDescription('**gyh!random** - Random kiválaszt a gép egy személyt az osztályból\n**gyh!csapat [csapatok száma]** - A gép kisorsolja a csapatokat annyi felé, amennyit a *[csapatok száma]* helyére írsz be\n**gyh!orarend** - Kiírja az aktuális órarendet')
         .setColor(randomColour);
         message.channel.send(Embed);
     }
