@@ -10,8 +10,12 @@
     "BOT_ID" : "722486287524692009",
     "USER_NAME" : "@USER",
     "SERVER_NAME" : "@SERVER",
-    "WELCOME_MESSAGE" : "Szia, @USER!\nÜdvözöllek a(z) **@SERVER** nevű szerveren! A moderátorokat már értesítettük az érkezésedről, már csak arra kell várni, hogy beállítsák a rangjaidat...",
+    "AGE" : "@AGE",
+    "WELCOME_MESSAGE" : "**Szia, @USER!**\nÜdvözöllek a(z) **@SERVER**en!\n\n**Miért is hoztuk létre ezt a szervert?**\nEzzel a szerverrel lehetővé tudjuk tenni, hogy minden az osztállyal kapcsolatos üzenetet egy privát szerveren tudjunk kezelni, és mivel külön szobák vannak különböző témáknak, amiket tetszés szerint tudtok külön-külön lenémítani, így nem maradsz le semmilyen fontos üzenetről sem. Emellett még kedvedre beszélgethetsz zavartalanul abban a témában, ami éppen érdekel mindezt egy szerveren, így nem kell lenémítanod az egész szervert. Nem kell egy rakat csoportot különböző platformokon nézned, hiszen itt mindent egyben tudsz kezelni. Mindezt a saját igényeidre tudod testre szabni, ahogy te szeretnéd. Emellett egy rakat új funkció segít a többi platformhoz képest, és a BOT-ok segítségével további, nekünk fontos funkciókkal, játékokkal és egyéb szórakozásra szolgáló extrákkal segítenek nekünk, hogy szórakozzunk egy jót a szerveren. És a legjobbat még nem is említettem: VAN KÜLÖN FANNIKAH EMOJI!!! Ha egyszer belépsz, nem fogod megbánni!\n\n**Hogy mihamarabb elsajátítsd a szerver funkcióit**, mindenféleképpen nézd meg az \"hogyan-működik\" csatornát! Van benne pár hasznos dolog.\n\nHa segítség kell a szerver személyre szabásában vagy beállításában, keress meg egy moderátort (Tuzsi, Frédi, Matyi). Ő biztosan segíteni fog, vagy írd be a kérdésed a \"segítség-és-visszajelzés\" csatornába.\n\n**Jó szórakozást kíván,\n       A moderátorok csapata**",
     "NOT_IN_THIS_CLASS_MESSAGE" : "Szia, @USER!\nSajnálom, de nem vagy tagja az osztályunknak, így nem léphetsz be a(z) **@SERVER** nevű szerverre!",
+    "LEFT_DM" : "**Szia, @USER!**\nSajnálom, hogy elhagytad a szerverünket... Várunk mihamarabb vissza!",
+    "LEFT_PUBLIC_MESSAGE" : "Sajnáljuk @USER, hogy elmentél... Várunk mihamarabb vissza!",
+    "BIRTHDAY_MESSAGE" : "**Szia, @USER!**\nBoldog @AGE. születésnapot kívánok! Legyen szép napod, és élvezd ki, mert ebből a születésnapból is csak egy van:heart:",
 
     "CATEGORIES" : {"Bot" : "🤖", "Zene" : "🎶", "Gaming" : "🎮", "Teszter" : "🛠"},
 
@@ -19,16 +23,17 @@
     "CURRENT_CLASS" : "9.gy.",
     
     "REACTION_ROLES" : {
-        "BOT" : {"REACTION" : "🤖", "MESSAGE_ID" : "749028451025027133", "ROLE_ID" : "642267346781601822"},
-        "Gaming" : {"REACTION" : "🎮", "MESSAGE_ID" : "749028479894290563", "ROLE_ID" : "642267101049913345"},
-        "Zene" : {"REACTION" : "🎶", "MESSAGE_ID" : "749028512874365079", "ROLE_ID" : "642267533038059530"},
-        "Teszter" : {"REACTION" : "🛠", "MESSAGE_ID" : "749028571040841829", "ROLE_ID" : "633786427678654478"},
-        "Spam" : {"REACTION" : "⚠", "MESSAGE_ID" : "749028540472754276", "ROLE_ID" : "748909512743977020"},
+        "BOT" : {"REACTION" : "🤖", "MESSAGE_ID" : "749028451025027133", "ROLE_ID" : "642267346781601822", "TEMP_ROLE_ID" : "749415607396597812"},
+        "Gaming" : {"REACTION" : "🎮", "MESSAGE_ID" : "749028479894290563", "ROLE_ID" : "642267101049913345", "TEMP_ROLE_ID" : "749415753014575155"},
+        "Zene" : {"REACTION" : "🎶", "MESSAGE_ID" : "749028512874365079", "ROLE_ID" : "642267533038059530", "TEMP_ROLE_ID" : "749415706013204663"},
+        "Teszter" : {"REACTION" : "🛠", "MESSAGE_ID" : "749028571040841829", "ROLE_ID" : "633786427678654478", "TEMP_ROLE_ID" : "749416425608839300"},
+        "Spam" : {"REACTION" : "⚠", "MESSAGE_ID" : "749028540472754276", "ROLE_ID" : "748909512743977020", "TEMP_ROLE_ID" : "749415865925238905"},
         "Verified" : {"REACTION" : "✅", "MESSAGE_ID" : "748906960165798058", "ROLE_ID" : "633723315499827200", "CHANNEL_ID" : "748580314296614944"},
         "Ezek_erdekelnek" : {"REACTION" : "☑", "MESSAGE_ID" : "749029253684789309", "ROLE_ID" : "748693420171722814", "CHANNEL_ID" : "642337017946046464"},
         "Unverified" : {"ROLE_ID" : "748694555930656791"},
 
-        "Tartsuk_be_legyszi" : {"CHANNEL_ID" : "748870108620914699"}
+        "Tartsuk_be_legyszi" : {"CHANNEL_ID" : "748870108620914699"},
+        "Rendszeruzenetek" : {"CHANNEL_ID" : "633766572837699584"}
     },
 
     "REACTION_CHANNELS" : {
@@ -86,38 +91,39 @@
     },
 
     "GENDER_ROLES" : [
-        {"USER_NAME" : "Tuzsi", "USER_ID" : "568082396696674307", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Frédi", "USER_ID" : "243646548909490177", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Matyi", "USER_ID" : "227404431979839488", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Benedek", "USER_ID" : "434702544120446976", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Bernát", "USER_ID" : "488897455925100545", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Zoli", "USER_ID" : "393703719629488136", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Ambi", "USER_ID" : "633967791292284931", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Berci", "USER_ID" : "627893535391219723", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Bendi", "USER_ID" : "575304646378389509", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Csöcsi", "USER_ID" : "502457480274640896", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Soki", "USER_ID" : "634357970288771072", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Marci", "USER_ID" : "393374233960513556", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Áron", "USER_ID" : "433969021822697473", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Gery", "USER_ID" : "473427312289775617", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Andriska", "USER_ID" : "", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Gandalf", "USER_ID" : "", "ROLE_ID" : "633715223207084042"},
-        {"USER_NAME" : "Izebigyo", "USER_ID" : "641777799031554078", "ROLE_ID" : "633715223207084042"},
+        {"USER_NAME" : "Tuzsi", "USER_ID" : "568082396696674307", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 10, "DAY" : 25}},
+        {"USER_NAME" : "Frédi", "USER_ID" : "243646548909490177", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2005, "MONTH" : 4, "DAY" : 14}},
+        {"USER_NAME" : "Matyi", "USER_ID" : "227404431979839488", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 8, "DAY" : 7}},
+        {"USER_NAME" : "Benedek", "USER_ID" : "434702544120446976", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 12}},
+        {"USER_NAME" : "Bernát", "USER_ID" : "488897455925100545", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : null, "MONTH" : null, "DAY" : null}},
+        {"USER_NAME" : "Zoli", "USER_ID" : "393703719629488136", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 10}},
+        {"USER_NAME" : "Ambi", "USER_ID" : "633967791292284931", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 12, "DAY" : 11}},
+        {"USER_NAME" : "Berci", "USER_ID" : "627893535391219723", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 8, "DAY" : 25}},
+        {"USER_NAME" : "Bendi", "USER_ID" : "575304646378389509", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 3, "DAY" : 14}},
+        {"USER_NAME" : "Csöcsi", "USER_ID" : "502457480274640896", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 11}},
+        {"USER_NAME" : "Soki", "USER_ID" : "634357970288771072", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 8, "DAY" : 25}},
+        {"USER_NAME" : "Marci", "USER_ID" : "393374233960513556", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 19}},
+        {"USER_NAME" : "Áron", "USER_ID" : "433969021822697473", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 7, "DAY" : 9}},
+        {"USER_NAME" : "Gery", "USER_ID" : "473427312289775617", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 9, "DAY" : 7}},
+        {"USER_NAME" : "Andriska", "USER_ID" : "", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 27}},
+        {"USER_NAME" : "Gandalf", "USER_ID" : "", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 6, "DAY" : 26}},
+        {"USER_NAME" : "Izebigyo", "USER_ID" : "641777799031554078", "ROLE_ID" : "633715223207084042", "BIRTHDAY" : {"YEAR" : null, "MONTH" : null, "DAY" : null}},
+        
 
-        {"USER_NAME" : "Liliána", "USER_ID" : "634313752979963944", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Adél", "USER_ID" : "633907217346854932", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Eszti", "USER_ID" : "634310036516241408", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Mesi", "USER_ID" : "634274055167410179", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Adri", "USER_ID" : "633736859272478730", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Panka", "USER_ID" : "633913040714072069", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Fófi", "USER_ID" : "634432368911974402", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Nelly", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Rozi", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Encsi", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Luca", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Alíz", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Zoé", "USER_ID" : "", "ROLE_ID" : "633715398491242506"},
-        {"USER_NAME" : "Lilko", "USER_ID" : "", "ROLE_ID" : "633715398491242506"}
+        {"USER_NAME" : "Liliána", "USER_ID" : "634313752979963944", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 1}},
+        {"USER_NAME" : "Adél", "USER_ID" : "633907217346854932", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 7, "DAY" : 2}},
+        {"USER_NAME" : "Eszti", "USER_ID" : "634310036516241408", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 17}},
+        {"USER_NAME" : "Mesi", "USER_ID" : "634274055167410179", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 11, "DAY" : 26}},
+        {"USER_NAME" : "Adri", "USER_ID" : "633736859272478730", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 7, "DAY" : 16}},
+        {"USER_NAME" : "Panka", "USER_ID" : "633913040714072069", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 8, "DAY" : 3}},
+        {"USER_NAME" : "Fófi", "USER_ID" : "634432368911974402", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 6, "DAY" : 17}},
+        {"USER_NAME" : "Nelly", "USER_ID" : "", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 2, "DAY" : 6}},
+        {"USER_NAME" : "Rozi", "USER_ID" : "", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 6, "DAY" : 11}},
+        {"USER_NAME" : "Encsi", "USER_ID" : "", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 12, "DAY" : 30}},
+        {"USER_NAME" : "Luca", "USER_ID" : "", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 19}},
+        {"USER_NAME" : "Alíz", "USER_ID" : "", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : null, "MONTH" : null, "DAY" : null}},
+        {"USER_NAME" : "Zoé", "USER_ID" : "", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2005, "MONTH" : 3, "DAY" : 29}},
+        {"USER_NAME" : "Lilko", "USER_ID" : "", "ROLE_ID" : "633715398491242506", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 4}}
     ]
     
 }

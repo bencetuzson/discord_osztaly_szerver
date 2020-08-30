@@ -9,8 +9,8 @@ module.exports = {
 
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
         .setDescription(`
-        
-        `)
+**Ha igen, kattints az ez alatt lévő :white_check_mark:-ra, és menj be a ${message.guild.channels.cache.get(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID)} csatornába!**
+`)
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 
         .setColor("RANDOM");
@@ -37,7 +37,7 @@ module.exports = {
                 messageID = setup.REACTION_ROLES.Spam.MESSAGE_ID;
                 break;
             case "verify":
-                embed.setTitle("`Elfogadod a ${message.guild.channels.cache.get(setup.REACTION_ROLES.Tartsuk_be_legyszi.CHANNEL_ID)}ben leírtakat?`");
+                embed.setTitle(`Elfogadod az itt leírtakat?`);
                 messageID = setup.REACTION_ROLES.Verified.MESSAGE_ID;
                 break;
             case "ezek_erdekelnek":
@@ -46,8 +46,10 @@ module.exports = {
                 break;
         
             default:
+                console.log("error");
                 break;
         }
         (await message.channel.messages.fetch({around: messageID, limit: 1})).first().edit(embed);
+        console.log("done");
     }
 }
