@@ -50,6 +50,28 @@ function genderSearch(reaction, user) {
     }
 }
 
+function nicknameSearch(reaction, user) {
+    for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
+        //console.log(user.id);
+        //console.log(setup.GENDER_ROLES[index].USER_ID);
+        if (setup.GENDER_ROLES[index].USER_ID == user.id) {
+            return setup.GENDER_ROLES[index].USER_NAME;
+        }
+        
+    }
+}
+
+function moderatorSearch(reaction, user) {
+    for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
+        //console.log(user.id);
+        //console.log(setup.GENDER_ROLES[index].USER_ID);
+        if (setup.GENDER_ROLES[index].USER_ID == user.id) {
+            return setup.GENDER_ROLES[index].MODERATOR;
+        }
+        
+    }
+}
+
 function birthdate(year, month, day) {
     let birthdays = [];
     for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
@@ -310,6 +332,10 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Verified.ROLE_ID);
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID);
                     await reaction.message.guild.members.cache.get(user.id).roles.add(genderSearch(reaction, user));
+                    if (moderatorSearch(reaction, user)) {
+                        await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Moderator.ROLE_ID);
+                    }
+                    reaction.message.guild.members.cache.get(user.id).setNickname(nicknameSearch(reaction, user));
                     //reaction.message.channel.messages.fetch(reaction.message.id).map(r => r).then(message => {
                     //    reaction.message.reactions.forEach(reaction => reaction.remove(user.id))
                     //  })
