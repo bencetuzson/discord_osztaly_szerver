@@ -59,7 +59,7 @@ function nicknameSearch(reaction, user) {
         //console.log(user.id);
         //console.log(setup.GENDER_ROLES[index].USER_ID);
         if (setup.GENDER_ROLES[index].USER_ID == user.id) {
-            return setup.GENDER_ROLES[index].USER_NAME;
+            return setup.GENDER_ROLES[index].NICKNAME;
         }
         
     }
