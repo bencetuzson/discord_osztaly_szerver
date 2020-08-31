@@ -3,13 +3,11 @@
     "STATUS" : "Itta segiccség gyálákik",
     "ACTIVITY" : "LISTENING",
 
-<<<<<<< Updated upstream
     "PREFIX" : "gyh!",
 
     "TOKEN_PATH" : "./config/config.json",
-=======
+
     "CONFIG_PATH" : "../config/config.json",
->>>>>>> Stashed changes
     "COMMANDS_PATH" : "./Commands/",
 
     "BOT_ID" : "722486287524692009",
