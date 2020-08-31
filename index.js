@@ -44,7 +44,11 @@ function genderSearch(reaction, user) {
         //console.log(user.id);
         //console.log(setup.GENDER_ROLES[index].USER_ID);
         if (setup.GENDER_ROLES[index].USER_ID == user.id) {
-            return setup.GENDER_ROLES[index].ROLE_ID;
+            if(setup.GENDER_ROLES[index].GENDER == "M") {
+                return setup.GENDERS_ROLE_ID.BOY;
+            } else if (setup.GENDER_ROLES[index].GENDER = "F") {
+                return setup.GENDERS_ROLE_ID.GIRL;
+            }
         }
         
     }
@@ -224,65 +228,57 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 
     switch (reaction.emoji.name) {
         case setup.REACTION_ROLES.BOT.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.BOT.MESSAGE_ID) {
+            if (reaction.message.id === setup.REACTION_ROLES.BOT.MESSAGE_ID) {
+                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
                     console.log("success");
-                    if (reaction.emoji.name === setup.REACTION_ROLES.BOT.REACTION) {
-                        console.log("success2");
-                        await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.ROLE_ID);
-                    }
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.ROLE_ID);
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID);
                 }
-            } else {
-                await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID);
             }
         break;
 
         case setup.REACTION_ROLES.Zene.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
+            if (reaction.message.id === setup.REACTION_ROLES.Zene.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    if (reaction.message.id === setup.REACTION_ROLES.Zene.MESSAGE_ID) {
-                        console.log("success");
-                        if (reaction.emoji.name === setup.REACTION_ROLES.Zene.REACTION) {
-                            console.log("success2");
-                            await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Zene.ROLE_ID);
-                        }
-                    }
+                    console.log("success");
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Zene.ROLE_ID);
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Zene.TEMP_ROLE_ID);
                 }
-            } else {
-                await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Zene.TEMP_ROLE_ID);
             }
         break;
 
         case setup.REACTION_ROLES.Gaming.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    if (reaction.message.id === setup.REACTION_ROLES.Gaming.MESSAGE_ID) {
-                        console.log("success");
-                        if (reaction.emoji.name === setup.REACTION_ROLES.Gaming.REACTION) {
-                            console.log("success2");
-                            await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.ROLE_ID);
-                        }
-                    }
+                    console.log("success");
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.ROLE_ID);
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.TEMP_ROLE_ID);
                 }
-            } else {
-                await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.TEMP_ROLE_ID);
             }
         break;
 
         case setup.REACTION_ROLES.Teszter.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
+            if (reaction.message.id === setup.REACTION_ROLES.Teszter.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    if (reaction.message.id === setup.REACTION_ROLES.Teszter.MESSAGE_ID) {
-                        console.log("success");
-                        if (reaction.emoji.name === setup.REACTION_ROLES.Teszter.REACTION) {
-                            console.log("success2");
-                            await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.ROLE_ID);
-                            
-                        }
-                    }
+                    console.log("success");
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.ROLE_ID);
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID);
                 }
-            } else {
-                await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID);
+            }
+        break;
+
+        case setup.REACTION_ROLES.Spam.REACTION :
+            if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
+                    console.log("success");
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Spam.ROLE_ID);
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
+                    await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Spam.TEMP_ROLE_ID);
+                }
             }
         break;
 
@@ -304,22 +300,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                         console.error('Failed to remove reactions.');
                     }
                 }
-            }
-        break;
-
-        case setup.REACTION_ROLES.Spam.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
-                        console.log("success");
-                        if (reaction.emoji.name === setup.REACTION_ROLES.Spam.REACTION) {
-                            console.log("success2");
-                            await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Spam.ROLE_ID);
-                        }
-                    }
-                }
-            } else {
-                await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Spam.TEMP_ROLE_ID);
             }
         break;
 
@@ -448,65 +428,55 @@ bot.on('messageReactionRemove', async (reaction, user) => {
 
     switch (reaction.emoji.name) {
         case setup.REACTION_ROLES.BOT.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.BOT.MESSAGE_ID) {
+            if (reaction.message.id === setup.REACTION_ROLES.BOT.MESSAGE_ID) {
+                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
                     console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.BOT.ROLE_ID);
-                }
-            } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID);
                 }
             }
         break;
 
         case setup.REACTION_ROLES.Zene.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Zene.MESSAGE_ID) {
+            if (reaction.message.id === setup.REACTION_ROLES.Zene.MESSAGE_ID) {
+                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
                     console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Zene.ROLE_ID);
-                }
-            } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Zene.TEMP_ROLE_ID);
                 }
             }
         break;
 
         case setup.REACTION_ROLES.Gaming.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Gaming.MESSAGE_ID) {
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.MESSAGE_ID) {
+                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
                     console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Gaming.ROLE_ID);
-                }
-            } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Gaming.TEMP_ROLE_ID);
                 }
             }
         break;
 
         case setup.REACTION_ROLES.Teszter.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Teszter.MESSAGE_ID) {
+            if (reaction.message.id === setup.REACTION_ROLES.Teszter.MESSAGE_ID) {
+                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
                     console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Teszter.ROLE_ID);
-                }
-            } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID);
                 }
             }
         break;
 
         case setup.REACTION_ROLES.Spam.REACTION :
-            if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+            if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+                if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
                     console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Spam.ROLE_ID);
-                }
-            } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
-                if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
+                } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Spam.TEMP_ROLE_ID);
                 }
             }

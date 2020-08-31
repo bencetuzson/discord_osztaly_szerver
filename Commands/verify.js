@@ -106,8 +106,8 @@ ${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Spam.meme_szekcio)}
                 argsSuccess = true;
                 break;
             case "verify":
-                title = `Elfogadod a **tartsuk-be-légyszi**ben leírtakat?`;
-                description = `**Ha igen, kattints az ez alatt lévő :white_check_mark:-ra, és menj be a ${message.guild.channels.cache.get(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID)} csatornába (vagy nyomj rá a \`#ezek-érdekelnek\`-re!)!**`;
+                title = `Elfogadod az itt leírtakat?`;
+                description = `**Ha igen, kattints az ez alatt lévő :white_check_mark:-ra, és menj be az ${message.guild.channels.cache.get(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID)} csatornába!**`;
                 reactEmoji = setup.REACTION_ROLES.Verified.REACTION;
                 argsSuccess = true;
                 break;
