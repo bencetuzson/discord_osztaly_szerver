@@ -30,7 +30,9 @@
 
         "Tartsuk_be_legyszi" : {"CHANNEL_ID" : "748870108620914699"},
         "Rendszeruzenetek" : {"CHANNEL_ID" : "633766572837699584"},
-        "Moderator" : {"ROLE_ID" : "633743212594593813"}
+
+        "Moderator" : {"ROLE_ID" : "633743212594593813"},
+        "Bot" : {"ROLE_ID" : "633746400722812939"}
     },
 
     "REACTION_CHANNELS" : {

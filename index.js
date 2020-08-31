@@ -492,7 +492,7 @@ bot.on('guildMemberAdd', member => {
         member.send(dm);
         member.roles.add(setup.REACTION_ROLES.Unverified.ROLE_ID);
     } else if (member.user.bot) {
-        member.roles.add(setup.REACTION_ROLES.BOT.ROLE_ID);
+        member.roles.add(setup.REACTION_ROLES.Bot.ROLE_ID);
     } else {
         const raw = setup.NOT_IN_THIS_CLASS_MESSAGE;
         const dm = raw.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
