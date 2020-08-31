@@ -3,7 +3,7 @@
     "STATUS" : "Itta segiccség gyálákik",
     "ACTIVITY" : "LISTENING",
 
-    "PREFIX" : "gyh!",
+    "PREFIX" : "gyh?",
 
     "TOKEN_PATH" : "./config/config.json",
     "COMMANDS_PATH" : "./Commands/",
