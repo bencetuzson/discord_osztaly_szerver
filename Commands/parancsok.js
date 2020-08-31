@@ -9,12 +9,12 @@ module.exports = {
         const Embed = new Discord.MessageEmbed()
         .setTitle('A parancsok, amiket tudsz használni:')
         .setDescription(`
-        \`gyh!random\` - Random kiválaszt a gép egy személyt az osztályból
+\`gyh!random\` - Random kiválaszt a gép egy személyt az osztályból
 
-        \`gyh!csapat [csapatok száma]\` - A gép csapatokat sorsol az osztály tagjaival annyi felé, amennyit a *[csapatok száma]* helyére írsz be
-        
-        \`gyh!orarend\` - Kiírja az aktuális órarendet
-        `)
+\`gyh!csapat [csapatok száma]\` - A gép csapatokat sorsol az osztály tagjaival annyi felé, amennyit a *[csapatok száma]* helyére írsz be
+
+\`gyh!orarend\` - Kiírja az aktuális órarendet
+`)
         .setColor(randomColour);
         message.channel.send(Embed);
     }
