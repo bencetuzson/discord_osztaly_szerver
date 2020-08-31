@@ -7,7 +7,7 @@ const bot = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
 const setup = require('./setup/setup.json');
-const token = require(setup.CONFIG_PATH).TOKEN;
+const config = require(setup.CONFIG_PATH).TOKEN;
 const fs = require('fs');
 const { set } = require('mongoose');
 const { userInfo } = require('os');
