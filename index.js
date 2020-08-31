@@ -7,7 +7,7 @@ const bot = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
 const setup = require('./setup/setup.json');
-const config = require(setup.TOKEN_PATH);
+const token = require(setup.CONFIG_PATH).TOKEN;
 const fs = require('fs');
 const { set } = require('mongoose');
 const { userInfo } = require('os');
@@ -15,7 +15,7 @@ let remoteMsg;
 (async () => {
     //...
   })()
-const prefix = setup.PREFIX;
+const prefix = require(setup.CONFIG_PATH).PREFIX;
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.endsWith('.js'));
 for(const file of commandFiles){
@@ -545,4 +545,4 @@ if (millisTill10 < 0) {
 
 setTimeout(function(){birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}, millisTill10);
 
-bot.login(config.TOKEN);
+bot.login(token);
