@@ -7,7 +7,8 @@ const bot = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
 const setup = require('./setup/setup.json');
-const token = require(setup.CONFIG_PATH).TOKEN;
+const token = require(setup.CONFIG_PATH).MAIN.TOKEN;
+const config = require(setup.CONFIG_PATH);
 const fs = require('fs');
 const { set } = require('mongoose');
 const { userInfo } = require('os');
@@ -15,7 +16,7 @@ let remoteMsg;
 (async () => {
     //...
   })()
-const prefix = require(setup.CONFIG_PATH).PREFIX;
+const prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.endsWith('.js'));
 for(const file of commandFiles){
@@ -36,18 +37,18 @@ function msgLC(args){
 function noPrefix(message, args) {
     return message.content.toLowerCase().includes(args);
 }
-//console.log(setup.GENDER_ROLES.length);
-//,console.log(setup.GENDER_ROLES[0].USER_ID);
+//console.log(config.USERS.length);
+//,console.log(config.USERS[0].USER_ID);
 
 function genderSearch(reaction, user) {
-    for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
+    for (let index = 0; index < config.USERS.length; index++) {
         //console.log(user.id);
-        //console.log(setup.GENDER_ROLES[index].USER_ID);
-        if (setup.GENDER_ROLES[index].USER_ID == user.id) {
-            if(setup.GENDER_ROLES[index].GENDER == "M") {
-                return setup.GENDERS_ROLE_ID.BOY;
-            } else if (setup.GENDER_ROLES[index].GENDER = "F") {
-                return setup.GENDERS_ROLE_ID.GIRL;
+        //console.log(config.USERS[index].USER_ID);
+        if (config.USERS[index].USER_ID == user.id) {
+            if(config.USERS[index].GENDER == "M") {
+                return config.GENDERS_ROLE_ID.BOY;
+            } else if (config.USERS[index].GENDER = "F") {
+                return config.GENDERS_ROLE_ID.GIRL;
             }
         }
         
@@ -55,22 +56,22 @@ function genderSearch(reaction, user) {
 }
 
 function nicknameSearch(reaction, user) {
-    for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
+    for (let index = 0; index < config.USERS.length; index++) {
         //console.log(user.id);
-        //console.log(setup.GENDER_ROLES[index].USER_ID);
-        if (setup.GENDER_ROLES[index].USER_ID == user.id) {
-            return setup.GENDER_ROLES[index].NICKNAME;
+        //console.log(config.USERS[index].USER_ID);
+        if (config.USERS[index].USER_ID == user.id) {
+            return config.USERS[index].NICKNAME;
         }
         
     }
 }
 
 function moderatorSearch(reaction, user) {
-    for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
+    for (let index = 0; index < config.USERS.length; index++) {
         //console.log(user.id);
-        //console.log(setup.GENDER_ROLES[index].USER_ID);
-        if (setup.GENDER_ROLES[index].USER_ID == user.id) {
-            return setup.GENDER_ROLES[index].MODERATOR;
+        //console.log(config.USERS[index].USER_ID);
+        if (config.USERS[index].USER_ID == user.id) {
+            return config.USERS[index].MODERATOR;
         }
         
     }
@@ -78,18 +79,18 @@ function moderatorSearch(reaction, user) {
 
 function birthdate(year, month, day) {
     let birthdays = [];
-    for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
+    for (let index = 0; index < config.USERS.length; index++) {
         //console.log(user.id);
-        //console.log(setup.GENDER_ROLES[index].USER_ID);
-        console.log(setup.GENDER_ROLES[index].BIRTHDAY.YEAR);
-        console.log(setup.GENDER_ROLES[index].BIRTHDAY.MONTH);
-        console.log(setup.GENDER_ROLES[index].BIRTHDAY.DAY);
+        //console.log(config.USERS[index].USER_ID);
+        console.log(config.USERS[index].BIRTHDAY.YEAR);
+        console.log(config.USERS[index].BIRTHDAY.MONTH);
+        console.log(config.USERS[index].BIRTHDAY.DAY);
         console.log(year);
         console.log(month);
         console.log(day);
-        if (setup.GENDER_ROLES[index].BIRTHDAY.MONTH == month && setup.GENDER_ROLES[index].BIRTHDAY.DAY == day) {
+        if (config.USERS[index].BIRTHDAY.MONTH == month && config.USERS[index].BIRTHDAY.DAY == day) {
             console.log("HBD");
-            birthdays.push(setup.GENDER_ROLES[index].USER_ID)
+            birthdays.push(config.USERS[index].USER_ID)
         }
         
     }
@@ -98,11 +99,11 @@ function birthdate(year, month, day) {
 
 function age(year, month, day) {
     var ages = [];
-    for (let index = 0; index < setup.GENDER_ROLES.length; index++) {
+    for (let index = 0; index < config.USERS.length; index++) {
         //console.log(user.id);
-        //console.log(setup.GENDER_ROLES[index].USER_ID);
-        if (setup.GENDER_ROLES[index].BIRTHDAY.MONTH == month && setup.GENDER_ROLES[index].BIRTHDAY.DAY == day) {
-            ages.push(year - setup.GENDER_ROLES[index].BIRTHDAY.YEAR);
+        //console.log(config.USERS[index].USER_ID);
+        if (config.USERS[index].BIRTHDAY.MONTH == month && config.USERS[index].BIRTHDAY.DAY == day) {
+            ages.push(year - config.USERS[index].BIRTHDAY.YEAR);
         }
         
     }
@@ -120,8 +121,8 @@ function birthday(year, month, day) {
     }
 }
 function isInThisClass(member) {
-    for (let index2 = 0; index2 < setup.GENDER_ROLES.length; index2++) {
-        if (setup.GENDER_ROLES[index2].USER_ID == member.user.id) {
+    for (let index2 = 0; index2 < config.USERS.length; index2++) {
+        if (config.USERS[index2].USER_ID == member.user.id) {
             return true;
         }
         
@@ -197,9 +198,9 @@ bot.on('message', async (message, user) => {
             }
             break;
     }
-    if (message.member.user.id != setup.BOT_ID/* && message.member.user.id != setup.GENDER_ROLES.Tuzsi.USER_ID*/) {
+    if (message.member.user.id != setup.BOT_ID/* && message.member.user.id != config.USERS.Tuzsi.USER_ID*/) {
         if(noPrefix(message, 'buzi')) {
-            message.channel.send(`${message.member.user} te vagy a buzi`/*`, de ${message.guild.members.cache.get(setup.GENDER_ROLES.Marci.USER_ID)} nagyobb`*/);
+            message.channel.send(`${message.member.user} te vagy a buzi`/*`, de ${message.guild.members.cache.get(config.USERS.Marci.USER_ID)} nagyobb`*/);
         } else if(msgLC(message) == 'sziasztok' || msgLC(message) == 'sziasztok!'){
             message.channel.send(`Szia ${message.member.user}!`);
         }
@@ -492,7 +493,7 @@ bot.on('guildMemberAdd', member => {
         member.send(dm);
         member.roles.add(setup.REACTION_ROLES.Unverified.ROLE_ID);
     } else if (member.user.bot) {
-        member.roles.add(setup.REACTION_ROLES.Bot.ROLE_ID);
+        member.roles.add(setup.REACTION_ROLES.BOT.ROLE_ID);
     } else {
         const raw = setup.NOT_IN_THIS_CLASS_MESSAGE;
         const dm = raw.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);

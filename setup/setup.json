@@ -1,4 +1,5 @@
 {
+    
     "STATUS" : "Itta segiccség gyálákik",
     "ACTIVITY" : "LISTENING",
 
@@ -30,9 +31,7 @@
 
         "Tartsuk_be_legyszi" : {"CHANNEL_ID" : "748870108620914699"},
         "Rendszeruzenetek" : {"CHANNEL_ID" : "633766572837699584"},
-
-        "Moderator" : {"ROLE_ID" : "633743212594593813"},
-        "Bot" : {"ROLE_ID" : "633746400722812939"}
+        "Moderator" : {"ROLE_ID" : "633743212594593813"}
     },
 
     "REACTION_CHANNELS" : {
@@ -76,10 +75,6 @@
         }
 
     },
-    "GENDERS_ROLE_ID" : {
-        "BOY" : "633715223207084042",
-        "GIRL" : "633715398491242506"
-    },
 
     "TEST" : "748983895499735211",
 
@@ -87,42 +82,6 @@
         "TITLE" : "alma",
         "DESCRIPTION" : "nem alma",
         "COLOR" : "RANDOM"
-    },
-
-    "GENDER_ROLES" : [
-        {"NICKNAME" : "Tuzsi", "USER_ID" : "568082396696674307", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 10, "DAY" : 25}, "MODERATOR" : true},
-        {"NICKNAME" : "Frédi", "USER_ID" : "243646548909490177", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2005, "MONTH" : 4, "DAY" : 14}, "MODERATOR" : true},
-        {"NICKNAME" : "Matyi", "USER_ID" : "227404431979839488", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 8, "DAY" : 7}, "MODERATOR" : true},
-        {"NICKNAME" : "Benedek", "USER_ID" : "434702544120446976", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 12}, "MODERATOR" : false},
-        {"NICKNAME" : "Bernát", "USER_ID" : "488897455925100545", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : null, "MONTH" : null, "DAY" : null}, "MODERATOR" : false},
-        {"NICKNAME" : "Zoli", "USER_ID" : "393703719629488136", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 10}, "MODERATOR" : false},
-        {"NICKNAME" : "Ambi", "USER_ID" : "633967791292284931", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 12, "DAY" : 11}, "MODERATOR" : false},
-        {"NICKNAME" : "Berci", "USER_ID" : "627893535391219723", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 8, "DAY" : 25}, "MODERATOR" : false},
-        {"NICKNAME" : "Bendi", "USER_ID" : "575304646378389509", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 3, "DAY" : 14}, "MODERATOR" : false},
-        {"NICKNAME" : "Csöcsi", "USER_ID" : "502457480274640896", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 11}, "MODERATOR" : false},
-        {"NICKNAME" : "Soki", "USER_ID" : "634357970288771072", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 8, "DAY" : 25}, "MODERATOR" : false},
-        {"NICKNAME" : "Marci", "USER_ID" : "393374233960513556", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 19}, "MODERATOR" : false},
-        {"NICKNAME" : "Áron", "USER_ID" : "433969021822697473", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 7, "DAY" : 9}, "MODERATOR" : false},
-        {"NICKNAME" : "Gery", "USER_ID" : "473427312289775617", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 9, "DAY" : 7}, "MODERATOR" : false},
-        {"NICKNAME" : "Andriska", "USER_ID" : "", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 27}},
-        {"NICKNAME" : "Gandalf", "USER_ID" : "", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 6, "DAY" : 26}},
-        {"NICKNAME" : "TEST", "USER_ID" : "641777799031554078", "GENDER" : "M", "BIRTHDAY" : {"YEAR" : null, "MONTH" : null, "DAY" : null}, "MODERATOR" : false},
-        
-
-        {"NICKNAME" : "Liliána", "USER_ID" : "634313752979963944", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 1}, "MODERATOR" : false},
-        {"NICKNAME" : "Adél", "USER_ID" : "633907217346854932", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 7, "DAY" : 2}, "MODERATOR" : false},
-        {"NICKNAME" : "Eszti", "USER_ID" : "634310036516241408", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 17}, "MODERATOR" : false},
-        {"NICKNAME" : "Mesi", "USER_ID" : "634274055167410179", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 11, "DAY" : 26}, "MODERATOR" : false},
-        {"NICKNAME" : "Adri", "USER_ID" : "633736859272478730", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 7, "DAY" : 16}, "MODERATOR" : false},
-        {"NICKNAME" : "Panka", "USER_ID" : "633913040714072069", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 8, "DAY" : 3}, "MODERATOR" : false},
-        {"NICKNAME" : "Fófi", "USER_ID" : "634432368911974402", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 6, "DAY" : 17}, "MODERATOR" : false},
-        {"NICKNAME" : "Nelly", "USER_ID" : "", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 2, "DAY" : 6}, "MODERATOR" : false},
-        {"NICKNAME" : "Rozi", "USER_ID" : "", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 6, "DAY" : 11}, "MODERATOR" : false},
-        {"NICKNAME" : "Encsi", "USER_ID" : "", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2003, "MONTH" : 12, "DAY" : 30}, "MODERATOR" : false},
-        {"NICKNAME" : "Luca", "USER_ID" : "", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 10, "DAY" : 19}, "MODERATOR" : false},
-        {"NICKNAME" : "Alíz", "USER_ID" : "", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : null, "MONTH" : null, "DAY" : null}, "MODERATOR" : false},
-        {"NICKNAME" : "Zoé", "USER_ID" : "", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2005, "MONTH" : 3, "DAY" : 29}, "MODERATOR" : false},
-        {"NICKNAME" : "Lilko", "USER_ID" : "", "GENDER" : "F", "BIRTHDAY" : {"YEAR" : 2004, "MONTH" : 11, "DAY" : 4}, "MODERATOR" : false}
-    ]
+    }
     
 }
