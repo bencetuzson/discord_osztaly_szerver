@@ -16,8 +16,6 @@
     "LEFT_PUBLIC_MESSAGE" : "Sajnáljuk @USER, hogy elmentél... Várunk mihamarabb vissza!",
     "BIRTHDAY_MESSAGE" : "**Szia, @USER!**\nBoldog @AGE. születésnapot kívánok! Legyen szép napod, és élvezd ki, mert ebből a születésnapból is csak egy van:heart:",
 
-    "CATEGORIES" : {"Bot" : "🤖", "Zene" : "🎶", "Gaming" : "🎮", "Teszter" : "🛠"},
-
     "CURRENT_SCHOOLYEAR" : "2020/2021",
     "CURRENT_CLASS" : "9.gy.",
     
