@@ -1,7 +1,7 @@
 {
     
-    "STATUS" : "Itta segiccség gyálákik",
-    "ACTIVITY" : "LISTENING",
+    "STATUS" : "gyh!parancsok",
+    "ACTIVITY" : "WATCHING",
 
     "CONFIG_PATH" : "../config/config.json",
     "COMMANDS_PATH" : "./Commands/",

@@ -538,12 +538,12 @@ bot.on('guildMemberRemove', async member => {
 });
 
 var now = new Date();
-var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 20, 0, 0) - now;
-if (millisTill10 < 0) {
-     millisTill10 += 86400000; // it's after 10am, try 10am tomorrow.
+var ms = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 30, 0, 0) - now;
+if (ms < 0) {
+     ms += 86400000;
 }
 
 
-setTimeout(function(){birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}, millisTill10);
+setTimeout(function(){birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}, ms);
 
 bot.login(token);
