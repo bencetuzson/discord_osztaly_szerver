@@ -5,6 +5,7 @@
 
     "CONFIG_PATH" : "../config/config.json",
     "COMMANDS_PATH" : "./Commands/",
+    "USERS_PATH" : "../config/users.json",
 
     "BOT_ID" : "722486287524692009",
     "USER_NAME" : "@USER",
