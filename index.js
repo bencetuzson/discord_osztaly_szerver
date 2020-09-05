@@ -1,8 +1,6 @@
 console.log("Starting up...");
 
 const Discord = require('discord.js');
-const Welcome = require("discord-welcome");
-var schedule = require('node-schedule');
 const bot = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
@@ -31,20 +29,15 @@ bot.on('ready', ()=>{
 
 function msgLC(args){
     msgArgs = args;
-    //console.log(args.content.toLowerCase());
     return args.content.toLowerCase();
 }
 
 function noPrefix(message, args) {
     return message.content.toLowerCase().includes(args);
 }
-//console.log(users.USERS.length);
-//,console.log(users.USERS[0].USER_ID);
 
 function genderSearch(reaction, user) {
     for (let index = 0; index < users.USERS.length; index++) {
-        //console.log(user.id);
-        //console.log(users.USERS[index].USER_ID);
         if (users.USERS[index].USER_ID == user.id) {
             if(users.USERS[index].GENDER == "M") {
                 return users.GENDERS_ROLE_ID.BOY;
@@ -58,8 +51,6 @@ function genderSearch(reaction, user) {
 
 function nicknameSearch(reaction, user) {
     for (let index = 0; index < users.USERS.length; index++) {
-        //console.log(user.id);
-        //console.log(users.USERS[index].USER_ID);
         if (users.USERS[index].USER_ID == user.id) {
             return users.USERS[index].NICKNAME;
         }
@@ -69,8 +60,6 @@ function nicknameSearch(reaction, user) {
 
 function moderatorSearch(reaction, user) {
     for (let index = 0; index < users.USERS.length; index++) {
-        //console.log(user.id);
-        //console.log(users.USERS[index].USER_ID);
         if (users.USERS[index].USER_ID == user.id) {
             return users.USERS[index].MODERATOR;
         }
@@ -81,16 +70,7 @@ function moderatorSearch(reaction, user) {
 function birthdate(year, month, day) {
     let birthdays = [];
     for (let index = 0; index < users.USERS.length; index++) {
-        //console.log(user.id);
-        //console.log(users.USERS[index].USER_ID);
-        console.log(users.USERS[index].BIRTHDAY.YEAR);
-        console.log(users.USERS[index].BIRTHDAY.MONTH);
-        console.log(users.USERS[index].BIRTHDAY.DAY);
-        console.log(year);
-        console.log(month);
-        console.log(day);
         if (users.USERS[index].BIRTHDAY.MONTH == month && users.USERS[index].BIRTHDAY.DAY == day) {
-            console.log("HBD");
             birthdays.push(users.USERS[index].USER_ID)
         }
         
@@ -101,8 +81,6 @@ function birthdate(year, month, day) {
 function age(year, month, day) {
     var ages = [];
     for (let index = 0; index < users.USERS.length; index++) {
-        //console.log(user.id);
-        //console.log(users.USERS[index].USER_ID);
         if (users.USERS[index].BIRTHDAY.MONTH == month && users.USERS[index].BIRTHDAY.DAY == day) {
             ages.push(year - users.USERS[index].BIRTHDAY.YEAR);
         }
@@ -113,7 +91,6 @@ function age(year, month, day) {
 
 function birthday(year, month, day) {
     const BDraw = setup.BIRTHDAY_MESSAGE;
-    console.log(birthdate(year, month, day));
     let BDlength = birthdate(year, month, day).length;
     for (let indexBD = 0; indexBD < BDlength; indexBD++) {
         let BDdm = BDraw.replace(setup.USER_NAME, `${bot.users.cache.get(birthdate(year, month, day)[indexBD])}`).replace(setup.AGE, `${age(year, month, day)[indexBD]}`);
@@ -121,6 +98,7 @@ function birthday(year, month, day) {
         DMuser.send(BDdm);
     }
 }
+
 function isInThisClass(member) {
     for (let index2 = 0; index2 < users.USERS.length; index2++) {
         if (users.USERS[index2].USER_ID == member.user.id) {
@@ -193,6 +171,12 @@ bot.on('message', async (message, user) => {
                 bot.commands.get('modify').execute(await message, args);
             }
             break;
+        case `${prefix}szulinap`:
+                bot.commands.get('szulinap').execute(await message, user, users, bot, args);
+            break;
+        case `${prefix}szolj`:
+            bot.commands.get('szolj').execute(await message, args);
+            break;
         case `${prefix}test`:
             if(message.member.hasPermission("ADMINISTRATOR")){
                 console.log(message.channel.id);
@@ -221,18 +205,10 @@ bot.on('messageReactionAdd', async (reaction, user) => {
     if(user.bot) return;
     if(!reaction.message.guild) return;
 
-    console.log(reaction.emoji.name);
-    console.log(setup.REACTION_ROLES.BOT.MESSAGE_ID);
-    console.log(setup.REACTION_ROLES.BOT.REACTION);
-    console.log(setup.REACTION_ROLES.BOT.ROLE_ID);
-    console.log(reaction.message.id);
-    console.log(user.id);
-
     switch (reaction.emoji.name) {
         case setup.REACTION_ROLES.BOT.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.BOT.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID);
@@ -243,7 +219,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
         case setup.REACTION_ROLES.Zene.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Zene.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Zene.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Zene.TEMP_ROLE_ID);
@@ -254,7 +229,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
         case setup.REACTION_ROLES.Gaming.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Gaming.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.TEMP_ROLE_ID);
@@ -265,7 +239,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
         case setup.REACTION_ROLES.Teszter.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Teszter.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID);
@@ -276,7 +249,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
         case setup.REACTION_ROLES.Spam.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Spam.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Spam.TEMP_ROLE_ID);
@@ -286,18 +258,13 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 
         case setup.REACTION_ROLES.Verified.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Verified.MESSAGE_ID) {
-                console.log("success");
                 if (reaction.emoji.name === setup.REACTION_ROLES.Verified.REACTION) {
-                    console.log("success2");
                     if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Unverified.ROLE_ID)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID);
                     }
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Unverified.ROLE_ID);
-                    const userReactions = reaction.message.reactions.cache.filter(reaction => reaction.users.cache.has(user.id));
                     try {
-                        //for (const reaction of userReactions.values()) {
-                            await reaction.users.remove(user.id);
-                        //}
+                        await reaction.users.remove(user.id);
                     } catch (error) {
                         console.error('Failed to remove reactions.');
                     }
@@ -307,39 +274,21 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 
         case setup.REACTION_ROLES.Ezek_erdekelnek.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Ezek_erdekelnek.MESSAGE_ID) {
-                console.log("success");
                 if (reaction.emoji.name === setup.REACTION_ROLES.Ezek_erdekelnek.REACTION) {
-                    console.log("success2");
-                    //console.log(reaction.message.guild.members.cache.get(user.id));
                     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Verified.ROLE_ID);
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID);
                     await reaction.message.guild.members.cache.get(user.id).roles.add(genderSearch(reaction, user));
                     if (moderatorSearch(reaction, user)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Moderator.ROLE_ID);
-                    }
-                    reaction.message.guild.members.cache.get(user.id).setNickname(nicknameSearch(reaction, user));
-                    //reaction.message.channel.messages.fetch(reaction.message.id).map(r => r).then(message => {
-                    //    reaction.message.reactions.forEach(reaction => reaction.remove(user.id))
-                    //  })
-                    //reaction.message.reactions.forEach((reaction) => {});
-                    //for (let ind = 0; ind < 4; ind++) {
-                        //let reactedUser = ifReacted(setup.REACTION_ROLES.BOT.REACTION, setup.REACTION_ROLES.BOT.MESSAGE_ID, reaction.message)[ind].replace("<", "").replace("@", "").replace(">", "")
-                        //if (reactedUser == user) {
-                       //     await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.ROLE_ID);
-                        //}
-                        
-                    //}
-                    //console.log(reaction.message.fetch());
+                    };
 
-                    const userReactions2 = reaction.message.reactions.cache.filter(reaction => reaction.users.cache.has(user.id));
+                    reaction.message.guild.members.cache.get(user.id).setNickname(nicknameSearch(reaction, user));
+
                     try {
-                        //for (const reaction of userReactions2.values()) {
-                            //sleep(5000);
-                            await reaction.users.remove(user.id);
-                        //}
+                        await reaction.users.remove(user.id);
                     } catch (error) {
                         console.error('Failed to remove reactions.');
-                    }
+                    };
 
                     if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.ROLE_ID);
@@ -365,46 +314,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.ROLE_ID);
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID);
                     };
-
-
-
-
-                    /*async fetch({ limit = 100, after, before } = {}); {;
-                        const message = this.reaction.message;
-                        const data = await this.client.api.channels[message.channel.id].messages[message.id].reactions[
-                          this.reaction.emoji.identifier
-                        ].get({ query: { limit, before, after } });
-                        const users = new Collection();
-                        for (const rawUser of data) {
-                          const user = this.client.users.add(rawUser);
-                          this.cache.set(user.id, user);
-                          users.set(user.id, user);
-                        }
-                        return users;
-                      }*/
-                      
-                    
-                    
-                    
-                        
-                    
-                    
-                    //console.log(await (await reaction.message.channel.messages.fetch(setup.REACTION_ROLES.BOT.MESSAGE_ID)).reactions.cache);
-                    //console.log(reaction.message.guild.members.cache.get(user.id));
-                    //console.log(reaction.message.reactions);
-                    //console.log(Array.from(reaction.message.reactions.cache.map(({users})=> users)));
-                    //if (await (await reaction.message.channel.messages.fetch(setup.REACTION_ROLES.BOT.MESSAGE_ID)).reactions..has(reaction.message.guild.members.cache.get(user.id))) {
-                    //    console.log()
-                    //}
-                    //let reactionVar = reaction.message.reactions;
-                    //console.log(reactionVar);
-                    //let usersVar = reactionVar.users 
-                    //let reactionVar = await reaction.message.channel.messages.fetch(reaction.message.id).reactions;
-                    //console.log(reactionVar);
-                    //let usersVar = reactionVar.users.map(u => u.toString());
-                    //console.log(usersVar);
-
-                    
                 }
             }
         break;
@@ -421,18 +330,10 @@ bot.on('messageReactionRemove', async (reaction, user) => {
     if(user.bot) return;
     if(!reaction.message.guild) return;
 
-    console.log(reaction.emoji.name);
-    console.log(setup.REACTION_ROLES.BOT.MESSAGE_ID);
-    console.log(setup.REACTION_ROLES.BOT.REACTION);
-    console.log(setup.REACTION_ROLES.BOT.ROLE_ID);
-    console.log(reaction.message.id);
-    console.log(user.id);  
-
     switch (reaction.emoji.name) {
         case setup.REACTION_ROLES.BOT.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.BOT.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.BOT.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID);
@@ -443,7 +344,6 @@ bot.on('messageReactionRemove', async (reaction, user) => {
         case setup.REACTION_ROLES.Zene.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Zene.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Zene.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Zene.TEMP_ROLE_ID);
@@ -454,7 +354,6 @@ bot.on('messageReactionRemove', async (reaction, user) => {
         case setup.REACTION_ROLES.Gaming.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Gaming.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Gaming.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Gaming.TEMP_ROLE_ID);
@@ -465,7 +364,6 @@ bot.on('messageReactionRemove', async (reaction, user) => {
         case setup.REACTION_ROLES.Teszter.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Teszter.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Teszter.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID);
@@ -476,7 +374,6 @@ bot.on('messageReactionRemove', async (reaction, user) => {
         case setup.REACTION_ROLES.Spam.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.Spam.MESSAGE_ID) {
                 if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) {
-                    console.log("success");
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Spam.ROLE_ID);
                 } else if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Ezek_erdekelnek.ROLE_ID)) {
                     await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Spam.TEMP_ROLE_ID);
@@ -505,8 +402,8 @@ bot.on('guildMemberAdd', member => {
 });
 
 bot.on('guildMemberRemove', async member => {
-    publicmsg = setup.LEFT_PUBLIC_MESSAGE;
-    publicchannel = setup.REACTION_ROLES.Rendszeruzenetek.CHANNEL_ID;
+    let publicmsg = setup.LEFT_PUBLIC_MESSAGE;
+    let publicchannel = setup.REACTION_ROLES.Rendszeruzenetek.CHANNEL_ID;
 
     if (publicmsg && publicchannel) {
         let channel = member.guild.channels.cache.find(val => val.name === publicchannel) || member.guild.channels.cache.get(publicchannel);
@@ -514,18 +411,12 @@ bot.on('guildMemberRemove', async member => {
           console.log(`Channel "${publicchannel}" not found`);
         } else {
           if (channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
-            // Prepare the Message by replacing the @MEMBER tag to the user mention
             if (typeof publicmsg === "object") {
-              // Embed
-              embed = publicmsg;
               channel.send({
-                embed
+                publicmsg
               });
             } else {
-              msg = publicmsg.replace(setup.USER_NAME, `${member.user}`);
-              msg = msg.replace(setup.SERVER_NAME, `${member.guild.name}`);
-  
-              // Send the Message
+              let msg = publicmsg.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
               channel.send(msg);
             }
         }

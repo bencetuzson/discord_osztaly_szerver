@@ -14,6 +14,8 @@ module.exports = {
 \`gyh!csapat [csapatok száma]\` - A gép csapatokat sorsol az osztály tagjaival annyi felé, amennyit a *[csapatok száma]* helyére írsz be
 
 \`gyh!orarend\` - Kiírja az aktuális órarendet
+
+\`gyh!szulinap [név vagy tag]\` - Elküldi privát üzenetben a *[név vagy tag]* helyére beírt személy születésnapját
 `)
         .setColor(randomColour);
         message.channel.send(Embed);
