@@ -1,4 +1,3 @@
-const Welcome = require("discord-welcome");
 const Discord = require('discord.js');
 
 module.exports = {

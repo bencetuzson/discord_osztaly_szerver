@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const database = require('../database/database.json');
+const database = require('../../database/database.json');
 
 module.exports = {
     name: 'random',

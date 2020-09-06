@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const setup = require("../setup/setup.json")
+const setup = require("../../database/setup.json")
 
 module.exports = {
     name: 'verify',

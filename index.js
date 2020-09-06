@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
-const setup = require('./setup/setup.json');
+const setup = require('../database/setup.json');
 const token = require(setup.CONFIG_PATH).MAIN.TOKEN;
 const config = require(setup.CONFIG_PATH);
 const users = require(setup.USERS_PATH);
@@ -38,10 +38,10 @@ function noPrefix(message, args) {
 
 function genderSearch(reaction, user) {
     for (let index = 0; index < users.USERS.length; index++) {
-        if (users.USERS[index].USER_ID == user.id) {
-            if(users.USERS[index].GENDER == "M") {
+        if (users.USERS[index].USER_ID === user.id) {
+            if(users.USERS[index].GENDER === "M") {
                 return users.GENDERS_ROLE_ID.BOY;
-            } else if (users.USERS[index].GENDER = "F") {
+            } else if (users.USERS[index].GENDER === "F") {
                 return users.GENDERS_ROLE_ID.GIRL;
             }
         }
@@ -51,7 +51,7 @@ function genderSearch(reaction, user) {
 
 function nicknameSearch(reaction, user) {
     for (let index = 0; index < users.USERS.length; index++) {
-        if (users.USERS[index].USER_ID == user.id) {
+        if (users.USERS[index].USER_ID === user.id) {
             return users.USERS[index].NICKNAME;
         }
         
@@ -60,7 +60,7 @@ function nicknameSearch(reaction, user) {
 
 function moderatorSearch(reaction, user) {
     for (let index = 0; index < users.USERS.length; index++) {
-        if (users.USERS[index].USER_ID == user.id) {
+        if (users.USERS[index].USER_ID === user.id) {
             return users.USERS[index].MODERATOR;
         }
         
@@ -70,7 +70,7 @@ function moderatorSearch(reaction, user) {
 function birthdate(year, month, day) {
     let birthdays = [];
     for (let index = 0; index < users.USERS.length; index++) {
-        if (users.USERS[index].BIRTHDAY.MONTH == month && users.USERS[index].BIRTHDAY.DAY == day) {
+        if (users.USERS[index].BIRTHDAY.MONTH === month && users.USERS[index].BIRTHDAY.DAY === day) {
             birthdays.push(users.USERS[index].USER_ID)
         }
         
@@ -81,7 +81,7 @@ function birthdate(year, month, day) {
 function age(year, month, day) {
     var ages = [];
     for (let index = 0; index < users.USERS.length; index++) {
-        if (users.USERS[index].BIRTHDAY.MONTH == month && users.USERS[index].BIRTHDAY.DAY == day) {
+        if (users.USERS[index].BIRTHDAY.MONTH === month && users.USERS[index].BIRTHDAY.DAY === day) {
             ages.push(year - users.USERS[index].BIRTHDAY.YEAR);
         }
         
@@ -101,7 +101,7 @@ function birthday(year, month, day) {
 
 function isInThisClass(member) {
     for (let index2 = 0; index2 < users.USERS.length; index2++) {
-        if (users.USERS[index2].USER_ID == member.user.id) {
+        if (users.USERS[index2].USER_ID === member.user.id) {
             return true;
         }
         
@@ -112,7 +112,7 @@ function ifReacted(emojiID, msgID, msg) {
         msg.channel.messages.fetch({around: msgID, limit: 1})
         .then(message => {  
         let reactionVar = message.reactions.cache
-        .find(r => r.emoji.name == emojiID);
+        .find(r => r.emoji.name === emojiID);
         if (reactionVar) {
         return reactionVar
         .users.cache.array()
@@ -183,15 +183,15 @@ bot.on('message', async (message, user) => {
             }
             break;
     }
-    if (message.member.user.id != setup.BOT_ID/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
+    if (message.member.user.id !== setup.BOT_ID/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
         if(noPrefix(message, 'buzi')) {
             message.channel.send(`${message.member.user} te vagy a buzi`/*`, de ${message.guild.members.cache.get(users.USERS.Marci.USER_ID)} nagyobb`*/);
-        } else if(msgLC(message) == 'sziasztok' || msgLC(message) == 'sziasztok!'){
+        } else if(msgLC(message) === 'sziasztok' || msgLC(message) === 'sziasztok!'){
             message.channel.send(`Szia ${message.member.user}!`);
         }
     }
 
-    if (message.channel.id == setup.REACTION_CHANNELS.Spam.one_word_story_in_english && args.length > 1) {
+    if (message.channel.id === setup.REACTION_CHANNELS.Spam.one_word_story_in_english && args.length > 1) {
         await message.channel.messages.fetch({ limit: 1 }).then(messages => {
             message.channel.bulkDelete(messages);
         });

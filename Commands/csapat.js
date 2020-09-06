@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const database = require('../database/database.json');
+const database = require('../../database/database.json');
 
 let classLength = database.CLASS_MEMBERS.length;
 module.exports = {
