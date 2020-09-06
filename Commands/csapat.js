@@ -6,9 +6,6 @@ module.exports = {
     name: 'csapat',
     description: 'makes teams',
     execute(message, args){
-        console.log(args[1] > 0 && args[1] <= classLength);
-        console.log(args[1]);
-        console.log(database.CLASS_MEMBERS.length);
         if(args[1] > 0 && args[1] <= classLength){
             console.log(args);
             var class_members = database.CLASS_MEMBERS;
@@ -19,10 +16,6 @@ module.exports = {
                 teams[index2].push(`**${index2+1}. csapat:** `);
                 //teams[0] = index2+1 + ". csapat: ";
                 for (let index3 = 1; index3 < Math.floor(cycle/args[1])+1; index3++) {
-                    console.log(class_members);
-                    console.log(teams);
-                    console.log(index2);
-                    console.log(index3);
                     var randomIndex = Math.floor(Math.random()*class_members.length)
                     const randomElement = class_members[randomIndex];
                     const index = class_members.indexOf(randomIndex);
@@ -48,7 +41,6 @@ module.exports = {
             .setDescription(`${teams.join("\n\n")}`)
             .setColor("RANDOM");
             message.channel.send(Embed);
-            console.log(class_members);
         } else {
             message.channel.send("Érvénytelen paraméter!");
         }

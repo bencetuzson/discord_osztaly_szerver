@@ -10,10 +10,10 @@ module.exports = {
         let ind = null;
         let dm;
         for (let index = 0; index < users.USERS.length; index++) {
-            if (users.USERS[index].NICKNAME.toLowerCase() == args[1].toLowerCase()) {
+            if (users.USERS[index].NICKNAME.toLowerCase() === args[1].toLowerCase()) {
                 ind = index;
                 break;
-            } else if (bot.users.cache.get(users.USERS[index].USER_ID) == args[1].replace("<", "").replace("@", "").replace("!", "").replace(">", "")) {
+            } else if (bot.users.cache.get(users.USERS[index].USER_ID) === args[1].replace("<", "").replace("@", "").replace("!", "").replace(">", "")) {
                 ind = index;
                 break;
             }
@@ -75,7 +75,7 @@ module.exports = {
         }
 
         if (ind != null) {
-            if (bot.users.cache.get(users.USERS[ind].USER_ID != undefined)) {
+            if (bot.users.cache.get(users.USERS[ind].USER_ID !== undefined)) {
                 dm = `${bot.users.cache.get(users.USERS[ind].USER_ID)} születésnapja: ${users.USERS[ind].BIRTHDAY.YEAR}. ${monthToString()} ${users.USERS[ind].BIRTHDAY.DAY}.`;
             } else {
                 dm = `${users.USERS[ind].NICKNAME} születésnapja: ${users.USERS[ind].BIRTHDAY.YEAR}. ${monthToString(users.USERS[ind].BIRTHDAY.MONTH)} ${users.USERS[ind].BIRTHDAY.DAY}.`;
