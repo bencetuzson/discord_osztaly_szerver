@@ -4,6 +4,6 @@ module.exports = {
     name: 'colour',
     description: 'role colour',
     execute(message, args){
-        message.reply('Hi!')
+
     }
 }
