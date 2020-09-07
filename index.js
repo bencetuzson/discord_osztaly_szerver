@@ -177,6 +177,9 @@ bot.on('message', async (message, user) => {
         case `${prefix}szolj`:
             bot.commands.get('szolj').execute(await message, args);
             break;
+        case `${prefix}jon`:
+            bot.commands.get('jon').execute(await message, args);
+            break;
         case `${prefix}test`:
             if(message.member.hasPermission("ADMINISTRATOR")){
                 console.log(message.channel.id);

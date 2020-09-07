@@ -16,6 +16,8 @@ module.exports = {
 \`gyh!orarend\` - Kiírja az aktuális órarendet
 
 \`gyh!szulinap [név vagy tag]\` - Elküldi privát üzenetben a *[név vagy tag]* helyére beírt személy születésnapját
+
+\`gyh!jon\` - Kiírja a következő óra nevét, indőpontját és a tulajdonságait
 `)
         .setColor(randomColour);
         message.channel.send(Embed);
