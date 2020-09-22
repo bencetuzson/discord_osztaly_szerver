@@ -162,7 +162,6 @@ bot.on('message', async (message, user) => {
             break;
         case `${prefix}verify`:
             if(message.member.hasPermission("ADMINISTRATOR")){
-                if(user.hasP)
                 bot.commands.get('verify').execute(await message, args);
             }
             break;
@@ -178,7 +177,7 @@ bot.on('message', async (message, user) => {
             bot.commands.get('szolj').execute(await message, args);
             break;
         case `${prefix}jon`:
-            bot.commands.get('jon').execute(await message, args);
+            bot.commands.get('jon').execute(await message, args, user, users);
             break;
         case `${prefix}test`:
             if(message.member.hasPermission("ADMINISTRATOR")){
