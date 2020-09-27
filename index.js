@@ -23,8 +23,9 @@ for(const file of commandFiles){
     bot.commands.set(command.name, command);
 };
 bot.on('ready', ()=>{
-    console.log(bot.user.tag + ' bot is active')
+    console.log(bot.user.tag + ' bot is active');
     bot.user.setActivity(setup.STATUS, {type: setup.ACTIVITY});
+    bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
 })
 
 function msgLC(args){
@@ -132,55 +133,62 @@ bot.on('message', async (message, user) => {
     remoteMsg = message;
     if (message.author.bot){return};
     let args = message.content.substring(' ').split(' ');
+    let prefixTemp;
+
+    if (message.guild === null) {
+        prefixTemp = prefix.replace(prefix, "");
+    } else {
+        prefixTemp = prefix;
+    }
 
     switch (args[0].toLowerCase()) {
         case `${prefix}ping`:
             bot.commands.get('ping').execute(await message, args);
             break;
-        case `${prefix}colour`:
+        case `${prefixTemp}colour`:
             bot.commands.get('colour').execute(await message, args);
             break;
-        case `${prefix}random`:
+        case `${prefixTemp}random`:
             bot.commands.get('random').execute(message, args);
             break;
-        case `${prefix}csapat`:
+        case `${prefixTemp}csapat`:
             bot.commands.get('csapat').execute(await message, args);
             break;
-        case `${prefix}parancsok`:
+        case `${prefixTemp}parancsok`:
             bot.commands.get('parancsok').execute(message, args);
             break;
-        case `${prefix}rang`:
-            if(message.member.hasPermission("ADMINISTRATOR")){
+        case `${prefixTemp}rang`:
+            if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
                 bot.commands.get('rang').execute(await message, args);
             }
             break;
-        case `${prefix}reakcio`:
+        case `${prefixTemp}reakcio`:
             bot.commands.get('reakcio').execute(await message, args);
             break;
-        case `${prefix}orarend`:
+        case `${prefixTemp}orarend`:
             bot.commands.get('orarend').execute(await message, args);
             break;
-        case `${prefix}verify`:
-            if(message.member.hasPermission("ADMINISTRATOR")){
+        case `${prefixTemp}verify`:
+            if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
                 bot.commands.get('verify').execute(await message, args);
             }
             break;
-        case `${prefix}modify`:
-            if(message.member.hasPermission("ADMINISTRATOR")){
+        case `${prefixTemp}modify`:
+            if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
                 bot.commands.get('modify').execute(await message, args);
             }
             break;
-        case `${prefix}szulinap`:
+        case `${prefixTemp}szulinap`:
                 bot.commands.get('szulinap').execute(await message, user, users, bot, args);
             break;
-        case `${prefix}szolj`:
+        case `${prefixTemp}szolj`:
             bot.commands.get('szolj').execute(await message, args);
             break;
-        case `${prefix}jon`:
+        case `${prefixTemp}jon`:
             bot.commands.get('jon').execute(await message, args, user, users);
             break;
-        case `${prefix}test`:
-            if(message.member.hasPermission("ADMINISTRATOR")){
+        case `${prefixTemp}test`:
+            if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
                 console.log(message.channel.id);
             }
             break;
