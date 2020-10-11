@@ -12,9 +12,6 @@ const fs = require('fs');
 const { set } = require('mongoose');
 const { userInfo } = require('os');
 let remoteMsg;
-(async () => {
-    //...
-  })()
 const prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.endsWith('.js'));
@@ -432,15 +429,11 @@ bot.on('guildMemberRemove', async member => {
         }
         }
     }
-    //if (member.user.bot) return;
-    //const raw2 = setup.LEFT_DM;
-    //const dm2 = raw2.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
-    //member.send(dm2);
 
 });
 
-var now = new Date();
-var ms = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 30, 0, 0) - now;
+const now = new Date();
+let ms = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 30, 0, 0) - now;
 if (ms < 0) {
      ms += 86400000;
 }
