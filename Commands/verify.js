@@ -50,12 +50,16 @@ ${message.guild.channels.cache.get(setup.REACTION_CHANNELS.BOT.szerverspecifikus
                 description = `
 ${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.minecraft)} 
 -*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.minecraft).topic}*
-${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.paladins)} 
--*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.paladins).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.among_us)}
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.among_us).topic}*
 ${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.rocket_league)}
 -*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.rocket_league).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.paladins)} 
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.paladins).topic}*
 ${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.pubg)} 
 -*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.pubg).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.csgo)} 
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.csgo).topic}*
 ${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.r6s)} 
 -*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.r6s).topic}*
 :loud_sound: #1

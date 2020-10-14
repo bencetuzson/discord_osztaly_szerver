@@ -9,13 +9,30 @@ module.exports = {
 
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
         .setDescription(`
-**Ha igen, kattints az ez alatt lévő :white_check_mark:-ra, és menj be az ${message.guild.channels.cache.get(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID)} csatornába!**
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.minecraft)} 
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.minecraft).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.among_us)}
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.among_us).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.rocket_league)}
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.rocket_league).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.paladins)} 
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.paladins).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.pubg)} 
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.pubg).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.csgo)} 
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.csgo).topic}*
+${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.r6s)} 
+-*${message.guild.channels.cache.get(setup.REACTION_CHANNELS.Gaming.r6s).topic}*
+:loud_sound: #1
+:loud_sound: #2
+:loud_sound: #3
+:loud_sound: #4
 `)
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 
         .setColor("RANDOM");
         var messageID;
-        switch (args[1]) {
+        switch (args[1].toLowerCase()) {
             case "bot":
                 embed.setTitle("BOT");
                 messageID = setup.REACTION_ROLES.BOT.MESSAGE_ID;
@@ -46,7 +63,7 @@ module.exports = {
                 break;
         
             default:
-                console.log("error");
+                console.error("Invalid parameter!");
                 break;
         }
         (await message.channel.messages.fetch({around: messageID, limit: 1})).first().edit(embed);

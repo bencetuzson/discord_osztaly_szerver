@@ -18,15 +18,19 @@ const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.end
 for(const file of commandFiles){
     const command = require(setup.COMMANDS_PATH + file);
     bot.commands.set(command.name, command);
-};
+}
+
 bot.on('ready', ()=>{
     console.log(bot.user.tag + ' bot is active');
     bot.user.setActivity(setup.STATUS, {type: setup.ACTIVITY});
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
 })
 
+bot.on('unhandledRejection', error => {
+    bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send(error);
+})
+
 function msgLC(args){
-    msgArgs = args;
     return args.content.toLowerCase();
 }
 
@@ -41,6 +45,8 @@ function genderSearch(reaction, user) {
                 return users.GENDERS_ROLE_ID.BOY;
             } else if (users.USERS[index].GENDER === "F") {
                 return users.GENDERS_ROLE_ID.GIRL;
+            } else {
+                console.error("Invalid gender code!");
             }
         }
         
@@ -128,12 +134,12 @@ function sleep(milliseconds) {
 
 bot.on('message', async (message, user) => {
     remoteMsg = message;
-    if (message.author.bot){return};
+    if (message.author.bot){return}
     let args = message.content.substring(' ').split(' ');
     let prefixTemp;
 
     if (message.guild === null) {
-        prefixTemp = prefix.replace(prefix, "");
+        prefixTemp = "";
     } else {
         prefixTemp = prefix;
     }
@@ -287,7 +293,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                     await reaction.message.guild.members.cache.get(user.id).roles.add(genderSearch(reaction, user));
                     if (moderatorSearch(reaction, user)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Moderator.ROLE_ID);
-                    };
+                    }
 
                     reaction.message.guild.members.cache.get(user.id).setNickname(nicknameSearch(reaction, user));
 
@@ -295,32 +301,32 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                         await reaction.users.remove(user.id);
                     } catch (error) {
                         console.error('Failed to remove reactions.');
-                    };
+                    }
 
                     if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.BOT.ROLE_ID);
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.BOT.TEMP_ROLE_ID);
-                    };
+                    }
 
                     if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Gaming.TEMP_ROLE_ID)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Gaming.ROLE_ID);
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Gaming.TEMP_ROLE_ID);
-                    };
+                    }
 
                     if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Zene.TEMP_ROLE_ID)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Zene.ROLE_ID);
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Zene.TEMP_ROLE_ID);
-                    };
+                    }
 
                     if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Spam.TEMP_ROLE_ID)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Spam.ROLE_ID);
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Spam.TEMP_ROLE_ID);
-                    };
+                    }
 
                     if (reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID)) {
                         await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES.Teszter.ROLE_ID);
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES.Teszter.TEMP_ROLE_ID);
-                    };
+                    }
                 }
             }
         break;
@@ -415,7 +421,7 @@ bot.on('guildMemberRemove', async member => {
     if (publicmsg && publicchannel) {
         let channel = member.guild.channels.cache.find(val => val.name === publicchannel) || member.guild.channels.cache.get(publicchannel);
         if (!channel) {
-          console.log(`Channel "${publicchannel}" not found`);
+          console.error(`Channel "${publicchannel}" not found`);
         } else {
           if (channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
             if (typeof publicmsg === "object") {
