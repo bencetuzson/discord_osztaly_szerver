@@ -83,7 +83,7 @@ function birthdate(year, month, day) {
 }
 
 function age(year, month, day) {
-    var ages = [];
+    const ages = [];
     for (let index = 0; index < users.USERS.length; index++) {
         if (users.USERS[index].BIRTHDAY.MONTH === month && users.USERS[index].BIRTHDAY.DAY === day) {
             ages.push(year - users.USERS[index].BIRTHDAY.YEAR);
@@ -432,19 +432,18 @@ bot.on('guildMemberRemove', async member => {
               let msg = publicmsg.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
               channel.send(msg);
             }
-        }
+          }
         }
     }
 
 });
 
-const now = new Date();
-let ms = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 30, 0, 0) - now;
+let now = new Date();
+let ms = new Date(now.getFullYear(), now.getMonth(), now.getDate(), setup.BIRTHDAY_NOTIFICATION_TIME.HOURS, setup.BIRTHDAY_NOTIFICATION_TIME.MINUTES, setup.BIRTHDAY_NOTIFICATION_TIME.SECONDS, setup.BIRTHDAY_NOTIFICATION_TIME.MILLISECONDS) - now;
 if (ms < 0) {
      ms += 86400000;
 }
 
-
-setTimeout(function(){birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}, ms);
+setTimeout(function(){now = new Date(); birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}, ms);
 
 bot.login(token);
