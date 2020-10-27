@@ -4,24 +4,25 @@ const Discord = require('discord.js');
 const bot = new Discord.Client({
 	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
-const setup = require('../database/setup.json');
-const token = require(setup.CONFIG_PATH).MAIN.TOKEN;
-const config = require(setup.CONFIG_PATH);
-const users = require(setup.USERS_PATH);
+let setup = require('../database/setup.json');
+let config = require(setup.CONFIG_PATH);
+let token = require(setup.CONFIG_PATH).MAIN.TOKEN;
+let users = require(setup.USERS_PATH);
+let prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
 const fs = require('fs');
 const { set } = require('mongoose');
 const { userInfo } = require('os');
 let remoteMsg;
-const prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.endsWith('.js'));
 for(const file of commandFiles){
     const command = require(setup.COMMANDS_PATH + file);
     bot.commands.set(command.name, command);
 }
+let now = new Date();
 
 bot.on('ready', ()=>{
-    console.log(bot.user.tag + ' bot is active');
+    console.log(`${bot.user.tag} bot is now active (${monthToString(now.getMonth()+1)} ${now.getDate()} ${now.getFullYear()} ${now.getHours() < 10 ? 0 : ""}${now.getHours()}:${now.getMinutes() < 10 ? 0 : ""}${now.getMinutes()}:${now.getSeconds() < 10 ? 0 : ""}${now.getSeconds()})`);
     bot.user.setActivity(setup.STATUS, {type: setup.ACTIVITY});
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
 })
@@ -29,6 +30,44 @@ bot.on('ready', ()=>{
 bot.on('unhandledRejection', error => {
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send(error);
 })
+
+function database(message) {
+    setSetup();
+    setToken();
+    setConfig();
+    setUsers();
+    setPrefix();
+    message.channel.send("Az adatbázisok sikeresen frissítve!")
+}
+
+function setSetup() {
+    delete require.cache[require.resolve('../database/setup.json')];
+    setup = require('../database/setup.json');
+}
+
+function setConfig() {
+    delete require.cache[require.resolve(setup.CONFIG_PATH)];
+    config = require(setup.CONFIG_PATH);
+}
+
+function setToken() {
+    delete require.cache[require.resolve(setup.CONFIG_PATH)];
+    token = require(setup.CONFIG_PATH).MAIN.TOKEN;
+}
+
+function setUsers() {
+    delete require.cache[require.resolve(setup.USERS_PATH)];
+    users = require(setup.USERS_PATH);
+}
+
+function setPrefix() {
+    delete require.cache[require.resolve(setup.CONFIG_PATH)];
+    prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
+}
+
+function successfulSet(message) {
+    message.channel.send("Az adatbázis sikeresen frissítve!")
+}
 
 function msgLC(args){
     return args.content.toLowerCase();
@@ -97,9 +136,11 @@ function birthday(year, month, day) {
     const BDraw = setup.BIRTHDAY_MESSAGE;
     let BDlength = birthdate(year, month, day).length;
     for (let indexBD = 0; indexBD < BDlength; indexBD++) {
-        let BDdm = BDraw.replace(setup.USER_NAME, `${bot.users.cache.get(birthdate(year, month, day)[indexBD])}`).replace(setup.AGE, `${age(year, month, day)[indexBD]}`);
-        let DMuser = bot.users.cache.get(birthdate(year, month, day)[indexBD]);
-        DMuser.send(BDdm);
+	let DMuser = bot.users.cache.get(birthdate(year, month, day)[indexBD]);
+	if(DMuser !== undefined){
+            let BDdm = BDraw.replace(setup.USER_NAME, `${bot.users.cache.get(birthdate(year, month, day)[indexBD])}`).replace(setup.AGE, `${age(year, month, day)[indexBD]}`);
+            DMuser.send(BDdm);
+        }
     }
 }
 
@@ -130,6 +171,37 @@ function sleep(milliseconds) {
     do {
       currentDate = Date.now();
     } while (currentDate - date < milliseconds);
+}
+
+function monthToString(month) {
+    switch (month) {
+        case 1:
+            return "Jan";
+        case 2:
+            return "Feb";
+        case 3:
+            return "Mar";
+        case 4:
+            return "Apr";
+        case 5:
+            return "May";
+        case 6:
+            return "Jun";
+        case 7:
+            return "Jul";
+        case 8:
+            return "Aug";
+        case 9:
+            return "Sep";
+        case 10:
+            return "Oct";
+        case 11:
+            return "Nov";
+        case 12:
+            return "Dec";
+        default:
+            break;
+    }
 }
 
 bot.on('message', async (message, user) => {
@@ -181,6 +253,45 @@ bot.on('message', async (message, user) => {
                 bot.commands.get('modify').execute(await message, args);
             }
             break;
+        case `${prefixTemp}database`:
+            if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
+                switch (args.length) {
+                    case 1:
+                        database(message)
+                        break;
+                    case 2:
+                        switch (args[1]) {
+                            case "setup":
+                                setSetup();
+                                successfulSet(message);
+                                break;
+                            case "token":
+                                setToken();
+                                successfulSet(message);
+                                break;
+                            case "config":
+                                setConfig();
+                                successfulSet(message);
+                                break;
+                            case "users":
+                                setUsers();
+                                successfulSet(message);
+                                break;
+                            case "prefix":
+                                setPrefix();
+                                successfulSet(message);
+                                break;
+                            default:
+                                message.channel.send("Érvénytelen paraméter!");
+                                break;
+                        }
+                        break;
+                    default:
+                        message.channel.send("Érvénytelen paraméter!");
+                        break;
+                }
+            }
+            break;
         case `${prefixTemp}szulinap`:
                 bot.commands.get('szulinap').execute(await message, user, users, bot, args);
             break;
@@ -192,7 +303,7 @@ bot.on('message', async (message, user) => {
             break;
         case `${prefixTemp}test`:
             if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
-                console.log(message.channel.id);
+                console.log(setup);
             }
             break;
     }
@@ -438,12 +549,20 @@ bot.on('guildMemberRemove', async member => {
 
 });
 
-let now = new Date();
+/*now = new Date();
 let ms = new Date(now.getFullYear(), now.getMonth(), now.getDate(), setup.BIRTHDAY_NOTIFICATION_TIME.HOURS, setup.BIRTHDAY_NOTIFICATION_TIME.MINUTES, setup.BIRTHDAY_NOTIFICATION_TIME.SECONDS, setup.BIRTHDAY_NOTIFICATION_TIME.MILLISECONDS) - now;
+console.log(ms);
 if (ms < 0) {
      ms += 86400000;
 }
 
-setTimeout(function(){now = new Date(); birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}, ms);
+setTimeout(function(){now = new Date(); birthday(date.getFullYear(), date.getMonth()+1, date.getDate())}, ms);*/
+
+setInterval(function(){
+    now = new Date();
+    if (now.getHours() === setup.BIRTHDAY_NOTIFICATION_TIME.HOURS && now.getMinutes() === setup.BIRTHDAY_NOTIFICATION_TIME.MINUTES && now.getSeconds() === setup.BIRTHDAY_NOTIFICATION_TIME.SECONDS) {
+        birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}
+    }, 1000
+);
 
 bot.login(token);

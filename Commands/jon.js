@@ -9,6 +9,7 @@ module.exports = {
         const time = new Date();
         let temp = new Date();
         let index = null;
+        const remainder = 1;
         console.log(now.getDay());
         temp.setHours(23);
         temp.setMinutes(59);
@@ -42,7 +43,7 @@ module.exports = {
 
         function whichLesson(user, lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === 1) {
+            if (getWeekNumber(now) % 2 === remainder) {
                 if (now.getDay() === 1) {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
@@ -88,7 +89,7 @@ module.exports = {
 
         function whichArt(user, lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === 1) {
+            if (getWeekNumber(now) % 2 === remainder) {
                 return arr[0];
             } else {
                 return arr[1];
