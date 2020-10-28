@@ -9,11 +9,13 @@ let config = require(setup.CONFIG_PATH);
 let token = require(setup.CONFIG_PATH).MAIN.TOKEN;
 let users = require(setup.USERS_PATH);
 let prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
+let database = require(setup.DATABASE_PATH);
 const fs = require('fs');
 const { set } = require('mongoose');
 const { userInfo } = require('os');
-let here = bot.users.cache;
-
+let splitted;
+let beSent;
+let replyTemp;
 const readline = require("readline");
 let remoteMsg;
 bot.commands = new Discord.Collection();
@@ -28,18 +30,19 @@ bot.on('ready', ()=>{
     console.log(`${bot.user.tag} bot is now active (${monthToString(now.getMonth()+1)} ${now.getDate()} ${now.getFullYear()} ${now.getHours() < 10 ? 0 : ""}${now.getHours()}:${now.getMinutes() < 10 ? 0 : ""}${now.getMinutes()}:${now.getSeconds() < 10 ? 0 : ""}${now.getSeconds()})`);
     bot.user.setActivity(setup.STATUS, {type: setup.ACTIVITY});
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
-})
+});
 
 bot.on('unhandledRejection', error => {
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send(error);
-})
+});
 
-function database(message) {
+function databaseUpdate(message) {
     setSetup();
     setToken();
     setConfig();
     setUsers();
     setPrefix();
+    setDatabase();
     message.channel.send("Az adatbázisok sikeresen frissítve!")
 }
 
@@ -66,6 +69,11 @@ function setUsers() {
 function setPrefix() {
     delete require.cache[require.resolve(setup.CONFIG_PATH)];
     prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
+}
+
+function setDatabase() {
+    delete require.cache[require.resolve(setup.DATABASE_PATH)];
+    database = require(setup.DATABASE_PATH);
 }
 
 function successfulSet(message) {
@@ -168,14 +176,6 @@ function ifReacted(emojiID, msgID, msg) {
     }});
 }
 
-function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-}
-
 function monthToString(month) {
     switch (month) {
         case 1:
@@ -207,7 +207,11 @@ function monthToString(month) {
     }
 }
 
+function idByNickname(name) {for (const raw of users.USERS) {if (name === raw.NICKNAME) {return raw.USER_ID;}}}
+
 bot.on('message', async (message, user) => {
+    beSent = "";
+    replyTemp = [];
     remoteMsg = message;
     if (message.author.bot){return}
     let args = message.content.substring(' ').split(' ');
@@ -219,7 +223,7 @@ bot.on('message', async (message, user) => {
         prefixTemp = prefix;
     }
     //message.channel.send({embed: message.embeds[0]});
-    //message.channel.messages.channel.send({embed: message.embeds[0]})
+    //message.channel.messages.channel.send({embed: message.embeds[0]});
     //console.log(message);
     //console.log(message.embeds[0].video);
 
@@ -267,7 +271,7 @@ bot.on('message', async (message, user) => {
             if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
                 switch (args.length) {
                     case 1:
-                        database(message)
+                        databaseUpdate(message)
                         break;
                     case 2:
                         switch (args[1]) {
@@ -289,6 +293,10 @@ bot.on('message', async (message, user) => {
                                 break;
                             case "prefix":
                                 setPrefix();
+                                successfulSet(message);
+                                break;
+                            case "database":
+                                setDatabase();
                                 successfulSet(message);
                                 break;
                             default:
@@ -317,12 +325,25 @@ bot.on('message', async (message, user) => {
             }
             break;
     }
-    if (message.member.user.id !== setup.BOT_ID/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
-        if(noPrefix(message, 'buzi')) {
-            message.channel.send(`${message.member.user} te vagy a buzi`);
-        } else if(msgLC(message) === 'sziasztok' || msgLC(message) === 'sziasztok!'){
-            message.channel.send(`Szia ${message.member.user}!`);
-        }
+    if (message.member.user.id !== setup.BOT_ID/* && message.author.id !== idByNickname("Tuzsi")/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
+        database.INAPPROPRIATE.forEach(function(word) {
+            if (noPrefix(message, word)) {
+                splitted = message.toString().toLowerCase().split(" ");
+                console.log(splitted);
+                splitted.forEach(function(msg){
+                    if (msg.includes(word) && !replyTemp.includes(msg)) {
+                        replyTemp.push(msg);
+                    }
+                })
+            }
+        });
+        replyTemp.forEach(msg => beSent += (beSent === "" ? "" : " ") + msg);
+        if (beSent) {message.channel.send(`${message.member.user} te vagy ${beSent}!`)}
+        database.GREETINGS.forEach(function(word) {
+            if (msgLC(message) === word || msgLC(message) === word + "!" || msgLC(message) === word + ".") {
+                message.channel.send(`Szia ${message.member.user}!`);
+            }
+        });
     }
 
     if (message.channel.id === setup.REACTION_CHANNELS.Spam.one_word_story_in_english && args.length > 1) {
@@ -330,7 +351,7 @@ bot.on('message', async (message, user) => {
             message.channel.bulkDelete(messages);
         });
     }
-})
+});
 
 bot.on('messageReactionAdd', async (reaction, user) => {
     if(reaction.message.partial) await reaction.message.fetch();
@@ -516,7 +537,6 @@ bot.on('messageReactionRemove', async (reaction, user) => {
         break;
     }
 });
-
 
 bot.on('guildMemberAdd', member => {
     if (isInThisClass(member)) {
