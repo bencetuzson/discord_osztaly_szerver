@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+delete require.cache[require.resolve("../../database/timetable.json")];
 const timetable = require("../../database/timetable.json");
 
 module.exports = {
@@ -168,7 +169,7 @@ module.exports = {
                     .addFields(
                         {
                             name: 'Idő:',
-                            value: `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`
+                            value: `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`
                         }
                     )
                     //.addField(timetable.TIMETABLE[now.getDay()-1][index].DESCRIPTION)

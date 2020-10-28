@@ -56,7 +56,7 @@ module.exports = {
         }
 
         if (ind != null) {
-            if (bot.users.cache.get(users.USERS[ind].USER_ID !== undefined)) {
+            if (bot.users.cache.get(users.USERS[ind].USER_ID) !== undefined) {
                 dm = `${bot.users.cache.get(users.USERS[ind].USER_ID)} születésnapja: ${users.USERS[ind].BIRTHDAY.YEAR}. ${monthToString()} ${users.USERS[ind].BIRTHDAY.DAY}.`;
             } else {
                 dm = `${users.USERS[ind].NICKNAME} születésnapja: ${users.USERS[ind].BIRTHDAY.YEAR}. ${monthToString()} ${users.USERS[ind].BIRTHDAY.DAY}.`;
@@ -64,7 +64,7 @@ module.exports = {
             if (message.guild == null) {
                 message.channel.send(dm);
             } else {
-                bot.users.cache.get(message.member.user.id).send(dm);
+                await message.author.send(dm);
             }
         } else {
 

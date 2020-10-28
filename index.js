@@ -12,6 +12,9 @@ let prefix = require(setup.CONFIG_PATH).MAIN.PREFIX;
 const fs = require('fs');
 const { set } = require('mongoose');
 const { userInfo } = require('os');
+let here = bot.users.cache;
+
+const readline = require("readline");
 let remoteMsg;
 bot.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync(setup.COMMANDS_PATH).filter(file => file.endsWith('.js'));
@@ -215,6 +218,10 @@ bot.on('message', async (message, user) => {
     } else {
         prefixTemp = prefix;
     }
+    //message.channel.send({embed: message.embeds[0]});
+    //message.channel.messages.channel.send({embed: message.embeds[0]})
+    //console.log(message);
+    //console.log(message.embeds[0].video);
 
     switch (args[0].toLowerCase()) {
         case `${prefix}ping`:
@@ -242,6 +249,9 @@ bot.on('message', async (message, user) => {
             break;
         case `${prefixTemp}orarend`:
             bot.commands.get('orarend').execute(await message, args);
+            break;
+        case `${prefixTemp}series`:
+            bot.commands.get('series').execute(await message, args, bot);
             break;
         case `${prefixTemp}verify`:
             if(message.guild !== null && message.member.hasPermission("ADMINISTRATOR")){
@@ -309,7 +319,7 @@ bot.on('message', async (message, user) => {
     }
     if (message.member.user.id !== setup.BOT_ID/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
         if(noPrefix(message, 'buzi')) {
-            message.channel.send(`${message.member.user} te vagy a buzi`/*`, de ${message.guild.members.cache.get(users.USERS.Marci.USER_ID)} nagyobb`*/);
+            message.channel.send(`${message.member.user} te vagy a buzi`);
         } else if(msgLC(message) === 'sziasztok' || msgLC(message) === 'sziasztok!'){
             message.channel.send(`Szia ${message.member.user}!`);
         }
@@ -532,21 +542,20 @@ bot.on('guildMemberRemove', async member => {
     if (publicmsg && publicchannel) {
         let channel = member.guild.channels.cache.find(val => val.name === publicchannel) || member.guild.channels.cache.get(publicchannel);
         if (!channel) {
-          console.error(`Channel "${publicchannel}" not found`);
+            console.error(`Channel "${publicchannel}" not found`);
         } else {
-          if (channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
-            if (typeof publicmsg === "object") {
-              channel.send({
-                publicmsg
-              });
-            } else {
-              let msg = publicmsg.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
-              channel.send(msg);
+            if (channel.permissionsFor(bot.user).has('SEND_MESSAGES')) {
+                if (typeof publicmsg === "object") {
+                    channel.send({
+                        publicmsg
+                    });
+                } else {
+                    let msg = publicmsg.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
+                    channel.send(msg);
+                }
             }
-          }
         }
     }
-
 });
 
 /*now = new Date();
@@ -564,5 +573,28 @@ setInterval(function(){
         birthday(now.getFullYear(), now.getMonth()+1, now.getDate())}
     }, 1000
 );
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+let read;
+let readChannel;
+let readMessage;
+rl.on('line', (input) => {
+    read = input;
+    readChannel = read.split(" ")[0];
+    readMessage = read.replace(readChannel);
+    try {
+        bot.channels.cache.get(readChannel).send(readMessage);
+    } catch {
+        try {
+            bot.guilds.cache.get(readChannel).send(readMessage);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+});
 
 bot.login(token);
