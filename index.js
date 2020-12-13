@@ -13,8 +13,6 @@ let database = require(setup.DATABASE_PATH);
 let timetable = require(setup.TIMETABLE_PATH);
 const childProcess = require('child_process');
 const fs = require('fs');
-const {set} = require('mongoose');
-const {userInfo} = require('os');
 /*runScript(setup.TEST_PATH, function (err) {
     if (err) throw err;
     console.log('finished running');
@@ -37,26 +35,11 @@ bot.on('ready', () => {
     console.log(`${bot.user.tag} bot is now active (${monthToString(now.getMonth() + 1)} ${now.getDate()} ${now.getFullYear()} ${now.getHours() < 10 ? 0 : ""}${now.getHours()}:${now.getMinutes() < 10 ? 0 : ""}${now.getMinutes()}:${now.getSeconds() < 10 ? 0 : ""}${now.getSeconds()})`);
     bot.user.setPresence({status: "online", activity: {name: setup.STATUS, type: setup.ACTIVITY}});
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
-    //console.log(bot.user);
-    //bot.channels.fetch('763463325228597278').then(guild => console.log(guild.messages.cache.map(msg => console.log(msg))));
-    /*bot.channels.fetch('763463325228597278').then(channel => function (){
-        const filter = m => (m.content.includes('discord'));
-        const collector = channel.createMessageCollector(filter, { time: 10000 });
-        console.log("collector started");
-        collector.on('collect', m => console.log(`Collected ${m.content}`));
-        collector.on('end', collected => console.log(`Collected ${collected.size} items`));
-    })*/
-
 });
 console.log("testError");
 bot.on('error', error => {
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send(error);
 });
-
-/*process.on('unhandledRejection', err => {channelLog(err)});
-process.on('uncaughtException', err => {channelLog(err)});
-process.on('warning', err => {channelLog(err)});
-process.on('exit', function () {console.log("exit"); bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send('Stopped...')})*/
 
 function channelLog(err) {bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("```js\n" + err + "\n```");}
 
@@ -271,18 +254,6 @@ function isInThisClass(member) {
     }
 }
 
-function ifReacted(emojiID, msgID, msg) {
-    msg.channel.messages.fetch({around: msgID, limit: 1})
-        .then(message => {
-            let reactionVar = message.reactions.cache
-                .find(r => r.emoji.name === emojiID);
-            if (reactionVar) {
-                return reactionVar
-                    .users.cache.array()
-                    .filter((u) => !u.bot)
-            }
-        });
-}
 
 function runScript(scriptPath, callback) {
 
@@ -304,6 +275,9 @@ function runScript(scriptPath, callback) {
 
 }
 
+function replaceAll(string, search, replace) {
+    return string.split(search).join(replace);
+}
 
 function monthToString(month) {
     switch (month) {
@@ -367,9 +341,7 @@ console.log("testMessage");
 bot.on('message', async (message) => {
     inappropriateGuild(message.guild);
     console.log("message");
-    //console.log(message.author === bot.user);
-    //console.log(message.channel)
-    //message.react("❤")
+
     function hasAdmin() {return message.member.hasPermission("ADMINISTRATOR");}
     function isDM() {return message.guild === null;}
 
@@ -399,11 +371,6 @@ bot.on('message', async (message) => {
             }, 500);
         }, 2000);
     }
-
-    //message.channel.send({embed: message.embeds[0]});
-    //message.channel.messages.channel.send({embed: message.embeds[0]});
-    //console.log(message);
-    //console.log(message.embeds[0].video);
 
     switch (args[0].toLowerCase()) {
         case `${requiredPrefix}szin`:
@@ -452,12 +419,10 @@ bot.on('message', async (message) => {
                 setSetup();
             }
             break;
-        case `${requiredPrefix}ut`:
-            //if (!isDM() && hasAdmin()) {
-                console.log("success");
+        case `${requiredPrefix}teams`:
+            if (!isDM() && hasAdmin()) {
                 updateTeams();
-
-            //}
+            }
             break;
         case `${requiredPrefix}modify`:
             if (!isDM() && hasAdmin()) {
@@ -535,21 +500,13 @@ bot.on('message', async (message) => {
     }
 
     function updateTeams() {
-        //let usrcnt = 0;
-        //console.log(message.guild.members);
+
         message.guild.members.cache.forEach(member => {
-            //console.log(member.displayName);
-            //users.USERS.SUBJECTS.TEAM.forEach(team => {
-                //let foundUser = users.USERS.find(u => u.id === member.id);
-                //usrcnt++;
-                //console.log("user " + member.id + " " + member.displayName + " " + usrcnt);
-                let role = teamSearch(member);
-                users.TEAMS.forEach(team => {
-                    //console.log("team " + team);
-                    if (member.roles.cache.has(team) && !member.roles.cache.has(role)) member.roles.remove(team);
-                })
-                if (role) member.roles.add(role);
-            //})
+            let role = teamSearch(member);
+            users.TEAMS.forEach(team => {
+                if (member.roles.cache.has(team) && !member.roles.cache.has(role)) member.roles.remove(team);
+            })
+            if (role) member.roles.add(role);
         })
     }
 
@@ -569,9 +526,6 @@ function onChannelChange(channel) {
 console.log("testReacted");
 bot.on('messageReactionAdd', async (reaction, user) => {
     inappropriateGuild(reaction.message.guild);
-    //console.log("reacted");
-    //console.log(reaction);
-    //fetchReactions(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID, setup.REACTION_ROLES.BOT.MESSAGE_ID, setup.REACTION_ROLES.BOT.REACTION, user)
     if (reaction.message.partial) await reaction.message.fetch();
     if (reaction.partial) await reaction.fetch();
 
@@ -644,11 +598,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                         }
                     }
                     removeRole("Unverified");
-                    /*try {
-                        await reaction.users.remove(user.id);
-                    } catch (error) {
-                        console.error('Failed to remove reactions.');
-                    }*/
                 }
             }
             break;
@@ -847,19 +796,7 @@ bot.on('guildMemberRemove', async member => {
     reactionRoleReset("Spam");
     reactionRoleReset("Teszter");
     removeReaction(setup.REACTION_ROLES.Verified.CHANNEL_ID, setup.REACTION_ROLES.Verified.MESSAGE_ID, setup.REACTION_ROLES.Verified.REACTION, member);
-
-    //bot.channels.cache.get(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID).messages.fetch(setup.REACTION_ROLES.BOT.MESSAGE_ID).then(msg => msg.reactions.cache.get(setup.REACTION_ROLES.BOT.REACTION).users.remove(user.id))
-
 });
-
-/*now = new Date();
-let ms = new Date(now.getFullYear(), now.getMonth(), now.getDate(), setup.BIRTHDAY_NOTIFICATION_TIME.HOURS, setup.BIRTHDAY_NOTIFICATION_TIME.MINUTES, setup.BIRTHDAY_NOTIFICATION_TIME.SECONDS, setup.BIRTHDAY_NOTIFICATION_TIME.MILLISECONDS) - now;
-console.log(ms);
-if (ms < 0) {
-     ms += 86400000;
-}
-
-setTimeout(function(){now = new Date(); birthday(date.getFullYear(), date.getMonth()+1, date.getDate())}, ms);*/
 
 setInterval(function () {
     now = new Date();
@@ -879,24 +816,10 @@ let readMessage;
 rl.on('line', (input) => {
     read = input;
     readChannel = read.split(" ")[0];
-    readMessage = read.replace(readChannel, "");
-    try {
-        bot.channels.cache.get(readChannel).send(readMessage);
-    } catch {
-        try {
-            /*bot.guilds.cache.get('633701805020151828').members.fetch().then(fetchedMembers => {
-                const totalOnline = fetchedMembers.filter(member => member.presence.status === 'online');
-                // We now have a collection with all online member objects in the totalOnline variable
-                console.log(`There are currently ${totalOnline.size} members online in this guild!`)
-            });*/
-            //bot.guilds.cache.get('633701805020151828').members.cache.get(readChannel).send(readMessage);
-            console.log('ready');
-            //bot.guilds.cache.get('633701805020151828').members.fetch(fetchedMember => {console.log(fetchedMember)});
-            console.log('done');
-        } catch (e) {
-            console.error(e);
-        }
-    }
+    readMessage = replaceAll(replaceAll(read.replace(readChannel + " ", ""), "\\n", "\n"), "\\\n", "\\n");
+    bot.channels.fetch(readChannel).then(channel => {
+        channel.send(readMessage);
+    }).catch(() => console.error(`Channel ${readChannel} not found!`));
 });
 
 bot.login(token);
