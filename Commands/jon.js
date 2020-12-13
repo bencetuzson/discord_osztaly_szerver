@@ -1,11 +1,10 @@
 const Discord = require('discord.js');
 delete require.cache[require.resolve("../../database/timetable.json")];
-const timetable = require("../../database/timetable.json");
 
 module.exports = {
     name: 'jon',
     description: 'writes out the next lesson',
-    execute: function (message, args, user, users) {
+    execute: function (message, args, users, timetable) {
         const now = new Date();
         const time = new Date();
         let temp = new Date();
@@ -32,7 +31,7 @@ module.exports = {
             }
         }*/
 
-        function whichLanguage(user, lesson) {
+        function whichLanguage(lesson) {
             let arr = lesson.split("/");
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] === languageSearch()) {
@@ -42,7 +41,7 @@ module.exports = {
             }
         }
 
-        function whichLesson(user, lesson) {
+        function whichLesson(lesson) {
             let arr = lesson.split("/");
             if (getWeekNumber(now) % 2 === remainder) {
                 if (now.getDay() === 1) {
@@ -88,7 +87,7 @@ module.exports = {
             return arr.toString().replace(",", "/").replace("[", "").replace("]", "");
         }
 
-        function whichArt(user, lesson) {
+        function whichArt(lesson) {
             let arr = lesson.split("/");
             if (getWeekNumber(now) % 2 === remainder) {
                 return arr[0];
@@ -97,18 +96,18 @@ module.exports = {
             }
         }
 
-        function nextLesson(user, lesson, type) {
+        function nextLesson(lesson, type) {
             console.log(type);
             switch (type) {
                 case "L":
                     console.log("L");
-                    return whichLanguage(user, lesson);
+                    return whichLanguage(lesson);
                 case "I":
                     console.log("I");
-                    return whichLesson(user, lesson);
+                    return whichLesson(lesson);
                 case "A":
                     console.log("A");
-                    return whichArt(user, lesson);
+                    return whichArt(lesson);
                 default:
                     console.log("default");
                     return lesson;

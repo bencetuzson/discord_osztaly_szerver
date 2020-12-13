@@ -1,12 +1,11 @@
 const Discord = require('discord.js');
-const database = require('../../database/database.json');
 let class_members;
 let classLength;
 let number;
 module.exports = {
     name: 'csapat',
     description: 'makes teams',
-    execute(message, args){
+    execute(message, args, database){
         console.log(args[0]);
         console.log(args[1]);
         console.log(args[2]);
@@ -22,8 +21,8 @@ module.exports = {
                         number = args[3];
                         break;
                     default:
-                        number = args[2];
-                        break;
+                        message.channel.send("Érvénytelen paraméter!");
+                        return;
                 }
                 break;
             default:
