@@ -37,22 +37,14 @@ ${getChannel(setup.REACTION_CHANNELS.BOT.bot)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.bot).topic}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.bot_parancsok)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.bot_parancsok).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.bot_info)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
--*${getChannel(setup.REACTION_CHANNELS.BOT.bot_info).topic}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.boxbot_szoba)} 
 -*${getChannel(setup.REACTION_CHANNELS.BOT.boxbot_szoba).topic.replace("BoxBot", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.BoxBot))}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.idlerpg_szoba)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.idlerpg_szoba).topic.replace("IdleRPG", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.IdleRPG))}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.pokecord)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.pokecord).topic.replace("Pokécord", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.Pokecord))}*
-${getChannel(setup.REACTION_CHANNELS.BOT.chat_with_cathy)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.chat_with_cathy).topic.replace("Cathy", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.Cathy))}*
-${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
--*${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
--*${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
--*${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update).topic.replace("GYH Gimi 2019 BOT", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.GYH_BOT))}*
+${getChannel(setup.REACTION_CHANNELS.BOT.cleverbot)}
+-*${getChannel(setup.REACTION_CHANNELS.BOT.cleverbot).topic.replace("CleverBot", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.CleverBot))}*
                 `;
                 reactEmoji = setup.REACTION_ROLES.BOT.REACTION;
                 argsSuccess = true;
@@ -100,6 +92,14 @@ ${getChannel(setup.REACTION_CHANNELS.Zene.zene)}
                 description = `
 ${getChannel(setup.REACTION_CHANNELS.Teszter.teszter)}
 -*${getChannel(setup.REACTION_CHANNELS.Teszter.teszter).topic}*
+${getChannel(setup.REACTION_CHANNELS.BOT.bot_info)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
+-*${getChannel(setup.REACTION_CHANNELS.BOT.bot_info).topic}*
+${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
+-*${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas).topic}*
+${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
+-*${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update).topic}*
+${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
+-*${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update).topic.replace("GYH Gimi 2019 BOT", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.GYH_BOT))}*
 __A tesztereknek az a feladatuk, hogy leteszteljék az új BOT-okat és az új fejlesztéseket, ami elvárás feléjük!__
                 `;
                 reactEmoji = setup.REACTION_ROLES.Teszter.REACTION;
