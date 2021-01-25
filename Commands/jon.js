@@ -4,12 +4,16 @@ delete require.cache[require.resolve("../../database/timetable.json")];
 module.exports = {
     name: 'jon',
     description: 'writes out the next lesson',
+    admin : false,
+    roles : [],
+    guilds : [],
     execute: function (message, args, users, timetable) {
+        console.log(timetable);
         const now = new Date();
         const time = new Date();
         let temp = new Date();
         let index = null;
-        const remainder = 1;
+        const reminder = 0;
         console.log(now.getDay());
         temp.setHours(23);
         temp.setMinutes(59);
@@ -43,7 +47,7 @@ module.exports = {
 
         function whichLesson(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === remainder) {
+            if (getWeekNumber(now) % 2 === reminder) {
                 if (now.getDay() === 1) {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
@@ -89,7 +93,7 @@ module.exports = {
 
         function whichArt(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === remainder) {
+            if (getWeekNumber(now) % 2 === reminder) {
                 return arr[0];
             } else {
                 return arr[1];
@@ -164,7 +168,7 @@ module.exports = {
             if (index != null) {
                 const Embed = new Discord.MessageEmbed()
                     .setTitle('**A következő óra ma:**')
-                    .setDescription(`**${nextLesson(message.member.user.id, timetable.TIMETABLE[now.getDay() - 1][index].LESSON, timetable.TIMETABLE[now.getDay()-1][index].TYPE)}**`)
+                    .setDescription(`**${nextLesson(timetable.TIMETABLE[now.getDay() - 1][index].LESSON, timetable.TIMETABLE[now.getDay()-1][index].TYPE)}**`)
                     .addFields(
                         {
                             name: 'Idő:',

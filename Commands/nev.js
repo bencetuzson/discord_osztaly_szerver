@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'nev',
     description: 'changes the author\'s personal role\'s colour',
+    admin : false,
+    roles : [],
+    guilds : [],
     execute(message, args, users) {
         let names = [];
         let ind;
@@ -38,19 +41,20 @@ module.exports = {
                 namesString += `**${ind+1}**: ${sortedNames[ind].FIRSTNAME} ${sortedNames[ind].LASTNAME} *"${sortedNames[ind].NICKNAME}"*\n`;
             }
             const Embed = new Discord.MessageEmbed()
-                .setTitle("Névsor")
-                .addField(`${sortBy()} szerint rendezve`, namesString)
+                .setTitle(`Névsor ${sortBy()} szerint rendezve`)
+                .setDescription(namesString)
                 .setColor('RANDOM');
+            console.log(namesString);
             message.channel.send(Embed);
 
         function sortBy() {
             switch(args[1]) {
                 case "bn":
-                    return "Becenév";
+                    return "becenév";
                 case "vn":
-                    return "Vezetéknév";
+                    return "vezetéknév";
                 case "kn":
-                    return "Keresztnév";
+                    return "keresztnév";
             }
         }
 

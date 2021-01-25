@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'orarend',
     description: 'shows timetable',
+    admin : false,
+    roles : [],
+    guilds : [],
     execute(message, args, setup){
         const path = setup.TIMETABLE_FILE_PATH;
         const splitPath = path.split("/");

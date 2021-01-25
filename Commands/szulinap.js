@@ -1,18 +1,25 @@
 module.exports = {
     name: 'szulinap',
     description: 'sends DM of arg\'s birthday',
+    admin : false,
+    roles : [],
+    guilds : [],
     async execute(message, users, bot, args){
         const Discord = require('discord.js');
         let ind = null;
         let dm;
         switch(args[1]) {
+            case undefined:
+                message.channel.send("Érvénytelen paraméter!");
+                break;
             case "abc":
             case "datum":
                 let allBD = [];
+                console.log(users.USERS.length);
                 for (ind = 0; ind < users.USERS.length; ++ind) {
-                    if(users.USERS[ind].REAL){allBD[ind] = {"NAME" : users.USERS[ind].NICKNAME, "DATE" : new Date(users.USERS[ind].BIRTHDAY.YEAR, users.USERS[ind].BIRTHDAY.MONTH-1, users.USERS[ind].BIRTHDAY.DAY, 0, 0, 0, 0)}; break;}
+                    if(users.USERS[ind].REAL){allBD.push({"NAME" : users.USERS[ind].NICKNAME, "DATE" : new Date(users.USERS[ind].BIRTHDAY.YEAR, users.USERS[ind].BIRTHDAY.MONTH-1, users.USERS[ind].BIRTHDAY.DAY, 0, 0, 0, 0)});}
                 }
-                
+                console.log(allBD.length)
                 for (ind = 0; ind < allBD.length; ++ind) {
                     if (allBD[ind] === undefined) allBD.splice(ind, 1);
                 }
@@ -41,7 +48,7 @@ module.exports = {
                 )*/
                 .setColor('RANDOM');
                 message.author.send(Embed);
-                await message.channel.messages.fetch({ limit: 1 }).then(messages => {
+                if (!isDM()) await message.channel.messages.fetch({ limit: 1 }).then(messages => {
                     message.channel.bulkDelete(messages);
                 });
                 break;
@@ -50,7 +57,7 @@ module.exports = {
                     if (users.USERS[index].NICKNAME.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === args[1].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") || users.USERS[index].NICKNAME.toLowerCase() === args[1].toLowerCase()) {
                         ind = index;
                         if (message.guild != null) {
-                            await message.channel.messages.fetch({limit: 1}).then(messages => {
+                            if (!isDM()) await message.channel.messages.fetch({limit: 1}).then(messages => {
                                 message.channel.bulkDelete(messages);
                             });
                         }
@@ -58,7 +65,7 @@ module.exports = {
                     } else if (users.USERS[index].USER_ID === args[1].replace("<", "").replace("@", "").replace("!", "").replace(">", "")) {
                         ind = index;
                         if (message.guild != null) {
-                            await message.channel.messages.fetch({limit: 1}).then(messages => {
+                            if (!isDM()) await message.channel.messages.fetch({limit: 1}).then(messages => {
                                 message.channel.bulkDelete(messages);
                             });
                         }
@@ -120,7 +127,7 @@ module.exports = {
                 } else {
         
                     message.channel.send("Érvénytelen paraméter!");
-                    await message.channel.messages.fetch({ limit: 1 }).then(messages => {
+                    if (!isDM()) await message.channel.messages.fetch({ limit: 1 }).then(messages => {
                         message.channel.bulkDelete(messages);
                     });
                     
@@ -128,6 +135,7 @@ module.exports = {
                 break;
         }
 
+        function isDM() {return message.guild === null;}
         
     }
 }

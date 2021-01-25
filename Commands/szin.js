@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'szin',
     description: 'changes the author\'s personal role\'s colour',
+    admin : false,
+    roles : [],
+    guilds : [],
     execute(message, args, users, database){
         const colours = database.COLOURS;
         for (let index = 0; index < users.USERS.length; index++) {

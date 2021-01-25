@@ -2,13 +2,15 @@ const Discord = require('discord.js');
 let class_members;
 let classLength;
 let number;
+let tag = false;
+let rang = false;
 module.exports = {
     name: 'csapat',
     description: 'makes teams',
-    execute(message, args, database){
-        console.log(args[0]);
-        console.log(args[1]);
-        console.log(args[2]);
+    admin : false,
+    roles : [],
+    guilds : [],
+    execute(message, args, database, users) {
         switch (args[1]) {
             case "tesi":
                 switch (args[2]) {
@@ -26,15 +28,26 @@ module.exports = {
                 }
                 break;
             default:
-                class_members = [...database.CLASS_MEMBERS];
+                users = users.USERS;
+                class_members = [];
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].REAL) class_members.push(users[i]);
+                }
+                switch (args[2]) {
+                    case "tag":
+                        tag = true;
+                        break;
+                    case "rang":
+                        rang = true;
+                        break;
+                    default:
+                        break;
+                }
                 number = args[1];
                 break;
         }
         classLength = class_members.length;
-        console.log(number > 0 && number <= classLength);
-        console.log(classLength);
         if(number > 0 && number <= classLength){
-            console.log(args);
 
             /*for (let i = 0; i < database.CLASS_MEMBERS.length; i++) {
                 class_members.push(database.CLASS_MEMBERS[i]);
@@ -46,11 +59,6 @@ module.exports = {
                 teams[index2].push(`**${index2+1}. csapat:** `);
                 //teams[0] = index2+1 + ". csapat: ";
                 for (let index3 = 1; index3 < Math.floor(cycle/number)+1; index3++) {
-                    console.log(class_members);
-                    console.log(database);
-                    console.log(teams);
-                    console.log(index2);
-                    console.log(index3);
                     var randomIndex = Math.floor(Math.random()*class_members.length)
                     const randomElement = class_members[randomIndex];
                     const index = class_members.indexOf(randomIndex);
@@ -59,12 +67,12 @@ module.exports = {
                     }*/
                     //class_members.splice(class_members.indexOf(index), 1 );
                     class_members.splice(randomIndex, 1);
-                    teams[index2].push(randomElement);
+                    teams[index2].push(args[1] === "tesi" ?  randomElement : (tag ? (message.guild.members.cache.get(randomElement.USER_ID) ? message.guild.members.cache.get(randomElement.USER_ID) : randomElement.NICKNAME) : (rang ? (message.guild.roles.cache.get(randomElement.ROLE_ID) ? message.guild.roles.cache.get(randomElement.ROLE_ID) : randomElement.NICKNAME) : randomElement.NICKNAME)));
                 }
             }
             var used = Math.floor(cycle/number)*number;
             for (let index5 = 0; index5 < cycle-used; index5++) {
-                teams[index5].push(class_members[index5]);
+                teams[index5].push(args[1] === "tesi" ?  class_members[index5] : (tag ? (message.guild.members.cache.get(class_members[index5].USER_ID) ? message.guild.members.cache.get(class_members[index5].USER_ID) : class_members[index5].NICKNAME) : (rang ? (message.guild.roles.cache.get(randomElement.ROLE_ID) ? message.guild.roles.cache.get(randomElement.ROLE_ID) : class_members[index5].NICKNAME) : class_members[index5].NICKNAME)));
 
             }
             //teams[Array] = teams[Array].join(", ");
@@ -76,7 +84,6 @@ module.exports = {
             .setDescription(`${teams.join("\n\n")}`)
             .setColor("RANDOM");
             message.channel.send(Embed);
-            console.log(class_members);
         } else {
             message.channel.send("Érvénytelen paraméter!");
         }

@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const replace = require('replace-in-file');
+const fs = require('fs');
 let inJSON;
 //const setup = JSON.parse(fs.readFileSync("../database/setup.json"));
 /*fs.readFile("../database/setup.json", (err, data) => {
@@ -11,11 +11,15 @@ let inJSON;
 module.exports = {
     name: 'verify',
     description: 'for the verify channel',
+    admin : true,
+    roles : [],
+    guilds : [],
     async execute(message, args, setup){
         let title = "";
         let description = "";
         let reactEmoji = '';
         let argsSuccess = false;
+        const path = "../database/setup.json";
         switch (args[1]) {
             case "intro":
                 inJSON = "Intro";
@@ -38,13 +42,13 @@ ${getChannel(setup.REACTION_CHANNELS.BOT.bot)}
 ${getChannel(setup.REACTION_CHANNELS.BOT.bot_parancsok)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.bot_parancsok).topic}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.boxbot_szoba)} 
--*${getChannel(setup.REACTION_CHANNELS.BOT.boxbot_szoba).topic.replace("BoxBot", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.BoxBot))}*
+-*${getChannel(setup.REACTION_CHANNELS.BOT.boxbot_szoba).topic}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.idlerpg_szoba)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.idlerpg_szoba).topic.replace("IdleRPG", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.IdleRPG))}*
+-*${getChannel(setup.REACTION_CHANNELS.BOT.idlerpg_szoba).topic}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.pokecord)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.pokecord).topic.replace("Pokécord", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.Pokecord))}*
+-*${getChannel(setup.REACTION_CHANNELS.BOT.pokecord).topic}*
 ${getChannel(setup.REACTION_CHANNELS.BOT.cleverbot)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.cleverbot).topic.replace("CleverBot", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.CleverBot))}*
+-*${getChannel(setup.REACTION_CHANNELS.BOT.cleverbot).topic}*
                 `;
                 reactEmoji = setup.REACTION_ROLES.BOT.REACTION;
                 argsSuccess = true;
@@ -92,14 +96,14 @@ ${getChannel(setup.REACTION_CHANNELS.Zene.zene)}
                 description = `
 ${getChannel(setup.REACTION_CHANNELS.Teszter.teszter)}
 -*${getChannel(setup.REACTION_CHANNELS.Teszter.teszter).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.bot_info)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
+${getChannel(setup.REACTION_CHANNELS.BOT.bot_info)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.bot_info).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
+${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
+${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update)}
 -*${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update)} (csak ${message.guild.roles.cache.get(setup.REACTION_ROLES.Teszter.ROLE_ID)})
--*${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update).topic.replace("GYH Gimi 2019 BOT", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.GYH_BOT))}*
+${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update)}
+-*${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update).topic}*
 __A tesztereknek az a feladatuk, hogy leteszteljék az új BOT-okat és az új fejlesztéseket, ami elvárás feléjük!__
                 `;
                 reactEmoji = setup.REACTION_ROLES.Teszter.REACTION;
@@ -115,8 +119,40 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.comment_chat)}
 -*${getChannel(setup.REACTION_CHANNELS.Spam.comment_chat).topic}*
 ${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio)}
 -*${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio).topic}*
+${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space)}
+-*${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space).topic}*
                 `;
                 reactEmoji = setup.REACTION_ROLES.Spam.REACTION;
+                argsSuccess = true;
+                break;
+            case "programozas":
+                inJSON ="Programozas";
+                title = "Programozás";
+                description = `
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.windows)} 
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.windows).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.mac)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.mac).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.linux)} 
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.linux).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.c_cpp)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.c_cpp).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.java)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.java).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.python)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.python).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.c_sharp)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.c_sharp).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.html)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.html).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.javascript)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.javascript).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.css)}
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.css).topic}*
+:loud_sound: Projekt 1
+:loud_sound: Projekt 2
+                `;
+                reactEmoji = setup.REACTION_ROLES.Programozas.REACTION;
                 argsSuccess = true;
                 break;
             case "done":
@@ -153,7 +189,8 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio)}
                 console.log(JSON.stringify(setup, null, 4));
                 console.log('writing to ' + path);
             });*/
-            const options = {
+
+            /*const options = {
                 files: "../database/setup.json",
                 from: `${setup.REACTION_ROLES[inJSON].MESSAGE_ID}`,
                 to: `${await msgEmbed.id}`,
@@ -166,6 +203,16 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio)}
                     console.error('Error occurred:', error);
                 });
             //return args[1];
+            */
+
+           await fs.readFile(path, 'utf8', function (err,data) {
+            if (err) return console.log(err);
+            console.log(setup.REACTION_ROLES[inJSON].MESSAGE_ID)
+            const result = data.replace(setup.REACTION_ROLES[inJSON].MESSAGE_ID, msgEmbed.id);
+            fs.writeFile(path, result, 'utf8', function (err) {
+                if (err) return console.log(err);
+            });
+        });
         } else {
             message.channel.send("Érvénytelen paraméter!");
         }

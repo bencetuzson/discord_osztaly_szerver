@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'dq',
     description: 'generates a random team and letter',
+    admin : false,
+    roles : [],
+    guilds : [],
     execute(message, args, database, users){
         let teams;
         let Embed;

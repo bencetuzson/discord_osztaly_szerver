@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'rainbow',
     description: 'changes the author\'s personal role\'s colour',
+    admin : true,
+    roles : [],
+    guilds : [],
     execute(message, args, users) {
         const role = message.guild.roles.cache.find(r => r.id === users.USERS[0].ROLE_ID);
         const color = role.color.toString(16);

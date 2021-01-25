@@ -3,22 +3,22 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'modify',
     description: 'modifies a message sent by GYH BOT',
+    admin : true,
+    roles : [],
+    guilds : [],
     async execute(message, args, setup){
         const embed = new Discord.MessageEmbed()
 
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
         .setDescription(`
-${getChannel(setup.REACTION_CHANNELS.Teszter.teszter)}
--*${getChannel(setup.REACTION_CHANNELS.Teszter.teszter).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.bot_info)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.bot_info).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.bot_teszt_beallitas).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.discord_js_update).topic}*
-${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update)}
--*${getChannel(setup.REACTION_CHANNELS.BOT.szerverspecifikus_bot_update).topic.replace("GYH Gimi 2019 BOT", message.guild.members.cache.get(setup.REACTION_CHANNELS.USERS.GYH_BOT))}*
-__A tesztereknek az a feladatuk, hogy leteszteljék az új BOT-okat és az új fejlesztéseket, ami elvárás feléjük!__
+${getChannel(setup.REACTION_CHANNELS.Spam.one_word_story_in_english)}
+-*${getChannel(setup.REACTION_CHANNELS.Spam.one_word_story_in_english).topic}*
+${getChannel(setup.REACTION_CHANNELS.Spam.comment_chat)}
+-*${getChannel(setup.REACTION_CHANNELS.Spam.comment_chat).topic}*
+${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio)}
+-*${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio).topic}*
+${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space)}
+-*${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space).topic}*
 `)
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 
@@ -51,6 +51,10 @@ __A tesztereknek az a feladatuk, hogy leteszteljék az új BOT-okat és az új f
                 break;
             case "spam":
                 embed.setTitle("Spam");
+                messageID = setup.REACTION_ROLES.Spam.MESSAGE_ID;
+                break;
+            case "programozas":
+                embed.setTitle("Programozas");
                 messageID = setup.REACTION_ROLES.Spam.MESSAGE_ID;
                 break;
             case "verify":

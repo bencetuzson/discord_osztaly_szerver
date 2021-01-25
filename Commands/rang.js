@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'rang',
     description: 'reaction roles',
+    admin : true,
+    roles : [],
+    guilds : [],
     async execute(message, args){
         let categoryArr = [];
         let reactionArr = [];

@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'ping',
     description: 'writes out the commands',
+    admin : true,
+    roles : [],
+    guilds : [],
     execute(message, args, bot){
         //message.channel.send("Pong").then(async msg => {
             const Embed = new Discord.MessageEmbed()
