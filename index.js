@@ -1,24 +1,5 @@
 console.log("Starting up...");
 
-/*const nacl = require('tweetnacl');
-
-// Your public key can be found on your application in the Developer Portal
-const PUBLIC_KEY = '748859717463441438';
-
-const signature = req.get('X-Signature-Ed25519');
-const timestamp = req.get('X-Signature-Timestamp');
-const body = req.rawBody; // rawBody is expected to be a string, not raw bytes
-
-const isVerified = nacl.sign.detached.verify(
-    Buffer.from(timestamp + body),
-    Buffer.from(signature, 'hex'),
-    Buffer.from(PUBLIC_KEY, 'hex')
-);
-
-if (!isVerified) {
-    return res.status(401).end('invalid request signature');
-}*/
-
 const Discord = require('discord.js');
 const bot = new Discord.Client({
     partials: ['USER', 'GUILD_MEMBER', 'CHANNEL', 'MESSAGE', 'REACTION']
@@ -33,11 +14,12 @@ let timetable = require(setup.TIMETABLE_PATH);
 let commands = require(setup.COMMANDS_DB_PATH);
 const childProcess = require('child_process');
 const fs = require('fs');
-//const nodemon = require('nodemon');
+
 /*runScript(setup.TEST_PATH, function (err) {
     if (err) throw err;
     console.log('finished running');
 });*/
+
 let split;
 let beSent;
 let replyTemp;
