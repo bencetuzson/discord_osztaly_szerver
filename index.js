@@ -691,9 +691,9 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                     }
 
                     if (reaction.message.guild.members.cache.get(user.id).roles && personalRole(user)) await reaction.message.guild.members.cache.get(user.id).roles.add(personalRole(user));
-                    if (botDevSearch(user)) roleAdd("Bot_Dev");
                     if (moderatorSearch(user)) roleAdd("Moderator");
                     if (gameTesterSearch(user)) roleAdd("Game_Tester");
+                    if (botDevSearch(user)) roleAdd("Bot_Dev");
                 }
             }
             break;
