@@ -195,6 +195,14 @@ function moderatorSearch(user) {
     }
 }
 
+function gameTesterSearch(user) {
+    for (let index = 0; index < users.USERS.length; index++) {
+        if (users.USERS[index].USER_ID === user.id) {
+            return users.USERS[index].GAME_TESTER;
+        }
+    }
+}
+
 function botDevSearch(user) {
     for (let index = 0; index < users.USERS.length; index++) {
         if (users.USERS[index].USER_ID === user.id) {
@@ -437,7 +445,7 @@ bot.on('message', async (message) => {
             break;
         case `${requiredPrefix}becenev`:
             if (!isDM() && hasAdmin()) {
-                bot.commands.get('becenev').execute(await message, args, users);
+                bot.commands.get('becenev').execute(await message, args, users, setup);
             }
             break;
         case `${requiredPrefix}modify`:
@@ -535,7 +543,7 @@ bot.on('message', async (message) => {
             users.TEAMS.forEach(team => {
                 if (member.roles.cache.has(team.ID) && !member.roles.cache.has(role)) member.roles.remove(team.ID);
             })
-            if (role) member.roles.add(role);
+            if (role && member.roles.cache.has(setup.REACTION_ROLES.Verified.ROLE_ID)) member.roles.add(role);
         })
     }
 
@@ -625,6 +633,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                             reVerifyReactionRoleAdd("Teszter");
                             reVerifyReactionRoleAdd("BOT");
                             if (moderatorSearch(user)) roleAdd("Moderator");
+                            if (gameTesterSearch(user)) roleAdd("Game_Tester");
                             genderSearch(reaction, user).then(result => {
                                 if (result) reaction.message.guild.members.cache.get(user.id).roles.add(result);
                             })
@@ -652,6 +661,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                             if (result) reaction.message.guild.members.cache.get(user.id).roles.add(result);
                         });
                         if (moderatorSearch(user)) roleAdd("Moderator");
+                        if (gameTesterSearch(user)) roleAdd("Game_Tester");
                     }
 
                     await reaction.message.guild.members.cache.get(user.id).setNickname(nicknameSearch(reaction, user));
@@ -727,6 +737,7 @@ bot.on('messageReactionRemove', async (reaction, user) => {
                         removeRole("Programozas");
                         removeRole("Verified");
                         removeRole("Moderator");
+                        removeRole("Game_Tester");
                         removeRole("Bot_Dev");
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(personalRole(user));
                         genderSearch(reaction, user).then(result => {
