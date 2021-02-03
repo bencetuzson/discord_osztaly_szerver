@@ -632,13 +632,13 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                             reVerifyReactionRoleAdd("Programozas");
                             reVerifyReactionRoleAdd("Teszter");
                             reVerifyReactionRoleAdd("BOT");
-                            if (moderatorSearch(user)) roleAdd("Moderator");
-                            if (gameTesterSearch(user)) roleAdd("Game_Tester");
                             genderSearch(reaction, user).then(result => {
                                 if (result) reaction.message.guild.members.cache.get(user.id).roles.add(result);
                             })
                             await reaction.message.guild.members.cache.get(user.id).roles.add(personalRole(user));
-                            if(botDevSearch(user)) roleAdd("Bot_Dev");
+                            if (moderatorSearch(user)) roleAdd("Moderator");
+                            if (gameTesterSearch(user)) roleAdd("Game_Tester");
+                            if (botDevSearch(user)) roleAdd("Bot_Dev");
                         } else {
                             roleAdd("Ezek_erdekelnek");
                         }
@@ -660,8 +660,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                         genderSearch(reaction, user).then(result => {
                             if (result) reaction.message.guild.members.cache.get(user.id).roles.add(result);
                         });
-                        if (moderatorSearch(user)) roleAdd("Moderator");
-                        if (gameTesterSearch(user)) roleAdd("Game_Tester");
+
                     }
 
                     await reaction.message.guild.members.cache.get(user.id).setNickname(nicknameSearch(reaction, user));
@@ -692,7 +691,9 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                     }
 
                     if (reaction.message.guild.members.cache.get(user.id).roles && personalRole(user)) await reaction.message.guild.members.cache.get(user.id).roles.add(personalRole(user));
-                    if(botDevSearch(user)) roleAdd("Bot_Dev");
+                    if (botDevSearch(user)) roleAdd("Bot_Dev");
+                    if (moderatorSearch(user)) roleAdd("Moderator");
+                    if (gameTesterSearch(user)) roleAdd("Game_Tester");
                 }
             }
             break;
