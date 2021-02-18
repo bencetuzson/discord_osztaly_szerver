@@ -13,7 +13,7 @@ module.exports = {
         const time = new Date();
         let temp = new Date();
         let index = null;
-        const reminder = 0;
+        const week = timetable.WEEK;
         console.log(now.getDay());
         temp.setHours(23);
         temp.setMinutes(59);
@@ -47,7 +47,7 @@ module.exports = {
 
         function whichLesson(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === reminder) {
+            if (getWeekNumber(now) % 2 === week) {
                 if (now.getDay() === 1) {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
@@ -93,7 +93,7 @@ module.exports = {
 
         function whichArt(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === reminder) {
+            if (getWeekNumber(now) % 2 === week) {
                 return arr[0];
             } else {
                 return arr[1];

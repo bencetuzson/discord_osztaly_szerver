@@ -206,7 +206,7 @@ function gameTesterSearch(user) {
 function botDevSearch(user) {
     for (let index = 0; index < users.USERS.length; index++) {
         if (users.USERS[index].USER_ID === user.id) {
-            return users.USERS[index].BOT_DEV;
+            return users.USERS[index].GitHub_Team;
         }
     }
 }
@@ -448,6 +448,11 @@ bot.on('message', async (message) => {
                 bot.commands.get('becenev').execute(await message, args, users, setup);
             }
             break;
+        case `${requiredPrefix}age`:
+            if (!isDM() && hasAdmin() && idByNickname("Tuzsi")) {
+                bot.commands.get('age').execute(await message, args, users);
+            }
+            break;
         case `${requiredPrefix}modify`:
             if (!isDM() && hasAdmin()) {
                 bot.commands.get('modify').execute(await message, args, setup);
@@ -487,6 +492,9 @@ bot.on('message', async (message) => {
         case `${requiredPrefix}jon`:
             bot.commands.get('jon').execute(await message, args, users, timetable);
             break;
+        case `${requiredPrefix}bejonni`:
+            bot.commands.get('bejonni').execute(await message, args, users, timetable);
+            break;
         case `${requiredPrefix}test`:
             if (!isDM() && hasAdmin()) {
                 message.pin();
@@ -519,7 +527,7 @@ bot.on('message', async (message) => {
                 message.channel.send(word.TO, {tts: word.TTS});
             }
         });
-
+        if (message.content.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("anime")) message.channel.send("Ah, yes, the kínai mese");
     }
 
     if (message.channel.id === setup.REACTION_CHANNELS.Spam.one_word_story_in_english && args.length > 1) {
@@ -638,7 +646,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                             await reaction.message.guild.members.cache.get(user.id).roles.add(personalRole(user));
                             if (moderatorSearch(user)) roleAdd("Moderator");
                             if (gameTesterSearch(user)) roleAdd("Game_Tester");
-                            if (botDevSearch(user)) roleAdd("Bot_Dev");
+                            if (botDevSearch(user)) roleAdd("GitHub_Team");
                         } else {
                             roleAdd("Ezek_erdekelnek");
                         }
@@ -693,7 +701,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                     if (reaction.message.guild.members.cache.get(user.id).roles && personalRole(user)) await reaction.message.guild.members.cache.get(user.id).roles.add(personalRole(user));
                     if (moderatorSearch(user)) roleAdd("Moderator");
                     if (gameTesterSearch(user)) roleAdd("Game_Tester");
-                    if (botDevSearch(user)) roleAdd("Bot_Dev");
+                    if (botDevSearch(user)) roleAdd("GitHub_Team");
                 }
             }
             break;
@@ -739,7 +747,7 @@ bot.on('messageReactionRemove', async (reaction, user) => {
                         removeRole("Verified");
                         removeRole("Moderator");
                         removeRole("Game_Tester");
-                        removeRole("Bot_Dev");
+                        removeRole("GitHub_Team");
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(personalRole(user));
                         genderSearch(reaction, user).then(result => {
                             if (result) reaction.message.guild.members.cache.get(user.id).roles.remove(result);

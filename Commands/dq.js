@@ -22,7 +22,7 @@ module.exports = {
             default:
                 teams = users.TEAMS;
                 const index = Math.floor(Math.random() * teams.length);
-                const randomID = teams[index]
+                const randomID = teams[index].ID;
                 const randomRole = message.guild.roles.cache.get(randomID);
                 let count = 0;
                 for (let i = 0; i < users.USERS.length; i++) {
