@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 delete require.cache[require.resolve("../../database/timetable.json")];
 
 module.exports = {
-    name: 'jon',
+    name: 'jonq',
     description: 'writes out the next lesson',
     admin : false,
     roles : [],
@@ -13,8 +13,8 @@ module.exports = {
         const time = new Date();
         let temp = new Date();
         let index = null;
-        const week_eng_it = timetable.WEEK.ENG_IT;
-        const week_art = timetable.WEEK.ART;
+        const week_eng_it = timetable.WEEK.QUARANTENE.ENG_IT;
+        const week_art = timetable.WEEK.QUARANTENE.ART;
         console.log(now.getDay());
         temp.setHours(23);
         temp.setMinutes(59);
@@ -48,7 +48,7 @@ module.exports = {
 
         function whichLesson(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === week_eng_it) {
+            if ((getWeekNumber(now) + week_eng_it) % 4 <= 1) {
                 if (now.getDay() === 1) {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
@@ -94,7 +94,7 @@ module.exports = {
 
         function whichArt(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === week_art) {
+            if ((getWeekNumber(now) + week_art) % 4 <= 1) {
                 return arr[0];
             } else {
                 return arr[1];

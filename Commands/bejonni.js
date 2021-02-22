@@ -1,21 +1,24 @@
-const { group } = require('console');
 const Discord = require('discord.js');
 
 module.exports = {
     name: 'bejonni',
-    description: 'writes out the next lesson',
+    description: 'writes out the next x times when the author has to come to school',
     admin : false,
     roles : [],
     guilds : [],
     execute: function (message, args, users, timetable) {
+        console.log(parseInt(args[1]));
+        if (args[1] > 100 || args[1] < 1 || args.length !== 2) {
+            message.channel.send("Érvénytelen paraméter!");
+            return;
+        }
+
         let id;
         let groups;
         for (user of users.USERS) {
-            console.log(user)
             if (user.USER_ID === message.author.id) {
                 id = user.USER_ID;
                 groups = user.SUBJECTS.GROUPS;
-                console.log("success");
                 break;
             }
         }
@@ -25,13 +28,11 @@ module.exports = {
         const week = timetable.WEEK;
         let day;
         let dates = "";
-
-        console.log(`${date.getFullYear()}. ${date.getMonth()+1 > 10 ? "" : 0}${date.getMonth()+1}. ${date.getDate() > 10 ? "" : 0}${date.getDate()}.`)
         
         while (args[1] > count) {
             day = whichDay();
             if (day) {
-                dates += `${date.getFullYear()}. ${date.getMonth()+1 > 10 ? "" : 0}${date.getMonth()+1}. ${date.getDate() > 10 ? "" : 0}${date.getDate()}. ${date.getDay() === 2 ? "Kedd" : "Péntek"}\n`
+                dates += `${date.getFullYear()}. ${date.getMonth()+1 < 10 ? "0" : ""}${date.getMonth()+1}. ${date.getDate() < 10 ? "0" : ""}${date.getDate()}. ${date.getDay() === 2 ? "Kedd" : "Péntek"}\n`
             }
             date.setDate(date.getDate()+1);
         }
@@ -41,6 +42,7 @@ module.exports = {
         .setDescription(dates)
         .setColor('RANDOM');
         message.channel.send(Embed);
+
         function getWeekNumber(d) {
             d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
             d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));

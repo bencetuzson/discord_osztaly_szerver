@@ -8,26 +8,22 @@ module.exports = {
     guilds : [],
     execute(message, args, users, commands, prefix) {
         console.log("TEST");
-        let Embed;
+        let Embed = new Discord.MessageEmbed()
+            .setDescription(`\`[]\` = általad meghatározott érték. Ezt a paraméterek megadásakor NE írd be!\nA \`${prefix}\` csak akkor kell a parancs elé, ha a szerverbe írod, DM-nél enélkül kell!`)
+            .setColor('RANDOM')
+            .setTimestamp();
         switch (args.length) {
             case 1:
-                Embed = new Discord.MessageEmbed()
+                Embed
                     .setTitle('A parancsok, amiket tudsz használni')
-                    .setDescription("`[]` = általad meghatározott érték. Ezt a paraméterek megadásakor NE írd be!")
-                    .setColor('RANDOM')
-                    .setTimestamp();
                 for (let i = 0; i < commands.MAIN.length; i++) {
                     replace(i)
                 }
                 message.channel.send(Embed);
                 break;
             case 2:
-                Embed = new Discord.MessageEmbed()
+                Embed
                     .setTitle(`\`${args[1]}\` parancs leírása:`)
-                    .setDescription("`[]` = általad meghatározott érték. Ezt a paraméterek megadásakor NE írd be!")
-                    .setColor('RANDOM')
-                    .setTimestamp();
-
                 for (let i = 0; i < commands.MAIN.length; i++) {
                     if (args[1] === commands.MAIN[i].name.split(" ")[0] && commands.MAIN[i].command) {
                         replace(i);
@@ -48,13 +44,13 @@ module.exports = {
         function replace(i) {
             console.log(commands.MAIN[i].name);
             switch (commands.MAIN[i].name) {
-                case "szulinap [név vagy tag]":
+                case "szulinap [név vagy tag]": case "msg [név vagy tag] [üzenet]":
                     console.log(commands.MAIN[i].value);
-                    valueReplace(1, message.guild.members.cache.get(idByNickname("Tuzsi")).nickname + "`");
+                    valueReplace(1, message.guild.members.cache.get(idByNickname("Tuzsi")).nickname);
                     console.log(commands.MAIN[i].value);
                     break;
             }
-            Embed.addField((commands.MAIN[i].command ? `**\`${prefix + commands.MAIN[i].name}\`**` : commands.MAIN[i].name), commands.MAIN[i].value);
+            Embed.addField((commands.MAIN[i].command ? `**\`${(commands.MAIN[i].prefix ? prefix : "") + commands.MAIN[i].name}\`**` : commands.MAIN[i].name), commands.MAIN[i].value);
             function valueReplace(from, to) {
                 commands.MAIN[i].value = commands.MAIN[i].value.replace(`{replace${from}}`, to);
             }

@@ -492,8 +492,14 @@ bot.on('message', async (message) => {
         case `${requiredPrefix}jon`:
             bot.commands.get('jon').execute(await message, args, users, timetable);
             break;
+        case `${requiredPrefix}jonq`:
+            bot.commands.get('jonq').execute(await message, args, users, timetable);
+            break;
         case `${requiredPrefix}bejonni`:
             bot.commands.get('bejonni').execute(await message, args, users, timetable);
+            break;
+        case `${requiredPrefix}gif`:
+            bot.commands.get('gif').execute(await message, args, setup);
             break;
         case `${requiredPrefix}test`:
             if (!isDM() && hasAdmin()) {
@@ -501,8 +507,14 @@ bot.on('message', async (message) => {
                 message.unpin();
             }
             break;
+        case `msg`:
+            if (isDM()) {
+                bot.commands.get('msg').execute(await message, args, bot, users);
+            }
+            break;
     }
     if (message.author !== bot.user/* && message.author.id !== idByNickname("Tuzsi")/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
+        let msg;
         database.INAPPROPRIATE.forEach(function (word) {
             if (noPrefix(message, word)) {
                 split = message.toString().toLowerCase().split(" ");
@@ -522,12 +534,30 @@ bot.on('message', async (message) => {
                 message.channel.send(`Szia ${message.author}!`);
             }
         });
-        database.RESPOND.forEach(function (word) {
-            if (msgLC(message) === word.FROM || msgLC(message) === word.FROM + "!" || msgLC(message) === word.FROM + ".") {
+        database.RESPOND.IS.forEach(function (word) {
+            msg = message;
+            if (!word.SAME) {
+                msg.content = msg.content.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                word.FROM = word.FROM.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            }
+            if (msgLC(msg) === word.FROM) {
                 message.channel.send(word.TO, {tts: word.TTS});
             }
         });
-        if (message.content.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("anime")) message.channel.send("Ah, yes, the kínai mese");
+        database.RESPOND.HAS.forEach(function (word) {
+            msg = message;
+            if (!word.SAME) {
+                msg.content = msg.content.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                word.FROM = word.FROM.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            }
+            if (msgLC(msg).includes(word.FROM)) {
+                message.channel.send(word.TO, {tts: word.TTS});
+            }
+        });
+        if (msgLC(message) === "szia matyi") {
+            bot.users.cache.get(idByNickname("Matyi")).send("szia matyi");
+        }
+        //if (message.content.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("anime")) message.channel.send("Ah, yes, the kínai mese");
     }
 
     if (message.channel.id === setup.REACTION_CHANNELS.Spam.one_word_story_in_english && args.length > 1) {

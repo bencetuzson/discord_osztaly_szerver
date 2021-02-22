@@ -20,20 +20,13 @@ module.exports = {
         message.channel.send(`${users.USERS[ind].NICKNAME} kora: ${getAge()}`);
 
         function getAge() {
-            console.log(now.getMonth() + 1 + " " + users.USERS[ind].BIRTHDAY.MONTH);
             if (now.getMonth() + 1 >= users.USERS[ind].BIRTHDAY.MONTH) {
-                console.log("hónap")
-                console.log(now.getDate() + " " + users.USERS[ind].BIRTHDAY.DAY);
                 if (now.getDate() >= users.USERS[ind].BIRTHDAY.DAY) {
-                    console.log("nap")
-                    console.log(now.getFullYear() + " " + users.USERS[ind].BIRTHDAY.YEAR);
                     return now.getFullYear() - users.USERS[ind].BIRTHDAY.YEAR
                 } else {
-                    console.log(now.getFullYear() + " " + users.USERS[ind].BIRTHDAY.YEAR - 1);
                     return now.getFullYear() - users.USERS[ind].BIRTHDAY.YEAR - 1;
                 }
             } else {
-                console.log(now.getFullYear() + " " + users.USERS[ind].BIRTHDAY.YEAR - 1);
                 return now.getFullYear() - users.USERS[ind].BIRTHDAY.YEAR - 1;
             }
         }
