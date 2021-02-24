@@ -413,7 +413,7 @@ bot.on('message', async (message) => {
             bot.commands.get('csapat').execute(await message, args, database, users);
             break;
         case `${requiredPrefix}parancsok`:
-            bot.commands.get('parancsok').execute(message, args, users, commands, prefix);
+            bot.commands.get('parancsok').execute(message, args, users, commands, prefix, bot, database);
             break;
         case `${requiredPrefix}nev`:
             bot.commands.get('nev').execute(message, args, users);
@@ -431,6 +431,9 @@ bot.on('message', async (message) => {
             break;
         case `${requiredPrefix}dq`:
             bot.commands.get('dq').execute(await message, args, database, users);
+            break;
+        case `${requiredPrefix}email`:
+            bot.commands.get('email').execute(await message, args, users);
             break;
         case `${requiredPrefix}verify`:
             if (!isDM() && hasAdmin()) {
@@ -495,8 +498,23 @@ bot.on('message', async (message) => {
         case `${requiredPrefix}jonq`:
             bot.commands.get('jonq').execute(await message, args, users, timetable);
             break;
+        case `${requiredPrefix}most`:
+            bot.commands.get('most').execute(await message, args, users, timetable);
+            break;
+        case `${requiredPrefix}mostq`:
+            bot.commands.get('mostq').execute(await message, args, users, timetable);
+            break;
         case `${requiredPrefix}bejonni`:
             bot.commands.get('bejonni').execute(await message, args, users, timetable);
+            break;
+        case `${requiredPrefix}laptop`:
+            bot.commands.get('laptop').execute(await message, args, users, timetable);
+            break;
+        case `${requiredPrefix}laptopq`:
+            bot.commands.get('laptopq').execute(await message, args, users, timetable);
+            break;
+        case `${requiredPrefix}orak`:
+            bot.commands.get('orak').execute(await message, args, users, timetable);
             break;
         case `${requiredPrefix}gif`:
             bot.commands.get('gif').execute(await message, args, setup);
@@ -556,8 +574,15 @@ bot.on('message', async (message) => {
         });
         if (msgLC(message) === "szia matyi") {
             bot.users.cache.get(idByNickname("Matyi")).send("szia matyi");
+        } else if (setup.MENTION_CHANNELS.includes(message.channel.id)) {
+            users.USERS.forEach(function (user) {
+                user.CALLED.forEach(function (name) {
+                    if (msgLC(message).normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
+                        bot.users.cache.get(user.USER_ID).send(`${message.author} megemlített egy üzenetben`)
+                    }
+                })
+            });
         }
-        //if (message.content.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes("anime")) message.channel.send("Ah, yes, the kínai mese");
     }
 
     if (message.channel.id === setup.REACTION_CHANNELS.Spam.one_word_story_in_english && args.length > 1) {
@@ -921,11 +946,18 @@ let readChannel;
 let readMessage;
 rl.on('line', (input) => {
     read = input;
-    readChannel = read.split(" ")[0];
-    readMessage = replaceAll(replaceAll(read.replace(readChannel + " ", ""), "\\n", "\n"), "\\\n", "\\n");
-    bot.channels.fetch(readChannel).then(channel => {
-        channel.send(readMessage);
-    }).catch((channel) => console.error(channel));
+    readChannel = read.split(" ")[1];
+    readMessage = replaceAll(read.split(" ").slice(2).join(' '), "\\\n", "\\n");
+    switch(read.split(" ")[0]) {
+        case "ch":
+            bot.channels.fetch(readChannel).then(channel => {
+                channel.send(readMessage);
+            }).catch((channel) => console.error(channel));
+            break;
+        case "dm":
+            bot.users.cache.get(readChannel).send(readMessage);
+            break;
+    }
 });
 
 bot.login(token);

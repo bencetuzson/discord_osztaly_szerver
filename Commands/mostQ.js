@@ -2,24 +2,22 @@ const Discord = require('discord.js');
 delete require.cache[require.resolve("../../database/timetable.json")];
 
 module.exports = {
-    name: 'jon',
-    description: 'writes out the next lesson',
+    name: 'mostq',
+    description: 'writes out the current lesson',
     admin : false,
     roles : [],
     guilds : [],
     execute: function (message, args, users, timetable) {
         console.log(timetable);
         const now = new Date();
-        const time = new Date();
-        let temp = new Date();
+        const from = new Date();
+        const to = new Date();
         let index = null;
-        const week_eng_it = timetable.WEEK.ENG_IT;
-        const week_art = timetable.WEEK.ART;
+        const week_eng_it = timetable.QUARANTENE.WEEK.ENG_IT;
+        const week_art = timetable.QUARANTENE.WEEK.ART;
         let meet;
         let classroom;
         console.log(now.getDay());
-        temp.setHours(23);
-        temp.setMinutes(59);
 
         function getWeekNumber(d) {
             d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -52,7 +50,7 @@ module.exports = {
 
         function whichLesson(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === week_eng_it) {
+            if ((getWeekNumber(now) + week_eng_it) % 4 <= 1) {
                 if (now.getDay() === 1) {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
@@ -105,7 +103,6 @@ module.exports = {
                             arr[0] = `__${arr[0]}__`;
                             meet = timetable.MEET.Angol.G2;
                             classroom = timetable.CLASSROOM.Angol.G2;
-
                             break;
                     }
                 }
@@ -115,7 +112,7 @@ module.exports = {
 
         function whichArt(lesson) {
             let arr = lesson.split("/");
-            if (getWeekNumber(now) % 2 === week_art) {
+            if ((getWeekNumber(now) + week_art) % 4 <= 1) {
                 return arr[0];
             } else {
                 return arr[1];
@@ -192,18 +189,18 @@ module.exports = {
 
         if (now.getDay() !== 6 && now.getDay() !== 0) {
             for (let i = 0; i < timetable.TIMETABLE[now.getDay() - 1].length; i++) {
-                time.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.HOUR);
-                time.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
-                if (time < temp && time > now) {
-                    temp.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.HOUR);
-                    temp.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
+                from.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.HOUR);
+                from.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
+                to.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.HOUR);
+                to.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.MINUTE);
+                if (from < now && now < to) {
                     index = i;
                 }
             }
 
             if (index != null) {
                 const Embed = new Discord.MessageEmbed()
-                    .setTitle('**A következő óra ma:**')
+                    .setTitle('**A most zajló óra:**')
                     .setDescription(`**${nextLesson(timetable.TIMETABLE[now.getDay() - 1][index].LESSON, timetable.TIMETABLE[now.getDay()-1][index].TYPE)}**`)
                     .addField('Idő:', `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`)
                     //.addField(timetable.TIMETABLE[now.getDay()-1][index].DESCRIPTION)
@@ -219,7 +216,7 @@ module.exports = {
                 }
                 message.channel.send(Embed);
             } else {
-                message.channel.send("Ma nincs több óra!")
+                message.channel.send("Most nincs óra!")
             }
 
         } else {

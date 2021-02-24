@@ -15,6 +15,8 @@ module.exports = {
         let index = null;
         const week_eng_it = timetable.WEEK.QUARANTENE.ENG_IT;
         const week_art = timetable.WEEK.QUARANTENE.ART;
+        let meet;
+        let classroom;
         console.log(now.getDay());
         temp.setHours(23);
         temp.setMinutes(59);
@@ -41,6 +43,8 @@ module.exports = {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] === languageSearch()) {
                     arr[i] = `__${arr[i]}__`
+                    meet = timetable.MEET[languageSearch()];
+                    classroom = timetable.CLASSROOM[languageSearch()];
                     return arr.toString().replace(",", "/").replace("[", "").replace("]", "");
                 }
             }
@@ -53,18 +57,26 @@ module.exports = {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
                             arr[0] = `__${arr[0]}__`;
+                            meet = timetable.MEET.Angol.G1;
+                            classroom = timetable.CLASSROOM.Angol.G1;
                             break;
                         case 2:
                             arr[1] = `__${arr[1]}__`;
+                            meet = timetable.MEET.Info.G2;
+                            classroom = timetable.CLASSROOM.Info.G2;
                             break;
                     }
                 } else if (now.getDay() === 2) {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
                             arr[1] = `__${arr[1]}__`;
+                            meet = timetable.MEET.Info.G1;
+                            classroom = timetable.CLASSROOM.Info.G1;
                             break;
                         case 2:
                             arr[0] = `__${arr[0]}__`;
+                            meet = timetable.MEET.Angol.G2;
+                            classroom = timetable.CLASSROOM.Angol.G2;
                             break;
                     }
                 }
@@ -73,18 +85,26 @@ module.exports = {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
                             arr[0] = `__${arr[0]}__`;
+                            meet = timetable.MEET.Angol.G1;
+                            classroom = timetable.CLASSROOM.Angol.G1;
                             break;
                         case 2:
                             arr[1] = `__${arr[1]}__`;
+                            meet = timetable.MEET.Info.G2;
+                            classroom = timetable.CLASSROOM.Info.G2;
                             break;
                     }
                 } else if (now.getDay() === 1) {
                     switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                         case 1:
                             arr[1] = `__${arr[1]}__`;
+                            meet = timetable.MEET.Info.G1;
+                            classroom = timetable.CLASSROOM.Info.G1;
                             break;
                         case 2:
                             arr[0] = `__${arr[0]}__`;
+                            meet = timetable.MEET.Angol.G2;
+                            classroom = timetable.CLASSROOM.Angol.G2;
                             break;
                     }
                 }
@@ -115,8 +135,22 @@ module.exports = {
                     return whichArt(lesson);
                 default:
                     console.log("default");
+                    if (lesson === "Tesi") {
+                        switch (users.USERS[userSearch()].GENDER) {
+                            case "M":
+                                meet = timetable.MEET.Tesi.BOYS;
+                                classroom = timetable.CLASSROOM.Tesi.BOYS;
+                                break;
+                            case "F":
+                                meet = timetable.MEET.Tesi.GIRLS;
+                                classroom = timetable.CLASSROOM.Tesi.GIRLS;
+                                break;
+                        }
+                    } else {
+                        meet = timetable.MEET[lesson];
+                        classroom = timetable.CLASSROOM[lesson];
+                    }
                     return lesson;
-
             }
         }
 
@@ -170,16 +204,17 @@ module.exports = {
                 const Embed = new Discord.MessageEmbed()
                     .setTitle('**A következő óra ma:**')
                     .setDescription(`**${nextLesson(timetable.TIMETABLE[now.getDay() - 1][index].LESSON, timetable.TIMETABLE[now.getDay()-1][index].TYPE)}**`)
-                    .addFields(
-                        {
-                            name: 'Idő:',
-                            value: `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`
-                        }
-                    )
+                    .addField('Idő:', `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`)
                     //.addField(timetable.TIMETABLE[now.getDay()-1][index].DESCRIPTION)
                     .setColor('RANDOM');
                 if (timetable.TIMETABLE[now.getDay() - 1][index].DESCRIPTION !== "") {
                     Embed.addField('Megjegyzés:', `${timetable.TIMETABLE[now.getDay() - 1][index].DESCRIPTION}`);
+                }
+                if (meet) {
+                    Embed.addField('Meet link:', `${meet}`);
+                }
+                if (classroom) {
+                    Embed.addField('Classroom link', `${classroom}`);
                 }
                 message.channel.send(Embed);
             } else {

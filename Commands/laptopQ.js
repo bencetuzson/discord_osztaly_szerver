@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'bejonni',
-    description: 'writes out the next x times when the author has to come to school',
+    name: 'laptopq',
+    description: 'writes out the next x times when the author has to bring your laptop to school',
     admin : false,
     roles : [],
     guilds : [],
@@ -25,20 +25,20 @@ module.exports = {
 
         let count = 0;
         let date = new Date();
-        const week = timetable.WEEK.ENG_IT;
+        const week = timetable.WEEK.QUARANTENE.ENG_IT;
         let day;
         let dates = "";
         
         while (args[1] > count) {
             day = whichDay();
             if (day) {
-                dates += `${date.getFullYear()}. ${date.getMonth()+1 < 10 ? "0" : ""}${date.getMonth()+1}. ${date.getDate() < 10 ? "0" : ""}${date.getDate()}. ${date.getDay() === 2 ? "Kedd" : "Péntek"}\n`
+                dates += `${date.getFullYear()}. ${date.getMonth()+1 < 10 ? "0" : ""}${date.getMonth()+1}. ${date.getDate() < 10 ? "0" : ""}${date.getDate()}. ${date.getDay() === 2 ? "Kedd" : "Hétfő"}\n`
             }
             date.setDate(date.getDate()+1);
         }
 
         const Embed = new Discord.MessageEmbed()
-        .setTitle(`A következő ${args[1]} alkalom, mikor be kell menned (${groups === 1 ? "sárgák" : "lilák"})`)
+        .setTitle(`A következő ${args[1]} alkalom, mikor be kell hoznod a laptopod (${groups === 1 ? "sárgák" : "pirosak/lilák"})`)
         .setDescription(dates)
         .setColor('RANDOM');
         message.channel.send(Embed);
@@ -51,20 +51,20 @@ module.exports = {
         }
 
         function whichDay() {
-            if (getWeekNumber(date) % 2 === week) {
+            if ((getWeekNumber(date) + week) % 4 <= 1) {
                 if (date.getDay() === 2) {
                     if (groups === 1) {
                         count++
                         return date;
                     }
-                } else if (date.getDay() === 5) {
+                } else if (date.getDay() === 1) {
                     if (groups === 2) {
                         count++
                         return date;
                     }
                 }
             } else {
-                if (date.getDay() === 5) {
+                if (date.getDay() === 1) {
                     if (groups === 1) {
                         count++
                         return date;
