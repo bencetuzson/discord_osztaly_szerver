@@ -71,7 +71,7 @@ module.exports = {
                     valueReplace(2, new Date().getMonth() + 1);
                     valueReplace(3, new Date().getDate());
                     break;
-                case "bejonni [szám]": case "laptop [szám]":
+                case "bejonni [szám]": case "laptop [szám]": case "orak [nap]":
                     valueReplace(100, Math.floor(Math.random() * 100) + 1);
                     break;
                 case "csapat [csapatok száma]":
