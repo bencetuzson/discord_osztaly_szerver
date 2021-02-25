@@ -211,6 +211,22 @@ function botDevSearch(user) {
     }
 }
 
+function languageSearch(user) {
+    for (let index = 0; index < users.USERS.length; index++) {
+        if (users.USERS[index].USER_ID === user.id) {
+            return users.USERS[index].SUBJECTS.LANGUAGE;
+        }
+    }
+}
+
+function groupSearch(user) {
+    for (let index = 0; index < users.USERS.length; index++) {
+        if (users.USERS[index].USER_ID === user.id) {
+            return users.USERS[index].SUBJECTS.GROUPS;
+        }
+    }
+}
+
 function personalRole(user) {
     for (let index = 0; index < users.USERS.length; index++) {
         if (users.USERS[index].USER_ID === user.id) {
@@ -702,6 +718,22 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                             if (moderatorSearch(user)) roleAdd("Moderator");
                             if (gameTesterSearch(user)) roleAdd("Game_Tester");
                             if (botDevSearch(user)) roleAdd("GitHub_Team");
+                            switch (languageSearch(user)) {
+                                case "G":
+                                    roleAdd("Nemet");
+                                    break;
+                                case "F":
+                                    roleAdd("Francia");
+                                    break;
+                            }
+                            switch (groupSearch(user)) {
+                                case 1:
+                                    roleAdd("G1");
+                                    break;
+                                case 2:
+                                    roleAdd("G2");
+                                    break;
+                            }
                         } else {
                             roleAdd("Ezek_erdekelnek");
                         }
@@ -757,6 +789,22 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                     if (moderatorSearch(user)) roleAdd("Moderator");
                     if (gameTesterSearch(user)) roleAdd("Game_Tester");
                     if (botDevSearch(user)) roleAdd("GitHub_Team");
+                    switch (languageSearch(user)) {
+                        case "G":
+                            roleAdd("Nemet");
+                            break;
+                        case "F":
+                            roleAdd("Francia");
+                            break;
+                    }
+                    switch (groupSearch(user)) {
+                        case 1:
+                            roleAdd("G1");
+                            break;
+                        case 2:
+                            roleAdd("G2");
+                            break;
+                    }
                 }
             }
             break;
