@@ -855,6 +855,22 @@ bot.on('messageReactionRemove', async (reaction, user) => {
                         genderSearch(reaction, user).then(result => {
                             if (result) reaction.message.guild.members.cache.get(user.id).roles.remove(result);
                         })
+                        switch (languageSearch(user)) {
+                            case "G":
+                                removeRole("Nemet");
+                                break;
+                            case "F":
+                                removeRole("Francia");
+                                break;
+                        }
+                        switch (groupSearch(user)) {
+                            case 1:
+                                removeRole("G1");
+                                break;
+                            case 2:
+                                removeRole("G2");
+                                break;
+                        }
 
                     }
                 }
