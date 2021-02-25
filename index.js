@@ -718,6 +718,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                             if (moderatorSearch(user)) roleAdd("Moderator");
                             if (gameTesterSearch(user)) roleAdd("Game_Tester");
                             if (botDevSearch(user)) roleAdd("GitHub_Team");
+                            if (teamSearch(user)) addRoleByID(teamSearch(user));
                             switch (languageSearch(user)) {
                                 case "G":
                                     roleAdd("Nemet");
@@ -852,6 +853,7 @@ bot.on('messageReactionRemove', async (reaction, user) => {
                         removeRole("Game_Tester");
                         removeRole("GitHub_Team");
                         await reaction.message.guild.members.cache.get(user.id).roles.remove(personalRole(user));
+                        if (teamSearch(user)) removeRoleByID(teamSearch(user));
                         genderSearch(reaction, user).then(result => {
                             if (result) reaction.message.guild.members.cache.get(user.id).roles.remove(result);
                         })
