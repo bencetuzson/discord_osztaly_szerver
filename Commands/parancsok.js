@@ -6,8 +6,9 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute(message, args, users, commands, prefix, bot, database) {
+    execute(message, args, users, commands, prefix, bot, database, timetable) {
         let value = "";
+        let blank = 0;
         let Embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp();
@@ -18,16 +19,19 @@ module.exports = {
                     .setTitle('A parancsok, amiket tudsz használni')
                     .setDescription(`A felső a parancs neve, az alsó pedig amit be kell írnod a leíráshoz.\nA \`${prefix}\` csak akkor kell a parancs elé, ha a szerverbe írod, DM-nél enélkül kell!`)
                 for (let i = 0; i < commands.MAIN.length; i++) {
-                    if (!command_arr.includes(commands.MAIN[i].name.split(' ')[0])) {
+                    if (commands.MAIN[i].display && !command_arr.includes(commands.MAIN[i].name.split(' ')[0])) {
                         command_arr.push(commands.MAIN[i].name.split(' ')[0]);
                         //Embed.addField(`${prefix}${commands.MAIN[i].name.split(' ')[0]}`, `\`${prefix}parancsok ${commands.MAIN[i].name.split(' ')[0]}\``, true);
                         if (commands.MAIN[i].command) {
                             if (commands.MAIN[i].done) {
+                                blank++
                                 Embed.addField(`${commands.MAIN[i].prefix ? `_${prefix}_` : ""}**${commands.MAIN[i].name.split(' ')[0]}**`, `\`${prefix}parancsok ${commands.MAIN[i].name.split(' ')[0]}\``, true);
                             } else {
                                 Embed.addField(`${commands.MAIN[i].prefix ? `_${prefix}_` : ""}**${commands.MAIN[i].name.split(' ')[0]}**`, commands.MAIN[i].value, true);
                             }
                         } else {
+                            if ((blank - 2) % 3 === 0) Embed.addField('\u200B', '\u200B', true);
+                            blank = 0;
                             Embed.addField(commands.MAIN[i].name, commands.MAIN[i].value);
                         }
                     }
@@ -38,7 +42,7 @@ module.exports = {
             case 2:
                 Embed
                     .setTitle(`\`${args[1]}\` parancs leírása:`)
-                    .setDescription(`\`[]\` = általad meghatározott érték. Ezt a paraméterek megadásakor NE írd be!\nA \`${prefix}\` csak akkor kell a parancs elé, ha a szerverbe írod, DM-nél enélkül kell!`)
+                    .setDescription(`\`[]\`, \`()\`,\`{}\` = általad meghatározott érték. Ezeket a paraméterekkel NE írd be!\nA \`${prefix}\` csak akkor kell a parancs elé, ha a szerverbe írod, DM-nél enélkül kell!\n\`[]\` = típus, \`()\` = nem kötelező, \`{}\` = konkrét paraméter`)
                 for (let i = 0; i < commands.MAIN.length; i++) {
                     if (args[1] === commands.MAIN[i].name.split(" ")[0] && commands.MAIN[i].command) {
                         replace(i);
@@ -113,6 +117,20 @@ module.exports = {
                     }
                     valueReplace(1, name);
                     break;
+                case "classroom [tantárgy] ({*f*, *l*, *y* vagy *p*})":
+                    const keys = Object.keys(timetable.CLASSROOM);
+                    const rand = keys[random(keys.length)];
+                    switch (rand) {
+                        case "Angol": case "Info":
+                            valueReplace(1, `${rand} ${groupById(message.author.id) === 1 ? "y" : "p"}`);
+                            break;
+                        case "Tesi":
+                            valueReplace(1, `${rand} ${genderById(message.author.id) === "M" ? "f" : "l"}`);
+                            break;
+                        default:
+                            valueReplace(1, rand)
+                    }
+                    break;
 
             }
             Embed.addField((commands.MAIN[i].command ? `**\`${(commands.MAIN[i].prefix ? prefix : "") + commands.MAIN[i].name}\`**` : commands.MAIN[i].name), value);
@@ -137,6 +155,14 @@ module.exports = {
             for (const raw of users.USERS) {
                 if (id === raw.USER_ID) {
                     return raw.GENDER;
+                }
+            }
+        }
+
+        function groupById(id) {
+            for (const raw of users.USERS) {
+                if (id === raw.USER_ID) {
+                    return raw.SUBJECTS.GROUPS;
                 }
             }
         }

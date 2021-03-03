@@ -2,22 +2,25 @@ const Discord = require('discord.js');
 delete require.cache[require.resolve("../../database/timetable.json")];
 
 module.exports = {
-    name: 'most',
-    description: 'writes out the current lesson',
+    name: 'ora',
+    description: 'writes out the next lesson',
     admin : false,
     roles : [],
     guilds : [],
-    execute: function (message, args, users, timetable) {
-        console.log(timetable);
+    execute: function (message, args, users, timetable, type) {
         const now = new Date();
-        const from = new Date();
-        const to = new Date();
         let index = null;
         const week_eng_it = timetable.WEEK.ENG_IT;
         const week_art = timetable.WEEK.ART;
         let meet;
         let classroom;
-        console.log(now.getDay());
+        const time = new Date();
+        let temp = new Date();
+        temp.setHours(23);
+        temp.setMinutes(59);
+        const from = new Date();
+        const to = new Date();
+        if (type !== "jon" && type !== "most") return;
 
         function getWeekNumber(d) {
             d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -144,6 +147,17 @@ module.exports = {
                                 classroom = timetable.CLASSROOM.Tesi.GIRLS;
                                 break;
                         }
+                    } else if (lesson === "Angol") {
+                        switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
+                            case 1:
+                                meet = timetable.MEET.Angol.G1;
+                                classroom = timetable.CLASSROOM.Angol.G1;
+                                break;
+                            case 2:
+                                meet = timetable.MEET.Info.G2;
+                                classroom = timetable.CLASSROOM.Info.G2;
+                                break;
+                        }
                     } else {
                         meet = timetable.MEET[lesson];
                         classroom = timetable.CLASSROOM[lesson];
@@ -188,23 +202,38 @@ module.exports = {
         }
 
         if (now.getDay() !== 6 && now.getDay() !== 0) {
-            for (let i = 0; i < timetable.TIMETABLE[now.getDay() - 1].length; i++) {
-                from.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.HOUR);
-                from.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
-                to.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.HOUR);
-                to.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.MINUTE);
-                if (from < now && now < to) {
-                    index = i;
-                }
+            switch (type) {
+                case "jon":
+                    for (let i = 0; i < timetable.TIMETABLE[now.getDay() - 1].length; i++) {
+                        time.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.HOUR);
+                        time.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
+                        if (time < temp && time > now) {
+                            temp.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.HOUR);
+                            temp.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
+                            index = i;
+                        }
+                    }
+                    break;
+                case "most":
+                    for (let i = 0; i < timetable.TIMETABLE[now.getDay() - 1].length; i++) {
+                        from.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.HOUR);
+                        from.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
+                        to.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.HOUR);
+                        to.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.MINUTE);
+                        if (from < now && now < to) {
+                            index = i;
+                        }
+                    }
+                    break;
             }
-
             if (index != null) {
                 const Embed = new Discord.MessageEmbed()
-                    .setTitle('**A most zajló óra:**')
+                    .setTitle(type === "jon" ? '**A következő óra ma:**' : '**A most zajló óra:**')
                     .setDescription(`**${nextLesson(timetable.TIMETABLE[now.getDay() - 1][index].LESSON, timetable.TIMETABLE[now.getDay()-1][index].TYPE)}**`)
                     .addField('Idő:', `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`)
                     //.addField(timetable.TIMETABLE[now.getDay()-1][index].DESCRIPTION)
-                    .setColor('RANDOM');
+                    .setColor('RANDOM')
+                    .setFooter("Ha több óra is van párhuhamosan, akkor az aláhúzott lesz a tiéd.\nEzért nem is biztos, hogy ami másnak ki lett írva, az neked is jó!");
                 if (timetable.TIMETABLE[now.getDay() - 1][index].DESCRIPTION !== "") {
                     Embed.addField('Megjegyzés:', `${timetable.TIMETABLE[now.getDay() - 1][index].DESCRIPTION}`);
                 }
@@ -216,7 +245,7 @@ module.exports = {
                 }
                 message.channel.send(Embed);
             } else {
-                message.channel.send("Most nincs óra!")
+                message.channel.send(type === "jon" ? "Ma nincs több óra!" : "Most nincs óra!")
             }
 
         } else {

@@ -30,7 +30,7 @@ module.exports = {
                     Embed.setTitle(`**Órák holnap:**`);
                 } else if (!isNaN(args[1])) {
                     time = now;
-                    time.setDate(time.getDate() + args[1]);
+                    time.setDate(time.getDate() + Number(args[1]));
                     Embed.setTitle(`**Órák ${args[1]} nap múlva:**`);
                 } else {
                     message.channel.send("Érvénytelen paraméter!");
@@ -38,8 +38,9 @@ module.exports = {
                 }
                 break;
             case 4:
-                time = new Date(args[1], args[2], args[3]);
+                time = new Date(args[1], args[2] - 1, args[3]);
                 Embed.setTitle(`**Órák ekkor: ${args[1]}. ${args[2] < 10 ? "0" : ""}${args[2]}. ${args[3] < 10 ? "0" : ""}${args[3]}. ${day(time.getDay())}:**`);
+                console.log(time);
                 break;
         }
 

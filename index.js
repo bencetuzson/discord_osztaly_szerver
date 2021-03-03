@@ -12,6 +12,7 @@ let prefix = config.MAIN.PREFIX;
 let database = require(setup.DATABASE_PATH);
 let timetable = require(setup.TIMETABLE_PATH);
 let commands = require(setup.COMMANDS_DB_PATH);
+const status = `${prefix}${setup.HELP_COMMAND}`;
 const childProcess = require('child_process');
 const fs = require('fs');
 
@@ -35,16 +36,15 @@ for (const file of commandFiles) {
 
 let now = new Date();
 
+let meet = {channel: "", message: "", user: ""};
+let meetIndex;
+let meetMissing;
+
 console.log("testReady");
 bot.on('ready', () => {
     console.log(`${bot.user.tag} bot is now active (${monthToString(now.getMonth() + 1)} ${now.getDate()} ${now.getFullYear()} ${now.getHours() < 10 ? 0 : ""}${now.getHours()}:${now.getMinutes() < 10 ? 0 : ""}${now.getMinutes()}:${now.getSeconds() < 10 ? 0 : ""}${now.getSeconds()})`);
-    bot.user.setPresence({status: "online", activity: {name: setup.STATUS, type: setup.ACTIVITY}});
+    bot.user.setPresence({status: "online", activity: {name: setup.DB_STATUS ? setup.STATUS : status, type: setup.ACTIVITY}});
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
-    /*bot.api.applications(bot.user.id).guilds('633701805020151828').commands.post({data: {
-        name: 'test',
-        description: 'slash command test'
-    }})*/
-    console.log(bot.api);
 });
 console.log("testError");
 bot.on('error', error => {
@@ -357,6 +357,14 @@ function idByNickname(name) {
     }
 }
 
+function nicknameById(id) {
+    for (const raw of users.USERS) {
+        if (id === raw.USER_ID) {
+            return raw.NICKNAME;
+        }
+    }
+}
+
 function inappropriateGuild(guild) {
     if (guild !== null && guild.id !== setup.GUILD_ID) {
             guild.leave();
@@ -366,6 +374,39 @@ function inappropriateGuild(guild) {
 
 async function findMessage(message, ID) {
     return message.channel.messages.fetch(ID);
+}
+
+function HSVtoRGB(h, s, v) {
+    var r, g, b, i, f, p, q, t;
+    if (arguments.length === 1) {
+        s = h.s, v = h.v, h = h.h;
+    }
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+    return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
+    };
+}
+
+function classLength() {
+    let names = [];
+    for (let ind = 0; ind < users.USERS.length; ++ind) {
+        if(users.USERS[ind].REAL){names.push(users.USERS[ind]);}
+    }
+    return names.length;
 }
 
 function removeReaction(channel_id, message_id, reaction, user) {bot.channels.cache.get(channel_id).messages.fetch(message_id).then(msg => msg.reactions.cache.get(reaction).users.remove(user.id))}
@@ -379,6 +420,7 @@ bot.on('message', async (message) => {
 
     function hasAdmin() {return message.member.hasPermission("ADMINISTRATOR");}
     function isDM() {return message.guild === null;}
+    function inOnBlacklist(user) {return setup.BLACKLIST.includes(nicknameById(user));}
 
     beSent = "";
     replyTemp = [];
@@ -407,6 +449,7 @@ bot.on('message', async (message) => {
         }, 2000);
     }
 
+    if (!inOnBlacklist(message.author.id))
     switch (args[0].toLowerCase()) {
         case `${requiredPrefix}szin`:
             if (!isDM())
@@ -428,8 +471,8 @@ bot.on('message', async (message) => {
         case `${requiredPrefix}csapat`:
             bot.commands.get('csapat').execute(await message, args, database, users);
             break;
-        case `${requiredPrefix}parancsok`:
-            bot.commands.get('parancsok').execute(message, args, users, commands, prefix, bot, database);
+        case `${requiredPrefix}${setup.HELP_COMMAND}`:
+            bot.commands.get('parancsok').execute(message, args, users, commands, prefix, bot, database, timetable);
             break;
         case `${requiredPrefix}nev`:
             bot.commands.get('nev').execute(message, args, users);
@@ -509,20 +552,20 @@ bot.on('message', async (message) => {
             bot.commands.get('szulinap').execute(await message, users, bot, args);
             break;
         case `${requiredPrefix}jon`:
-            bot.commands.get('jon').execute(await message, args, users, timetable);
+            bot.commands.get('ora').execute(await message, args, users, timetable, "jon");
             break;
         case `${requiredPrefix}jonq`:
             bot.commands.get('jonq').execute(await message, args, users, timetable);
             break;
         case `${requiredPrefix}most`:
-            bot.commands.get('most').execute(await message, args, users, timetable);
+            bot.commands.get('ora').execute(await message, args, users, timetable, "most");
             break;
         case `${requiredPrefix}mostq`:
             bot.commands.get('mostq').execute(await message, args, users, timetable);
             break;
-        case `${requiredPrefix}bejonni`:
+        /*case `${requiredPrefix}bejonni`:
             bot.commands.get('bejonni').execute(await message, args, users, timetable);
-            break;
+            break;*/
         case `${requiredPrefix}laptop`:
             bot.commands.get('laptop').execute(await message, args, users, timetable);
             break;
@@ -532,8 +575,19 @@ bot.on('message', async (message) => {
         case `${requiredPrefix}orak`:
             bot.commands.get('orak').execute(await message, args, users, timetable);
             break;
+        case `${requiredPrefix}orakq`:
+            bot.commands.get('orakq').execute(await message, args, users, timetable);
+            break;
         case `${requiredPrefix}gif`:
             bot.commands.get('gif').execute(await message, args, setup);
+            break;
+        case `${requiredPrefix}classroom`:
+            bot.commands.get('classroom').execute(await message, args, users, timetable);
+            break;
+        case `${requiredPrefix}meeten`:
+            meetIndex = 0;
+            meetMissing = [];
+            bot.commands.get('meeten').execute(await message, args, users, timetable, meetIndex).then(data => meet = data);
             break;
         case `${requiredPrefix}test`:
             if (!isDM() && hasAdmin()) {
@@ -649,6 +703,34 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 
     if (user.bot) return;
     if (!reaction.message.guild) return;
+
+    if (reaction.message.channel.id === meet.channel && reaction.message.id === meet.message) {
+        if (reaction.emoji.name === "✅" || reaction.emoji.name === "❌") {
+            console.log(meetMissing);
+            if (reaction.emoji.name === "❌") meetMissing.push(meet.user);
+            console.log(meetIndex);
+            console.log(classLength());
+            if (++meetIndex > classLength() - 1) {
+                let missing = [];
+                for (const name of meetMissing) {
+                    missing.push(name.NICKNAME);
+                }
+                const rgb = HSVtoRGB((1 - (missing.length / classLength())) / 3, 1, 1)
+                const Embed = new Discord.MessageEmbed().setTitle(missing.length === 0 ? "Úgy tűnik, mindenki benn van meet-en" : "Hiányzók meet-en:").setDescription(missing.join("\n")).setColor([rgb.r, rgb.g, rgb.b])
+                reaction.message.channel.send(Embed);
+                console.log(missing);
+                console.log(255 * (missing.length / classLength()));
+                console.log(255 - (255 * (missing.length / classLength())));
+            } else {
+                bot.commands.get('meeten').execute(await reaction.message, reaction.message.content.split(' '), users, timetable, meetIndex, reaction.emoji.name).then(data => meet = data);
+            }
+            reaction.message.channel.messages.fetch({limit: 1}).then(messages => {
+                reaction.message.channel.bulkDelete(messages);
+            });
+        } else {
+            reaction.remove();
+        }
+    }
 
     switch (reaction.emoji.name) {
         case setup.REACTION_ROLES.BOT.REACTION :

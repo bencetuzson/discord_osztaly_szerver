@@ -25,7 +25,7 @@ module.exports = {
 
         let count = 0;
         let date = new Date();
-        const week = timetable.WEEK.ENG_IT;
+        const week = timetable.WEEK.QUARANTINE.IN_SCHOOL;
         let day;
         let dates = "";
         
@@ -51,7 +51,7 @@ module.exports = {
         }
 
         function whichDay() {
-            if (getWeekNumber(date) % 2 === week) {
+            if ((getWeekNumber(date) + week) % 4 <= 1) {
                 if (date.getDay() === 2) {
                     if (groups === 1) {
                         count++
