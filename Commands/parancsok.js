@@ -117,7 +117,7 @@ module.exports = {
                     }
                     valueReplace(1, name);
                     break;
-                case "classroom [tantárgy] ({*f*, *l*, *y* vagy *p*})":
+                case "classroom [tantárgy] ({*f*, *l*, *y* vagy *p*})": case "meet [tantárgy] ({*f*, *l*, *y* vagy *p*})":
                     const keys = Object.keys(timetable.CLASSROOM);
                     const rand = keys[random(keys.length)];
                     switch (rand) {

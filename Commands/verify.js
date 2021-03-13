@@ -135,6 +135,8 @@ ${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.mac)}
 -*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.mac).topic}*
 ${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.linux)} 
 -*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.linux).topic}*
+${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.git)} 
+-*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.git).topic}*
 ${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.c_cpp)}
 -*${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.c_cpp).topic}*
 ${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.java)}

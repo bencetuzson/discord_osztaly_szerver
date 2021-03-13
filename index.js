@@ -36,7 +36,7 @@ for (const file of commandFiles) {
 
 let now = new Date();
 
-let meet = {channel: "", message: "", user: ""};
+let meet = {channel: "", message: "", user: "", names: [], subject: "", usr_db: ""};
 let meetIndex;
 let meetMissing;
 
@@ -554,40 +554,43 @@ bot.on('message', async (message) => {
         case `${requiredPrefix}jon`:
             bot.commands.get('ora').execute(await message, args, users, timetable, "jon");
             break;
-        case `${requiredPrefix}jonq`:
+        /*case `${requiredPrefix}jonq`:
             bot.commands.get('jonq').execute(await message, args, users, timetable);
-            break;
+            break;*/
         case `${requiredPrefix}most`:
             bot.commands.get('ora').execute(await message, args, users, timetable, "most");
             break;
-        case `${requiredPrefix}mostq`:
+        /*case `${requiredPrefix}mostq`:
             bot.commands.get('mostq').execute(await message, args, users, timetable);
-            break;
+            break;*/
         /*case `${requiredPrefix}bejonni`:
             bot.commands.get('bejonni').execute(await message, args, users, timetable);
             break;*/
         case `${requiredPrefix}laptop`:
             bot.commands.get('laptop').execute(await message, args, users, timetable);
             break;
-        case `${requiredPrefix}laptopq`:
+        /*case `${requiredPrefix}laptopq`:
             bot.commands.get('laptopq').execute(await message, args, users, timetable);
-            break;
+            break;*/
         case `${requiredPrefix}orak`:
             bot.commands.get('orak').execute(await message, args, users, timetable);
             break;
-        case `${requiredPrefix}orakq`:
+        /*case `${requiredPrefix}orakq`:
             bot.commands.get('orakq').execute(await message, args, users, timetable);
-            break;
+            break;*/
         case `${requiredPrefix}gif`:
             bot.commands.get('gif').execute(await message, args, setup);
             break;
         case `${requiredPrefix}classroom`:
-            bot.commands.get('classroom').execute(await message, args, users, timetable);
+            bot.commands.get('link').execute(await message, args, users, timetable, "classroom");
+            break;
+        case `${requiredPrefix}meet`:
+            bot.commands.get('link').execute(await message, args, users, timetable, "meet");
             break;
         case `${requiredPrefix}meeten`:
             meetIndex = 0;
             meetMissing = [];
-            bot.commands.get('meeten').execute(await message, args, users, timetable, meetIndex).then(data => meet = data);
+            bot.commands.get('meeten').execute(await message, args, users, timetable, database, meetIndex).then(data => meet = data);
             break;
         case `${requiredPrefix}test`:
             if (!isDM() && hasAdmin()) {
@@ -709,20 +712,20 @@ bot.on('messageReactionAdd', async (reaction, user) => {
             console.log(meetMissing);
             if (reaction.emoji.name === "❌") meetMissing.push(meet.user);
             console.log(meetIndex);
-            console.log(classLength());
-            if (++meetIndex > classLength() - 1) {
+            console.log(meet.names.length);
+            if (++meetIndex > meet.names.length - 1) {
                 let missing = [];
                 for (const name of meetMissing) {
-                    missing.push(name.NICKNAME);
+                    missing.push(meet.usr_db ? name.NICKNAME : name);
                 }
-                const rgb = HSVtoRGB((1 - (missing.length / classLength())) / 3, 1, 1)
-                const Embed = new Discord.MessageEmbed().setTitle(missing.length === 0 ? "Úgy tűnik, mindenki benn van meet-en" : "Hiányzók meet-en:").setDescription(missing.join("\n")).setColor([rgb.r, rgb.g, rgb.b])
+                const rgb = HSVtoRGB((1 - (missing.length / meet.names.length)) / 3, 1, 1)
+                const Embed = new Discord.MessageEmbed().setTitle(missing.length === 0 ? `Úgy tűnik, mindenki benn van${meet.subject ? ` ${meet.subject} ` : " "}meet-en` : `Hiányzók${meet.subject ? ` ${meet.subject} ` : " "}meet-en:`).setDescription(missing.join("\n")).setColor([rgb.r, rgb.g, rgb.b])
                 reaction.message.channel.send(Embed);
                 console.log(missing);
-                console.log(255 * (missing.length / classLength()));
-                console.log(255 - (255 * (missing.length / classLength())));
+                console.log(255 * (missing.length / meet.names.length));
+                console.log(255 - (255 * (missing.length / meet.names.length)));
             } else {
-                bot.commands.get('meeten').execute(await reaction.message, reaction.message.content.split(' '), users, timetable, meetIndex, reaction.emoji.name).then(data => meet = data);
+                bot.commands.get('meeten').execute(await reaction.message, reaction.message.content.split(' '), users, timetable, database, meetIndex, meet.names, meet.usr_db).then(data => meet = data);
             }
             reaction.message.channel.messages.fetch({limit: 1}).then(messages => {
                 reaction.message.channel.bulkDelete(messages);

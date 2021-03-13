@@ -114,6 +114,7 @@ module.exports = {
         }
 
         function whichArt(lesson) {
+            classroom = timetable.CLASSROOM[lesson];
             let arr = lesson.split("/");
             if (getWeekNumber(now) % 2 === week_art) {
                 return arr[0];
@@ -139,23 +140,23 @@ module.exports = {
                     if (lesson === "Tesi") {
                         switch (users.USERS[userSearch()].GENDER) {
                             case "M":
-                                meet = timetable.MEET.Tesi.BOYS;
-                                classroom = timetable.CLASSROOM.Tesi.BOYS;
+                                meet = timetable.MEET[lesson].BOYS;
+                                classroom = timetable.CLASSROOM[lesson].BOYS;
                                 break;
                             case "F":
-                                meet = timetable.MEET.Tesi.GIRLS;
-                                classroom = timetable.CLASSROOM.Tesi.GIRLS;
+                                meet = timetable.MEET[lesson].GIRLS;
+                                classroom = timetable.CLASSROOM[lesson].GIRLS;
                                 break;
                         }
                     } else if (lesson === "Angol") {
                         switch (users.USERS[userSearch()].SUBJECTS.GROUPS) {
                             case 1:
-                                meet = timetable.MEET.Angol.G1;
-                                classroom = timetable.CLASSROOM.Angol.G1;
+                                meet = timetable.MEET[lesson].G1;
+                                classroom = timetable.CLASSROOM[lesson].G1;
                                 break;
                             case 2:
-                                meet = timetable.MEET.Info.G2;
-                                classroom = timetable.CLASSROOM.Info.G2;
+                                meet = timetable.MEET[lesson].G2;
+                                classroom = timetable.CLASSROOM[lesson].G2;
                                 break;
                         }
                     } else {

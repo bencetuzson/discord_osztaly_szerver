@@ -19,6 +19,8 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio)}
 -*${getChannel(setup.REACTION_CHANNELS.Spam.meme_szekcio).topic}*
 ${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space)}
 -*${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space).topic}*
+:loud_sound: Projekt 1
+:loud_sound: Projekt 2
 `)
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 
@@ -55,7 +57,7 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space)}
                 break;
             case "programozas":
                 embed.setTitle("Programozas");
-                messageID = setup.REACTION_ROLES.Spam.MESSAGE_ID;
+                messageID = setup.REACTION_ROLES.Programozas.MESSAGE_ID;
                 break;
             case "verify":
                 embed.setTitle(`Elfogadod az itt leírtakat?`);
