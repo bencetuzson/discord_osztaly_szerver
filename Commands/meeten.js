@@ -84,11 +84,16 @@ module.exports = {
             .setTitle(`${usr_db ? userList[meetIndex].NICKNAME : userList[meetIndex]} van${subject ? ` ${subject} ` : " "}meet-en?`)
             .setDescription(`${meetIndex + 1}/${userList.length}`)
             .setColor(!usr_db || message.guild.roles.cache.get(userList[meetIndex].ROLE_ID).color === 0 ? 'RANDOM' : message.guild.roles.cache.get(userList[meetIndex].ROLE_ID).color);
-        const msg = await message.channel.send(Embed);
-        msg.react("✅");
-        msg.react("❌");
-        console.log(msg.channel.id);
-        console.log(msg.id);
+        let msg;
+        if (meetIndex === 0) {
+            msg = await message.channel.send(Embed);
+            msg.react("✅");
+            msg.react("❌");
+            console.log(msg.channel.id);
+            console.log(msg.id);
+        } else {
+            msg = message.channel.messages.fetch(message.id).then(msg => msg.edit(Embed));
+        }
         return {channel: msg.channel.id, message: msg.id, user: userList[meetIndex], names: userList, subject: subject, usr_db: usr_db}
     }
 }

@@ -221,7 +221,7 @@ module.exports = {
                         from.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.FROM.MINUTE);
                         to.setHours(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.HOUR);
                         to.setMinutes(timetable.TIMETABLE[now.getDay() - 1][i].TIME.TO.MINUTE);
-                        if (from < now && now < to) {
+                        if (from <= now && now < to) {
                             index = i;
                         }
                     }

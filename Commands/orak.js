@@ -11,27 +11,64 @@ module.exports = {
         let time;
         let temp = new Date();
         let index = null;
+        let week_day = 0;
+        let week_add = 0;
         const week_eng_it = timetable.WEEK.ENG_IT;
         const week_art = timetable.WEEK.ART;
         temp.setHours(23);
         temp.setMinutes(59);
         const Embed = new Discord.MessageEmbed()
+            .setFooter("Ha több óra is van párhuhamosan, akkor az aláhúzott lesz a tiéd.\nEzért nem is biztos, hogy ami másnak ki lett írva, az neked is jó!")
             .setColor('RANDOM');
-
         switch (args.length) {
             case 1:
                 time = now;
                 Embed.setTitle(`**Órák ma:**`);
                 break;
             case 2:
-                if (args[1] === "h") {
+                if (args[1] === "hn") {
                     time = now;
                     time.setDate(time.getDate() + 1);
                     Embed.setTitle(`**Órák holnap:**`);
                 } else if (!isNaN(args[1])) {
                     time = now;
                     time.setDate(time.getDate() + Number(args[1]));
-                    Embed.setTitle(`**Órák ${args[1]} nap múlva:**`);
+                    Embed.setTitle(`**Órák ${Number(args[1])} nap múlva:**`);
+                } else {
+                    week_day = weekDay(args[1]);
+                    if (week_day !== null) {
+                        time = now;
+                        time.setDate(time.getDate() + week_day);
+                        Embed.setTitle(`**Órák ezen a héten ${onDay(time.getDay())}:**`);
+                    } else {
+                        message.channel.send("Érvénytelen paraméter!");
+                        return;
+                    }
+                }
+                break;
+            case 3:
+                if (args[1] === "jh") {
+                    week_add = 1;
+                    week_day = weekDay(args[2]);
+                    if (week_day !== null) {
+                        time = now;
+                        time.setDate(time.getDate() + week_day + week_add * 7);
+                        Embed.setTitle(`**Órák jövő hét ${onDay(time.getDay())}:**`);
+                    } else {
+                        message.channel.send("Érvénytelen paraméter!");
+                        return;
+                    }
+                } else if (!isNaN(args[1])) {
+                    week_add = args[1];
+                    week_day = weekDay(args[2])
+                    if (week_day !== null) {
+                        time = now;
+                        time.setDate(time.getDate() + week_day + week_add * 7);
+                        Embed.setTitle(`**Órák ${week_add} hét múlva ${onDay(time.getDay())}:**`);
+                    } else {
+                        message.channel.send("Érvénytelen paraméter!");
+                        return;
+                    }
                 } else {
                     message.channel.send("Érvénytelen paraméter!");
                     return;
@@ -48,13 +85,31 @@ module.exports = {
             message.channel.send("Hétvégén nincs óra!");
             return;
         }
-
+        console.log(time);
         lesson(time.getDay() - 1)
         message.channel.send(Embed)
 
         function lesson(d) {
             for (index = 0; index < timetable.TIMETABLE.length; index++) {
                 Embed.addField(nextLesson(timetable.TIMETABLE[d][index].LESSON, timetable.TIMETABLE[d][index].TYPE), `Idő: ${timetable.TIMETABLE[d][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[d][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[d][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[d][index].TIME.TO.HOUR}:${timetable.TIMETABLE[d][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[d][index].TIME.TO.MINUTE}${timetable.TIMETABLE[d][index].DESCRIPTION !== "" ? `\nMegjegyzés: ${timetable.TIMETABLE[d][index].DESCRIPTION}` : ""}`)
+            }
+        }
+
+        function weekDay (d) {
+            switch (d) {
+                case "h":
+                    return now.getDay() - 7;
+                case "k":
+                    return now.getDay() + 1 - 7;
+                case "sz":
+                    return now.getDay() + 2 - 7;
+                case "cs":
+                    return now.getDay() + 3 - 7;
+                case "p":
+                    return now.getDay() + 4 - 7;
+                default:
+                    message.channel.send("Érvénytelen paraméter!");
+                    return null;
             }
         }
 
@@ -205,6 +260,21 @@ module.exports = {
                     return "Csütörtök";
                 case 5:
                     return "Péntek";
+            }
+        }
+
+        function onDay(d) {
+            switch (d) {
+                case 1:
+                    return "hétfőn";
+                case 2:
+                    return "kedden";
+                case 3:
+                    return "szerdán";
+                case 4:
+                    return "csütörtökön";
+                case 5:
+                    return "pénteken";
             }
         }
     }

@@ -54,6 +54,7 @@ module.exports = {
 
         function replace(i) {
             value = commands.MAIN[i].value;
+            const wd = ["h", "k", "sz", "cs", "p"]
             switch (commands.MAIN[i].name) {
                 case "szulinap [név vagy tag]": case "msg [név vagy tag] [üzenet]": case "email [név vagy tag]":
                     let usrs = [];
@@ -77,6 +78,13 @@ module.exports = {
                     break;
                 case "bejonni [szám]": case "laptop [szám]": case "orak [nap]":
                     valueReplace(100, Math.floor(Math.random() * 100) + 1);
+                    break;
+                case "orak jh [hét napjának kezdőbetűje]": case "orak [hét napjának kezdőbetűje]":
+                    valueReplace(100, wd[random(wd.length)]);
+                    break;
+                case "orak [hét] [hét napjának kezdőbetűje]":
+                    valueReplace(100, Math.floor(Math.random() * 100) + 1);
+                    valueReplace(200, wd[random(wd.length)]);
                     break;
                 case "csapat [csapatok száma]":
                     valueReplace(15, Math.floor(Math.random() * 15) + 1);

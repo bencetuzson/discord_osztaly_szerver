@@ -12,6 +12,7 @@ let prefix = config.MAIN.PREFIX;
 let database = require(setup.DATABASE_PATH);
 let timetable = require(setup.TIMETABLE_PATH);
 let commands = require(setup.COMMANDS_DB_PATH);
+let slash_commands = require(setup.SLASH_COMMANDS_PATH);
 const status = `${prefix}${setup.HELP_COMMAND}`;
 const childProcess = require('child_process');
 const fs = require('fs');
@@ -45,6 +46,9 @@ bot.on('ready', () => {
     console.log(`${bot.user.tag} bot is now active (${monthToString(now.getMonth() + 1)} ${now.getDate()} ${now.getFullYear()} ${now.getHours() < 10 ? 0 : ""}${now.getHours()}:${now.getMinutes() < 10 ? 0 : ""}${now.getMinutes()}:${now.getSeconds() < 10 ? 0 : ""}${now.getSeconds()})`);
     bot.user.setPresence({status: "online", activity: {name: setup.DB_STATUS ? setup.STATUS : status, type: setup.ACTIVITY}});
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
+    bot.api.applications(bot.user.id).guilds("633701805020151828").commands.post({
+        data: slash_commands
+    });
 });
 console.log("testError");
 bot.on('error', error => {
@@ -708,31 +712,25 @@ bot.on('messageReactionAdd', async (reaction, user) => {
     if (!reaction.message.guild) return;
 
     if (reaction.message.channel.id === meet.channel && reaction.message.id === meet.message) {
-        if (reaction.emoji.name === "✅" || reaction.emoji.name === "❌") {
-            console.log(meetMissing);
-            if (reaction.emoji.name === "❌") meetMissing.push(meet.user);
-            console.log(meetIndex);
-            console.log(meet.names.length);
-            if (++meetIndex > meet.names.length - 1) {
-                let missing = [];
-                for (const name of meetMissing) {
-                    missing.push(meet.usr_db ? name.NICKNAME : name);
-                }
-                const rgb = HSVtoRGB((1 - (missing.length / meet.names.length)) / 3, 1, 1)
-                const Embed = new Discord.MessageEmbed().setTitle(missing.length === 0 ? `Úgy tűnik, mindenki benn van${meet.subject ? ` ${meet.subject} ` : " "}meet-en` : `Hiányzók${meet.subject ? ` ${meet.subject} ` : " "}meet-en:`).setDescription(missing.join("\n")).setColor([rgb.r, rgb.g, rgb.b])
-                reaction.message.channel.send(Embed);
-                console.log(missing);
-                console.log(255 * (missing.length / meet.names.length));
-                console.log(255 - (255 * (missing.length / meet.names.length)));
-            } else {
-                bot.commands.get('meeten').execute(await reaction.message, reaction.message.content.split(' '), users, timetable, database, meetIndex, meet.names, meet.usr_db).then(data => meet = data);
+        console.log(meetMissing);
+        if (reaction.emoji.name === "❌") meetMissing.push(meet.user);
+        console.log(meetIndex);
+        console.log(meet.names.length);
+        if (++meetIndex > meet.names.length - 1) {
+            let missing = [];
+            for (const name of meetMissing) {
+                missing.push(meet.usr_db ? name.NICKNAME : name);
             }
-            reaction.message.channel.messages.fetch({limit: 1}).then(messages => {
-                reaction.message.channel.bulkDelete(messages);
-            });
+            const rgb = HSVtoRGB((1 - (missing.length / meet.names.length)) / 3, 1, 1)
+            const Embed = new Discord.MessageEmbed().setTitle(missing.length === 0 ? `Úgy tűnik, mindenki benn van${meet.subject ? ` ${meet.subject} ` : " "}meet-en` : `Hiányzók${meet.subject ? ` ${meet.subject} ` : " "}meet-en:`).setDescription(missing.join("\n")).setColor([rgb.r, rgb.g, rgb.b])
+            reaction.message.channel.messages.fetch(reaction.message.id).then(msg => msg.edit(Embed));
+            console.log(missing);
+            console.log(255 * (missing.length / meet.names.length));
+            console.log(255 - (255 * (missing.length / meet.names.length)));
         } else {
-            reaction.remove();
+            bot.commands.get('meeten').execute(await reaction.message, reaction.message.content.split(' '), users, timetable, database, meetIndex, meet.names, meet.usr_db).then(data => meet = data);
         }
+        reaction.users.remove(user.id);
     }
 
     switch (reaction.emoji.name) {
