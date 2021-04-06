@@ -7,10 +7,11 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute: function (message, args, users, timetable, type) {
+    execute: function (interaction, args, users, timetable, bot, type) {
         let link;
         let subject;
         let db;
+        const subjecr_arr = args[0].value.split(" ");
         switch (type) {
             case "classroom":
                 db = timetable.CLASSROOM;
@@ -22,65 +23,40 @@ module.exports = {
                 break;
             default:return;
         }
-        if (args.length < 2) return message.channel.send("Érvénytelen paraméter!");
         Object.keys(db).reduce((acc, key) => {
             acc[key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")] = db[key];
-            if (key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === args[1].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) {
+            if (key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === subjecr_arr[0].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) {
                 subject = key;
                 link = db[key];
             }
             return acc;
         });
         if (typeof link === 'object') {
-            if (args.length > 3) return message.channel.send("Érvénytelen paraméter!");
-            switch (args[2]) {
-                case "f":
-                    if (link.BOYS) {
-                        link = link.BOYS;
-                    } else {
-                        return message.channel.send("Érvénytelen paraméter!");
-                    }
+            switch (subjecr_arr[subjecr_arr.length - 1]) {
+                case "fiúk":
+                    link = link.BOYS;
                     subject += " (fiúk)";
                     break;
-                case "l":
-                    if (link.GIRLS) {
-                        link = link.GIRLS;
-                    } else {
-                        return message.channel.send("Érvénytelen paraméter!");
-                    }
+                case "lányok":
+                    link = link.GIRLS;
                     subject += " (lányok)";
                     break;
-                case "y":
-                    if (link.G1) {
-                        link = link.G1;
-                    } else {
-                        return message.channel.send("Érvénytelen paraméter!");
-                    }
+                case "sárgák":
+                    link = link.G1;
                     subject += " (sárgák)";
                     break;
-                case "p":
-                    if (link.G2) {
-                        link = link.G2;
-                    } else {
-                        return message.channel.send("Érvénytelen paraméter!");
-                    }
+                case "lilák":
+                    link = link.G2;
                     subject += " (lilák)";
                     break;
-                case undefined:
-                    if (link.MAIN) {
-                        link = link.MAIN;
-                    } else {
-                        return message.channel.send("Érvénytelen paraméter!");
-                    }
+                case "közös":
+                    link = link.MAIN;
                     subject += " (közös)";
                     break;
-                default:
-                    return message.channel.send("Érvénytelen paraméter!");
             }
-        } else if (!link || args.length !== 2) {
-            return message.channel.send("Érvénytelen paraméter!");
         }
-        message.channel.send(`${subject} ${type} linkje: ${link}`);
-
+        bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+            content: `${subject} ${type} linkje: ${link}`
+        }}});
     }
 }

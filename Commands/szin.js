@@ -6,58 +6,93 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute(message, args, users, database){
+    execute(interaction, args, users, database, bot){
         const colours = database.COLOURS;
         for (let index = 0; index < users.USERS.length; index++) {
-            if (users.USERS[index].USER_ID === message.member.user.id) {
-                switch (args.length) {
-                    case 2:
-                        const custom_colour = isCustomColour(args[1]);
+            if (users.USERS[index].USER_ID === interaction.member.user.id) {
+                switch (args[0].name) {
+                    case "név":
+                        const custom_colour = isCustomColour(args[0].options[0].value);
                         if (custom_colour) {
-                            setColor(custom_colour);
-                        } else {
-                            setColor(args[1].toUpperCase());
-                        }
-                        break;
-                    case 3:
-                        if (args[1] === "test") {
-                            const Embed = new Discord.MessageEmbed()
-                                .setTitle("Szín teszt")
-                                .setDescription(args[2].toUpperCase());
-                            const custom_colour = isCustomColour(args[2]);
-                            if (custom_colour) {
-                                Embed.setColor(custom_colour);
+                            if (args[0].options[1].value) {
+                                let Embed = new Discord.MessageEmbed()
+                                    .setTitle("Szín teszt")
+                                    .setDescription(args[0].options[0].value)
+                                    .setColor(custom_colour);
+                                bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                    embeds: [Embed]
+                                }}});
                             } else {
-                                Embed.setColor(args[2].toUpperCase());
+                                setColor(custom_colour);
+                                bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                    content: `A színed átállítva erre: ${args[0].options[0].value}`
+                                }}});
                             }
-                            message.channel.send(Embed);
+                        } else {
+                            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                content: "Érvénytelen szín!"
+                            }}});
                         }
                         break;
-                    case 4:
-                        setColor(rgbToHex(args[1], args[2], args[3]));
+                    case "hex":
+                        let colour = args[0].options[0].value.replace("#", "");
+                        if (colour.length === 6 && new RegExp("^[0-9a-eA-E]+$").test(colour)) {
+                            colour = parseInt(colour, 16);
+                            if (0 <= colour && colour <= 256^3 - 1) {
+                                if (args[0].options[1].value) {
+                                    let Embed = new Discord.MessageEmbed()
+                                        .setTitle("Szín teszt")
+                                        .setDescription(args[0].options[0].value)
+                                        .setColor(colour);
+                                    bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                        embeds: [Embed]
+                                    }}});
+                                } else {
+                                    setColor(colour);
+                                    bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                        content: `A színed átállítva erre: ${args[0].options[0].value}`
+                                    }}});
+                                }
+                                return;
+                            }
+                        }
+                        bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                            content: "Érvénytelen szín!"
+                        }}});
                         break;
-                    case 5:
-                        if (args[1] === "test") {
-                            const Embed = new Discord.MessageEmbed()
+                    case "rgb":
+                        for (let i = 0; i < 3; i++) {
+                            let colour = args[0].options[i].value;
+                            if (!(0 <= colour && colour <= 255)) {
+                                bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                    content: "Érvénytelen szín!"
+                                }}});
+                                return;
+                            }
+                        }
+                        if (args[0].options[3].value) {
+                            let Embed = new Discord.MessageEmbed()
                                 .setTitle("Szín teszt")
-                                .setDescription(`${args[2]}, ${args[3]}, ${args[4]}`)
-                                .setColor(rgbToHex(args[2], args[3], args[4]));
-                            message.channel.send(Embed);
+                                .setDescription(`${args[0].options[0].value}, ${args[0].options[1].value}, ${args[0].options[2].value}`)
+                                .setColor(rgbToHex(args[0].options[0].value, args[0].options[1].value, args[0].options[2].value));
+                            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                embeds: [Embed]
+                            }}});
+                        } else {
+                            setColor(rgbToHex(args[0].options[0].value, args[0].options[1].value, args[0].options[2].value));
+                            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                                content: `A színed átállítva erre: ${args[0].options[0].value}, ${args[0].options[1].value}, ${args[0].options[2].value}`
+                            }}});
                         }
                         break;
-                    default:
-                        message.channel.send("Érvénytelen paraméter!");
-                        break;
-
                 }
 
                 function setColor(color) {
-                    message.guild.roles.cache.find(r => r.id === users.USERS[index].ROLE_ID).edit({color: color});
+                    bot.guilds.cache.get(interaction.guild_id).roles.cache.find(r => r.id === users.USERS[index].ROLE_ID).edit({color: color});
                 }
 
                 function componentToHex(c) {
                     let hex = Number(c).toString(16);
-                    console.log(hex);
                     return hex.length === 1 ? "0" + hex : hex;
                 }
 

@@ -6,17 +6,19 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute: function (message, args, users, timetable) {
-        console.log(parseInt(args[1]));
-        if (args[1] > 100 || args[1] < 1 || args.length !== 2) {
-            message.channel.send("Érvénytelen paraméter!");
+    execute: function (interaction, args, users, timetable, bot) {
+        console.log(parseInt(args[0].value));
+        if (args[0].value > 100 || args[0].value < 1) {
+            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                content: "Érvénytelen paraméter!"
+            }}});
             return;
         }
 
         let id;
         let groups;
         for (user of users.USERS) {
-            if (user.USER_ID === message.author.id) {
+            if (user.USER_ID === interaction.member.user.id) {
                 id = user.USER_ID;
                 groups = user.SUBJECTS.GROUPS;
                 break;
@@ -30,7 +32,7 @@ module.exports = {
         let day;
         let dates = "";
         
-        while (args[1] > count) {
+        while (args[0].value > count) {
             day = whichDay();
             if (day) {
                 dates += `${date.getFullYear()}. ${date.getMonth()+1 < 10 ? "0" : ""}${date.getMonth()+1}. ${date.getDate() < 10 ? "0" : ""}${date.getDate()}. ${date.getDay() === 2 ? "Kedd" : "Hétfő"}\n`
@@ -39,10 +41,12 @@ module.exports = {
         }
 
         const Embed = new Discord.MessageEmbed()
-        .setTitle(`A következő ${args[1]} alkalom, mikor be kell hoznod a laptopod (${groups === 1 ? "sárgák" : "pirosak/lilák"})`)
+        .setTitle(`A következő ${args[0].value} alkalom, mikor be kell hoznod a laptopod (${groups === 1 ? "sárgák" : "pirosak/lilák"})`)
         .setDescription(dates)
         .setColor('RANDOM');
-        message.channel.send(Embed);
+        bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+            embeds: [Embed]
+        }}});
 
         function getWeekNumber(d) {
             d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));

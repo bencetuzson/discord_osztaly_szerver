@@ -6,14 +6,17 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute(message, args, setup){
+    execute(interaction, args, setup, bot){
         const path = setup.TIMETABLE_FILE_PATH;
         const splitPath = path.split("/");
-        const embed = new Discord.MessageEmbed()
+        const Embed = new Discord.MessageEmbed()
         .setTitle(`${setup.CURRENT_SCHOOLYEAR} ${setup.CURRENT_CLASS} órarend`)
         .attachFiles(path)
         .setImage(`attachment://${splitPath[splitPath.length-1]}`)
         .setColor("RANDOM");
-        message.channel.send(embed);
+        bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+            embeds: [Embed],
+            attachments: path
+        }}});
     }
 }

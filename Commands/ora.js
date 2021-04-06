@@ -7,7 +7,7 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute: function (message, args, users, timetable, type) {
+    execute: function (interaction, args, users, timetable, bot, type) {
         const now = new Date();
         let index = null;
         const week_eng_it = timetable.WEEK.ENG_IT;
@@ -169,7 +169,7 @@ module.exports = {
 
         function languageSearch() {
             for (let index = 0; index < users.USERS.length; index++) {
-                if (users.USERS[index].USER_ID === message.member.user.id) {
+                if (users.USERS[index].USER_ID === interaction.member.user.id) {
                     console.log(timetable.LANGUAGES.length);
                     for (let i = 0; i < timetable.LANGUAGES.length; i++) {
                         console.log(timetable.LANGUAGES[i].CHAR);
@@ -196,7 +196,7 @@ module.exports = {
 
         function userSearch() {
             for (let i = 0; i < users.USERS.length; i++) {
-                if (users.USERS[i].USER_ID === message.member.user.id) {
+                if (users.USERS[i].USER_ID === interaction.member.user.id) {
                     return i;
                 }
             }
@@ -244,13 +244,19 @@ module.exports = {
                 if (classroom) {
                     Embed.addField('Classroom link', `${classroom}`);
                 }
-                message.channel.send(Embed);
+                bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                    embeds: [Embed]
+                }}});
             } else {
-                message.channel.send(type === "jon" ? "Ma nincs több óra!" : "Most nincs óra!")
+                bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                    content: type === "jon" ? "Ma nincs több óra!" : "Most nincs óra!"
+                }}});
             }
 
         } else {
-            message.channel.send("Hétvégén nincs óra!")
+            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                content: "Hétvégén nincs óra!"
+            }}});
         }
     }
 }

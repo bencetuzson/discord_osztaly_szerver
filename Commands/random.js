@@ -6,7 +6,7 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute(message, args, users){
+    execute(interaction, args, users, bot){
         users = users.USERS;
         let class_members = [];
         for (let i = 0; i < users.length; i++) {
@@ -16,8 +16,10 @@ module.exports = {
         const Embed = new Discord.MessageEmbed()
         .setTitle('A random osztálytárs nem más, mint...')
         .setDescription(randomElement.NICKNAME)
-        .setColor(message.guild.roles.cache.get(randomElement.ROLE_ID).color ? message.guild.roles.cache.get(randomElement.ROLE_ID).color : 'RANDOM');
-        message.channel.send(Embed);
+        .setColor(bot.guilds.cache.get(interaction.guild_id).roles.cache.get(randomElement.ROLE_ID).color ? bot.guilds.cache.get(interaction.guild_id).roles.cache.get(randomElement.ROLE_ID).color : 'RANDOM');
+        bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+            embeds: [Embed]
+        }}});
 
     }
 }

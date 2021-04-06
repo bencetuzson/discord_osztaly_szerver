@@ -13,9 +13,10 @@ let database = require(setup.DATABASE_PATH);
 let timetable = require(setup.TIMETABLE_PATH);
 let commands = require(setup.COMMANDS_DB_PATH);
 let slash_commands = require(setup.SLASH_COMMANDS_PATH);
-const status = `${prefix}${setup.HELP_COMMAND}`;
+const status = `/${setup.HELP_COMMAND}`;
 const childProcess = require('child_process');
 const fs = require('fs');
+
 
 /*runScript(setup.TEST_PATH, function (err) {
     if (err) throw err;
@@ -37,25 +38,25 @@ for (const file of commandFiles) {
 
 let now = new Date();
 
-let meet = {channel: "", message: "", user: "", names: [], subject: "", usr_db: ""};
-let meetIndex;
-let meetMissing;
-
 console.log("testReady");
-bot.on('ready', () => {
+bot.on('ready', async () => {
     console.log(`${bot.user.tag} bot is now active (${monthToString(now.getMonth() + 1)} ${now.getDate()} ${now.getFullYear()} ${now.getHours() < 10 ? 0 : ""}${now.getHours()}:${now.getMinutes() < 10 ? 0 : ""}${now.getMinutes()}:${now.getSeconds() < 10 ? 0 : ""}${now.getSeconds()})`);
     bot.user.setPresence({status: "online", activity: {name: setup.DB_STATUS ? setup.STATUS : status, type: setup.ACTIVITY}});
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("Restarted...");
-    bot.api.applications(bot.user.id).guilds(setup.GUILD_ID).commands.post({
-        data: slash_commands
-    });
+    //console.log(await bot.api.applications(bot.user.id).guilds(setup.GUILD_ID).commands.get());
+    //await bot.api.applications(bot.user.id).guilds(setup.GUILD_ID).commands("").delete();
+    for (let i = 0; i < slash_commands.length; i++) {
+        await bot.api.applications(bot.user.id).guilds(setup.GUILD_ID).commands.post({
+            data: slash_commands[i]
+        });
+    }
 });
 console.log("testError");
 bot.on('error', error => {
     bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send(error);
 });
 
-function channelLog(err) {bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("```js\n" + err + "\n```");}
+function channelLog(err) {bot.channels.cache.get(setup.REACTION_CHANNELS.BOT.bot_info).send("```\n" + err + "\n```");}
 
 function databaseUpdate(message) {
     setSetup();
@@ -417,6 +418,74 @@ function removeReaction(channel_id, message_id, reaction, user) {bot.channels.ca
 function fetchReactions(channel_id, message_id, reaction, user) {const r = bot.channels.cache.get(channel_id).messages.cache.get(message_id); if(r) return r.reactions.cache.get(reaction).users.cache.get(user.id);}
 function reVerifyRoleAdd(channel_id, message_id, reaction, user, role, local_reaction){bot.channels.cache.get(channel_id).messages.fetch(message_id).then(message => message.reactions.cache.get(reaction).users.fetch(user.id).then(usr => {if (usr.get(user.id)) local_reaction.message.guild.members.cache.get(user.id).roles.add(role);}))}
 
+bot.ws.on('INTERACTION_CREATE', async (interaction) => {
+    const command = interaction.data.name.toLowerCase();
+    const args = interaction.data.options;
+    console.log(interaction.data.options);
+
+    switch (command) {
+        case setup.HELP_COMMAND:
+            bot.commands.get('parancsok').execute(interaction, args, users, commands, prefix, bot, database, timetable);
+            break;
+        case "random":
+            bot.commands.get('random').execute(interaction, args, users, bot);
+            break;
+        case "csapat":
+            bot.commands.get('csapat').execute(await interaction, args, database, users, bot);
+            break;
+        case "orarend":
+            bot.commands.get('orarend').execute(await interaction, args, setup, bot);
+            break;
+        case "szulinap":
+            bot.commands.get('szulinap').execute(await interaction, users, bot, args);
+            break;
+        case "orak":
+            bot.commands.get('orak').execute(await interaction, args, users, timetable, bot);
+            break;
+        case "jon":
+            bot.commands.get('ora').execute(await interaction, args, users, timetable, bot, "jon");
+            break;
+        case "most":
+            bot.commands.get('ora').execute(await interaction, args, users, timetable, bot, "most");
+            break;
+        case "szin":
+            bot.commands.get('szin').execute(await interaction, args, users, database, bot);
+            break;
+        case "szinek":
+            bot.commands.get('szinek').execute(await interaction, args, database, bot);
+            break;
+        case "dq":
+            bot.commands.get('dq').execute(await interaction, args, database, users, bot);
+            break;
+        case "nev":
+            bot.commands.get('nev').execute(interaction, args, users, bot);
+            break;
+        case "laptop":
+            bot.commands.get('laptop').execute(await interaction, args, users, timetable, bot);
+            break;
+        case "email":
+            bot.commands.get('email').execute(await interaction, args, users, bot);
+            break;
+        case "classroom":
+            bot.commands.get('link').execute(await interaction, args, users, timetable, bot, "classroom");
+            break;
+        case "meet":
+            bot.commands.get('link').execute(await interaction, args, users, timetable, bot, "meet");
+            break;
+        case "meeten":
+            bot.commands.get('meeten').execute(interaction, args, users, database, bot);
+            break;
+        case "gif":
+            bot.commands.get('gif').execute(await interaction, args, bot);
+            break;
+        default:
+            bot.api.interactions(interaction.id, interaction.token).callback.post({ data: { type: 4, data: {
+                content: "```json\n" + JSON.stringify(interaction, null, 2) + "\n```"
+            }}});
+            break;
+    }
+});
+
 console.log("testMessage");
 bot.on('message', async (message) => {
     inappropriateGuild(message.guild);
@@ -455,13 +524,6 @@ bot.on('message', async (message) => {
 
     if (!inOnBlacklist(message.author.id))
     switch (args[0].toLowerCase()) {
-        case `${requiredPrefix}szin`:
-            if (!isDM())
-            bot.commands.get('szin').execute(await message, args, users, database);
-            break;
-        case `${requiredPrefix}szinek`:
-            bot.commands.get('szinek').execute(await message, args, database);
-            break;
         case `${requiredPrefix}rainbow`:
             if (message.author.id === idByNickname("Tuzsi") && !isDM())
             bot.commands.get('rainbow').execute(await message, args, users);
@@ -469,34 +531,13 @@ bot.on('message', async (message) => {
         case `${requiredPrefix}ping`:
             bot.commands.get('ping').execute(await message, args, bot);
             break;
-        case `${requiredPrefix}random`:
-            bot.commands.get('random').execute(message, args, users);
-            break;
-        case `${requiredPrefix}csapat`:
-            bot.commands.get('csapat').execute(await message, args, database, users);
-            break;
-        case `${requiredPrefix}${setup.HELP_COMMAND}`:
-            bot.commands.get('parancsok').execute(message, args, users, commands, prefix, bot, database, timetable);
-            break;
-        case `${requiredPrefix}nev`:
-            bot.commands.get('nev').execute(message, args, users);
-            break;
         case `${requiredPrefix}rang`:
             if (!isDM() && hasAdmin()) {
                 bot.commands.get('rang').execute(await message, args, setup);
             }
             break;
-        case `${requiredPrefix}orarend`:
-            bot.commands.get('orarend').execute(await message, args, setup);
-            break;
         case `${requiredPrefix}series`:
             bot.commands.get('series').execute(await message, args, bot);
-            break;
-        case `${requiredPrefix}dq`:
-            bot.commands.get('dq').execute(await message, args, database, users);
-            break;
-        case `${requiredPrefix}email`:
-            bot.commands.get('email').execute(await message, args, users);
             break;
         case `${requiredPrefix}verify`:
             if (!isDM() && hasAdmin()) {
@@ -552,50 +593,9 @@ bot.on('message', async (message) => {
                 }
             }
             break;
-        case `${requiredPrefix}szulinap`:
-            bot.commands.get('szulinap').execute(await message, users, bot, args);
-            break;
-        case `${requiredPrefix}jon`:
-            bot.commands.get('ora').execute(await message, args, users, timetable, "jon");
-            break;
-        /*case `${requiredPrefix}jonq`:
-            bot.commands.get('jonq').execute(await message, args, users, timetable);
-            break;*/
-        case `${requiredPrefix}most`:
-            bot.commands.get('ora').execute(await message, args, users, timetable, "most");
-            break;
-        /*case `${requiredPrefix}mostq`:
-            bot.commands.get('mostq').execute(await message, args, users, timetable);
-            break;*/
         /*case `${requiredPrefix}bejonni`:
             bot.commands.get('bejonni').execute(await message, args, users, timetable);
             break;*/
-        case `${requiredPrefix}laptop`:
-            bot.commands.get('laptop').execute(await message, args, users, timetable);
-            break;
-        /*case `${requiredPrefix}laptopq`:
-            bot.commands.get('laptopq').execute(await message, args, users, timetable);
-            break;*/
-        case `${requiredPrefix}orak`:
-            bot.commands.get('orak').execute(await message, args, users, timetable);
-            break;
-        /*case `${requiredPrefix}orakq`:
-            bot.commands.get('orakq').execute(await message, args, users, timetable);
-            break;*/
-        case `${requiredPrefix}gif`:
-            bot.commands.get('gif').execute(await message, args, setup);
-            break;
-        case `${requiredPrefix}classroom`:
-            bot.commands.get('link').execute(await message, args, users, timetable, "classroom");
-            break;
-        case `${requiredPrefix}meet`:
-            bot.commands.get('link').execute(await message, args, users, timetable, "meet");
-            break;
-        case `${requiredPrefix}meeten`:
-            meetIndex = 0;
-            meetMissing = [];
-            bot.commands.get('meeten').execute(await message, args, users, timetable, database, meetIndex).then(data => meet = data);
-            break;
         case `${requiredPrefix}test`:
             if (!isDM() && hasAdmin()) {
                 message.pin();
@@ -710,28 +710,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 
     if (user.bot) return;
     if (!reaction.message.guild) return;
-
-    if (reaction.message.channel.id === meet.channel && reaction.message.id === meet.message) {
-        console.log(meetMissing);
-        if (reaction.emoji.name === "❌") meetMissing.push(meet.user);
-        console.log(meetIndex);
-        console.log(meet.names.length);
-        if (++meetIndex > meet.names.length - 1) {
-            let missing = [];
-            for (const name of meetMissing) {
-                missing.push(meet.usr_db ? name.NICKNAME : name);
-            }
-            const rgb = HSVtoRGB((1 - (missing.length / meet.names.length)) / 3, 1, 1)
-            const Embed = new Discord.MessageEmbed().setTitle(missing.length === 0 ? `Úgy tűnik, mindenki benn van${meet.subject ? ` ${meet.subject} ` : " "}meet-en` : `Hiányzók${meet.subject ? ` ${meet.subject} ` : " "}meet-en:`).setDescription(missing.join("\n")).setColor([rgb.r, rgb.g, rgb.b])
-            reaction.message.channel.messages.fetch(reaction.message.id).then(msg => msg.edit(Embed));
-            console.log(missing);
-            console.log(255 * (missing.length / meet.names.length));
-            console.log(255 - (255 * (missing.length / meet.names.length)));
-        } else {
-            bot.commands.get('meeten').execute(await reaction.message, reaction.message.content.split(' '), users, timetable, database, meetIndex, meet.names, meet.usr_db).then(data => meet = data);
-        }
-        reaction.users.remove(user.id);
-    }
 
     switch (reaction.emoji.name) {
         case setup.REACTION_ROLES.BOT.REACTION :

@@ -6,7 +6,7 @@ module.exports = {
     admin : false,
     roles : [],
     guilds : [],
-    execute: function (message, args, users, timetable) {
+    execute: function (interaction, args, users, timetable, bot) {
         const now = new Date();
         let time;
         let temp = new Date();
@@ -20,74 +20,68 @@ module.exports = {
         const Embed = new Discord.MessageEmbed()
             .setFooter("Ha több óra is van párhuhamosan, akkor az aláhúzott lesz a tiéd.\nEzért nem is biztos, hogy ami másnak ki lett írva, az neked is jó!")
             .setColor('RANDOM');
-        switch (args.length) {
-            case 1:
+        console.log(args[0].name);
+        switch (args[0].name) {
+            case "ma":
                 time = now;
                 Embed.setTitle(`**Órák ma:**`);
                 break;
-            case 2:
-                if (args[1] === "hn") {
-                    time = now;
-                    time.setDate(time.getDate() + 1);
-                    Embed.setTitle(`**Órák holnap:**`);
-                } else if (!isNaN(args[1])) {
-                    time = now;
-                    time.setDate(time.getDate() + Number(args[1]));
-                    Embed.setTitle(`**Órák ${Number(args[1])} nap múlva:**`);
+            case "hét":
+                week_day = weekDay(args[0].options[0].value);
+                console.log(week_day);
+                time = now;
+                if (args[0].options[1]) {
+                    week_add = args[0].options[1].value;
+                    time.setDate(time.getDate() + week_day + week_add * 7);
+                    Embed.setTitle(`**Órák ${week_add} hét múlva ${onDay(time.getDay())}:**`);
                 } else {
-                    week_day = weekDay(args[1]);
-                    if (week_day !== null) {
-                        time = now;
-                        time.setDate(time.getDate() + week_day);
-                        Embed.setTitle(`**Órák ezen a héten ${onDay(time.getDay())}:**`);
-                    } else {
-                        message.channel.send("Érvénytelen paraméter!");
-                        return;
+                    time.setDate(time.getDate() + week_day);
+                    Embed.setTitle(`**Órák ezen a héten ${onDay(time.getDay())}:**`);
+                }
+                break;
+            case "múlva":
+                if (args[0].options[1]) {
+                    week_add = args[0].options[1].value;
+                    time = now;
+                    time.setDate(time.getDate() + args[0].options[0].value + week_add * 7);
+                    Embed.setTitle(`**Órák ${week_add} hét múlva ${onDay(time.getDay())}:**`);
+                } else {
+                    switch (args[0].options[0].value) {
+                        case 1:
+                            time = now;
+                            time.setDate(time.getDate() + 1);
+                            Embed.setTitle(`**Órák holnap, ${onDay(time.getDay())}:**`);
+                            break;
+                        case 2:
+                            time = now;
+                            time.setDate(time.getDate() + 2);
+                            Embed.setTitle(`**Órák holnapután, ${onDay(time.getDay())}:**`);
+                            break;
+                        default:
+                            time = now;
+                            time.setDate(time.getDate() + args[0].options[0].value);
+                            Embed.setTitle(`**Órák ${args[0].options[0].value} nap múlva, ${onDay(time.getDay())}:**`);
+                            break;
                     }
                 }
                 break;
-            case 3:
-                if (args[1] === "jh") {
-                    week_add = 1;
-                    week_day = weekDay(args[2]);
-                    if (week_day !== null) {
-                        time = now;
-                        time.setDate(time.getDate() + week_day + week_add * 7);
-                        Embed.setTitle(`**Órák jövő hét ${onDay(time.getDay())}:**`);
-                    } else {
-                        message.channel.send("Érvénytelen paraméter!");
-                        return;
-                    }
-                } else if (!isNaN(args[1])) {
-                    week_add = args[1];
-                    week_day = weekDay(args[2])
-                    if (week_day !== null) {
-                        time = now;
-                        time.setDate(time.getDate() + week_day + week_add * 7);
-                        Embed.setTitle(`**Órák ${week_add} hét múlva ${onDay(time.getDay())}:**`);
-                    } else {
-                        message.channel.send("Érvénytelen paraméter!");
-                        return;
-                    }
-                } else {
-                    message.channel.send("Érvénytelen paraméter!");
-                    return;
-                }
-                break;
-            case 4:
-                time = new Date(args[1], args[2] - 1, args[3]);
-                Embed.setTitle(`**Órák ekkor: ${args[1]}. ${args[2] < 10 ? "0" : ""}${args[2]}. ${args[3] < 10 ? "0" : ""}${args[3]}. ${day(time.getDay())}:**`);
+            case "dátum":
+                time = new Date(args[0].options[0].value, args[0].options[1].value - 1, args[0].options[2].value);
+                Embed.setTitle(`**Órák ekkor: ${args[0].options[0].value}. ${args[0].options[1].value < 10 ? "0" : ""}${args[0].options[1].value}. ${args[0].options[2].value < 10 ? "0" : ""}${args[0].options[2].value}. ${day(time.getDay())}:**`);
                 console.log(time);
                 break;
         }
-
         if (time.getDay() === 0 || time.getDay() === 6) {
-            message.channel.send("Hétvégén nincs óra!");
+            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                content: "Hétvégén nincs óra!"
+            }}});
             return;
         }
         console.log(time);
         lesson(time.getDay() - 1)
-        message.channel.send(Embed)
+        bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+            embeds: [Embed]
+        }}});
 
         function lesson(d) {
             for (index = 0; index < timetable.TIMETABLE.length; index++) {
@@ -97,19 +91,16 @@ module.exports = {
 
         function weekDay (d) {
             switch (d) {
-                case "h":
-                    return now.getDay() - 7;
-                case "k":
-                    return now.getDay() + 1 - 7;
-                case "sz":
-                    return now.getDay() + 2 - 7;
-                case "cs":
-                    return now.getDay() + 3 - 7;
-                case "p":
-                    return now.getDay() + 4 - 7;
-                default:
-                    message.channel.send("Érvénytelen paraméter!");
-                    return null;
+                case "hétfő":
+                    return 1 - now.getDay();
+                case "kedd":
+                    return 2 - now.getDay();
+                case "szerda":
+                    return 3 - now.getDay();
+                case "csütörtök":
+                    return 4 - now.getDay();
+                case "péntek":
+                    return 5 - now.getDay();
             }
         }
 
@@ -215,7 +206,7 @@ module.exports = {
 
         function languageSearch() {
             for (let index = 0; index < users.USERS.length; index++) {
-                if (users.USERS[index].USER_ID === message.member.user.id) {
+                if (users.USERS[index].USER_ID === interaction.member.user.id) {
                     console.log(timetable.LANGUAGES.length);
                     for (let i = 0; i < timetable.LANGUAGES.length; i++) {
                         console.log(timetable.LANGUAGES[i].CHAR);
@@ -242,7 +233,7 @@ module.exports = {
 
         function userSearch() {
             for (let i = 0; i < users.USERS.length; i++) {
-                if (users.USERS[i].USER_ID === message.member.user.id) {
+                if (users.USERS[i].USER_ID === interaction.member.user.id) {
                     return i;
                 }
             }

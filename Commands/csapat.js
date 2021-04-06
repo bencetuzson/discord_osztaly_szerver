@@ -1,54 +1,52 @@
 const Discord = require('discord.js');
-let class_members;
-let classLength;
-let number;
-let tag = false;
-let rang = false;
+
 module.exports = {
     name: 'csapat',
     description: 'makes teams',
     admin : false,
     roles : [],
     guilds : [],
-    execute(message, args, database, users) {
-        switch (args[1]) {
-            case "tesi":
-                switch (args[2]) {
-                    case "f":
-                        class_members = [...database.PE.BOYS];
-                        number = args[3];
-                        break;
-                    case "l":
-                        class_members = [...database.PE.GIRLS];
-                        number = args[3];
-                        break;
-                    default:
-                        message.channel.send("Érvénytelen paraméter!");
-                        return;
-                }
-                break;
-            default:
-                users = users.USERS;
-                class_members = [];
-                for (let i = 0; i < users.length; i++) {
-                    if (users[i].REAL) class_members.push(users[i]);
-                }
-                switch (args[2]) {
-                    case "tag":
-                        tag = true;
-                        break;
-                    case "rang":
-                        rang = true;
-                        break;
-                    case undefined:
-                        break;
-                    default:
-                        message.channel.send("Érvénytelen paraméter!");
-                        return;
-                }
-                number = args[1];
-                break;
+    execute(interaction, args, database, users, bot) {
+        let classLength;
+        let names = [];
+        let number = args[0].value;
+        users = users.USERS;
+        let class_members = [];
+
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].REAL) class_members.push(users[i]);
         }
+        if (args[1]) {
+            switch (args[1].value) {
+                case "sárgák":
+                    for (let i = 0; i < class_members.length; ++i) {
+                        if(class_members[i].SUBJECTS.GROUPS === 1){names.push(class_members[i]);}
+                    }
+                    break;
+                case "lilák":
+                    for (let i = 0; i < class_members.length; ++i) {
+                        if(class_members[i].SUBJECTS.GROUPS === 2){names.push(class_members[i]);}
+                    }
+                    break;
+                case "német":
+                    for (let i = 0; i < class_members.length; ++i) {
+                        if(class_members[i].SUBJECTS.LANGUAGE === "G"){names.push(class_members[i]);}
+                    }
+                    break;
+                case "francia":
+                    for (let i = 0; i < class_members.length; ++i) {
+                        if(class_members[i].SUBJECTS.LANGUAGE === "F"){names.push(class_members[i]);}
+                    }
+                    break;
+                case "tesi fiúk":
+                    names = database.PE.BOYS;
+                    break;
+                case "tesi lányok":
+                    names = database.PE.GIRLS;
+            }
+            class_members = names;
+        }
+        console.log(class_members);
         classLength = class_members.length;
         if(number > 0 && number <= classLength){
 
@@ -70,12 +68,12 @@ module.exports = {
                     }*/
                     //class_members.splice(class_members.indexOf(index), 1 );
                     class_members.splice(randomIndex, 1);
-                    teams[index2].push(args[1] === "tesi" ?  randomElement : (tag ? (message.guild.members.cache.get(randomElement.USER_ID) ? message.guild.members.cache.get(randomElement.USER_ID) : randomElement.NICKNAME) : (rang ? (message.guild.roles.cache.get(randomElement.ROLE_ID) ? message.guild.roles.cache.get(randomElement.ROLE_ID) : randomElement.NICKNAME) : randomElement.NICKNAME)));
+                    teams[index2].push(args[1] && (args[1].value === "tesi fiúk" || args[1].value === "tesi lányok") ?  randomElement : randomElement.NICKNAME);
                 }
             }
             let used = Math.floor(cycle/number)*number;
             for (let index5 = 0; index5 < cycle-used; index5++) {
-                teams[index5].push(args[1] === "tesi" ?  class_members[index5] : (tag ? (message.guild.members.cache.get(class_members[index5].USER_ID) ? message.guild.members.cache.get(class_members[index5].USER_ID) : class_members[index5].NICKNAME) : (rang ? (message.guild.roles.cache.get(randomElement.ROLE_ID) ? message.guild.roles.cache.get(randomElement.ROLE_ID) : class_members[index5].NICKNAME) : class_members[index5].NICKNAME)));
+                teams[index5].push(args[1] && (args[1] === "tesi fiúk" || args[1].value === "tesi lányok") ?  class_members[index5] : class_members[index5].NICKNAME);
 
             }
             //teams[Array] = teams[Array].join(", ");
@@ -86,9 +84,13 @@ module.exports = {
             .setTitle('A csapatok:')
             .setDescription(`${teams.join("\n\n")}`)
             .setColor("RANDOM");
-            message.channel.send(Embed);
+            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                embeds: [Embed]
+            }}});
         } else {
-            message.channel.send("Érvénytelen paraméter!");
+            bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
+                content: "Érvénytelen paraméter!"
+            }}});
         }
     }
 }
