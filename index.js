@@ -608,16 +608,35 @@ bot.on('message', async (message) => {
             }
             break;
     }
+
     if (message.author !== bot.user/* && message.author.id !== idByNickname("Tuzsi")/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
         let msg;
+        let splitWord_exc;
+        let splitMessage = message.content.replace(/[!-?{-¿\[-`÷ʹ-͢]/g, "").split(" ");
+        let ind;
+        let ind2;
         database.INAPPROPRIATE.forEach(function (word) {
             if (noPrefix(message, word)) {
                 split = message.toString().toLowerCase().split(" ");
                 split.forEach(function (msg) {
                     if (msg.includes(word) && !replyTemp.includes(msg)) {
+                        database.INAPPROPRIATE_EXCEPTION.forEach(function (word_exc) {
+                            if (word_exc.includes(word)) {
+                                splitWord_exc = word_exc.split(" ");
+                                ind = splitWord_exc.indexOf(word);
+                                ind2 = splitMessage.indexOf(word);
+                                if (splitMessage.slice(ind2 - ind, ind2 - ind + splitWord_exc.length).join(" ") === word_exc) {
+                                    splitMessage.splice(ind2 - ind, splitWord_exc.length);
+                                }
+                            }
+                        })
+                    }
+                });
+                splitMessage.forEach(function (msg) {
+                    if (msg.includes(word) && !replyTemp.includes(msg)) {
                         replyTemp.push(msg);
                     }
-                })
+                });
             }
         });
         replyTemp.forEach(msg => beSent += (beSent === "" ? "" : " ") + msg);
