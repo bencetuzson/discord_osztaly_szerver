@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'test',
+    name: 'meeten',
     description: 'changes the author\'s personal role\'s colour',
     admin : false,
     roles : [],
@@ -81,31 +81,39 @@ module.exports = {
 
         const listener = (reaction, user) => {
             if (!reaction.me && reaction.message.id === messageID && (reaction.emoji.name === "✅" || reaction.emoji.name === "❌")) {
-                if (usrIndex < userList.length - 1) {
-                    switch (reaction.emoji.name) {
-                        case "✅":
-                            ++usrIndex;
+                switch (reaction.emoji.name) {
+                    case "✅":
+                        ++usrIndex;
+                        if (usrIndex === userList.length) {
+                            sendMissing(reaction);
+                        } else {
                             msgEdit(nextUsrEmbed());
-                            break;
-                        case "❌":
-                            missing.push(usr_db ? userList[usrIndex++].NICKNAME : userList[usrIndex++]);
+                        }
+                        break;
+                    case "❌":
+                        missing.push(usr_db ? userList[usrIndex++].NICKNAME : userList[usrIndex++]);
+                        if (usrIndex === userList.length) {
+                            sendMissing(reaction);
+                        } else {
                             msgEdit(nextUsrEmbed());
-                            break;
-                    }
-                } else {
-                    const rgb = HSVtoRGB((1 - (missing.length / userList.length)) / 3, 1, 1)
-                    const Embed = new Discord.MessageEmbed()
-                        .setTitle(missing.length === 0 ? `Úgy tűnik, mindenki benn van${args ? ` ${args[0].value} ` : " "}meet-en` : `Hiányzók${args ? ` ${args[0].value} ` : " "}meet-en:`)
-                        .setDescription(missing.join("\n"))
-                        .setColor([rgb.r, rgb.g, rgb.b])
-                    msgEdit(Embed).then(() => {reaction.message.reactions.cache.forEach(r => {r.remove()})});
-                    bot.removeListener('messageReactionAdd', listener);
+                        }
+                        break;
                 }
                 reaction.users.remove(user.id);
             }
         }
 
         bot.on('messageReactionAdd', listener);
+
+        function sendMissing (reaction) {
+            const rgb = HSVtoRGB((1 - (missing.length / userList.length)) / 3, 1, 1)
+            const Embed = new Discord.MessageEmbed()
+                .setTitle(missing.length === 0 ? `Úgy tűnik, mindenki benn van${args ? ` ${args[0].value} ` : " "}meet-en` : `Hiányzók${args ? ` ${args[0].value} ` : " "}meet-en:`)
+                .setDescription(missing.join("\n"))
+                .setColor([rgb.r, rgb.g, rgb.b])
+            msgEdit(Embed).then(() => {reaction.message.reactions.cache.forEach(r => {r.remove()})});
+            bot.removeListener('messageReactionAdd', listener);
+        }
 
         function nextUsrEmbed () {
             return Embed = new Discord.MessageEmbed()
