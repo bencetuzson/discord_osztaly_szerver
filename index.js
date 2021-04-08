@@ -478,6 +478,9 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
         case "gif":
             bot.commands.get('gif').execute(await interaction, args, bot);
             break;
+        case "jegyek":
+            bot.commands.get('jegyek').execute(await interaction, args, bot);
+            break;
         default:
             bot.api.interactions(interaction.id, interaction.token).callback.post({ data: { type: 4, data: {
                 content: "```json\n" + JSON.stringify(interaction, null, 2) + "\n```"
