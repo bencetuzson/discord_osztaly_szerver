@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: 'meeten',
-    description: 'changes the author\'s personal role\'s colour',
+    description: 'checks if everyone is in a meeting',
     admin : false,
     roles : [],
     guilds : [],
