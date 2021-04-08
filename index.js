@@ -414,6 +414,8 @@ function classLength() {
     return names.length;
 }
 
+function isOnBlacklist(user_id) {return setup.BLACKLIST.includes(nicknameById(user_id));}
+
 function removeReaction(channel_id, message_id, reaction, user) {bot.channels.cache.get(channel_id).messages.fetch(message_id).then(msg => msg.reactions.cache.get(reaction).users.remove(user.id))}
 function fetchReactions(channel_id, message_id, reaction, user) {const r = bot.channels.cache.get(channel_id).messages.cache.get(message_id); if(r) return r.reactions.cache.get(reaction).users.cache.get(user.id);}
 function reVerifyRoleAdd(channel_id, message_id, reaction, user, role, local_reaction){bot.channels.cache.get(channel_id).messages.fetch(message_id).then(message => message.reactions.cache.get(reaction).users.fetch(user.id).then(usr => {if (usr.get(user.id)) local_reaction.message.guild.members.cache.get(user.id).roles.add(role);}))}
@@ -423,6 +425,7 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
     const args = interaction.data.options;
     console.log(interaction.data.options);
 
+    if (!isOnBlacklist(interaction.member.user.id))
     switch (command) {
         case setup.HELP_COMMAND:
             bot.commands.get('parancsok').execute(interaction, args, users, commands, prefix, bot, database, timetable);
@@ -481,11 +484,11 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
         case "jegyek":
             bot.commands.get('jegyek').execute(await interaction, args, bot);
             break;
-        default:
+        /*default:
             bot.api.interactions(interaction.id, interaction.token).callback.post({ data: { type: 4, data: {
                 content: "```json\n" + JSON.stringify(interaction, null, 2) + "\n```"
             }}});
-            break;
+            break;*/
     }
 });
 
@@ -496,7 +499,6 @@ bot.on('message', async (message) => {
 
     function hasAdmin() {return message.member.hasPermission("ADMINISTRATOR");}
     function isDM() {return message.guild === null;}
-    function inOnBlacklist(user) {return setup.BLACKLIST.includes(nicknameById(user));}
 
     beSent = "";
     replyTemp = [];
@@ -525,7 +527,7 @@ bot.on('message', async (message) => {
         }, 2000);
     }
 
-    if (!inOnBlacklist(message.author.id))
+    if (!isOnBlacklist(message.author.id))
     switch (args[0].toLowerCase()) {
         case `${requiredPrefix}rainbow`:
             if (message.author.id === idByNickname("Tuzsi") && !isDM())
