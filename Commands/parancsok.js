@@ -131,25 +131,25 @@ module.exports = {
                     valueReplace(100, wd[random(wd.length)]);
                     valueReplace(101, wd[random(wd.length)]);
                     break;
-                case "csapat [darab] (típus)":
+                case "csapat [darab] (csoport)":
                     valueReplace(15, Math.floor(Math.random() * 12) + 1);
                     valueReplace(16, Math.floor(Math.random() * 12) + 1);
                     valueReplace(1, team_opts[random(team_opts.length)]);
                     break;
-                case "szin hex [hex] (test)":
+                case "szin hex [hex] (teszt)":
                     valueReplace(1, random(0xffffff+1).toString(16));
                     valueReplace(2, random(0xffffff+1).toString(16));
                     valueReplace(3, Boolean(random(2)) ? "True" : "False");
                     valueReplace(4, Boolean(random(2)) ? "True" : "False");
                     break;
-                case "szin rgb [R] [G] [B] (test)":
+                case "szin rgb [R] [G] [B] (teszt)":
                     valueReplace(1, random(256));
                     valueReplace(2, random(256));
                     valueReplace(3, random(256));
                     valueReplace(4, Boolean(random(2)) ? "True" : "False");
 
                     break;
-                case "szin név [név] (test)":
+                case "szin név [név] (teszt)":
                     const discord_colours = ["DEFAULT", "WHITE", "AQUA", "GREEN", "BLUE", "YELLOW", "PURPLE", "LUMINOUS_VIVID_PINK", "GOLD", "ORANGE", "RED", "GREY", "DARKER_GREY", "NAVY", "DARK_AQUA", "DARK_GREEN", "DARK_BLUE", "DARK_PURPLE", "DARK_VIVID_PINK", "DARK_GOLD", "DARK_ORANGE", "DARK_RED", "DARK_GREY", "LIGHT_GREY", "DARK_NAVY", "BLURPLE", "GREYPLE", "DARK_BUT_NOT_BLACK", "NOT_QUITE_BLACK", "RANDOM"];
                     let colours = [];
                     for (const c of database.COLOURS) {
