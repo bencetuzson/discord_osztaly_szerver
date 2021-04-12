@@ -15,6 +15,7 @@ module.exports = {
         let week_add = 0;
         const week_eng_it = timetable.WEEK.ENG_IT;
         const week_art = timetable.WEEK.ART;
+        const datePrint = () => { return `${time.getFullYear()}. ${time.getMonth() < 10 ? "0" : ""}${time.getMonth()}. ${time.getDate() < 10 ? "0" : ""}${time.getDate()}.`}
         temp.setHours(23);
         temp.setMinutes(59);
         const Embed = new Discord.MessageEmbed()
@@ -24,7 +25,7 @@ module.exports = {
         switch (args[0].name) {
             case "ma":
                 time = now;
-                Embed.setTitle(`**Órák ma:**`);
+                Embed.setTitle(`**Órák ma (${datePrint()} ${day(time.getDay())}):**`);
                 break;
             case "hét":
                 week_day = weekDay(args[0].options[0].value);
@@ -33,41 +34,85 @@ module.exports = {
                 if (args[0].options[1]) {
                     week_add = args[0].options[1].value;
                     time.setDate(time.getDate() + week_day + week_add * 7);
-                    Embed.setTitle(`**Órák ${week_add} hét múlva ${onDay(time.getDay())}:**`);
+                    Embed.setTitle(`**Órák ${week_add === 0 ? "ezen a héten" : (Math.abs(week_add) === 1 ? (week_add === 1 ? "jövő hét" : "múlt hét") : (`${Math.abs(week_add)} ${week_add > 1 ? "hét múlva" : "héttel ezelőtt"}`))} ${onDay(time.getDay())} (${datePrint()}):**`);
                 } else {
                     time.setDate(time.getDate() + week_day);
-                    Embed.setTitle(`**Órák ezen a héten ${onDay(time.getDay())}:**`);
+                    Embed.setTitle(`**Órák ezen a héten ${onDay(time.getDay())} (${datePrint()}):**`);
                 }
                 break;
             case "múlva":
-                if (args[0].options[1]) {
-                    week_add = args[0].options[1].value;
+                if (args[0].options[1] && args[0].options[0].value !== 0) {
+                    week_add = args[0].options[1].value + Math.floor(args[0].options[0].value / 7);
                     time = now;
-                    time.setDate(time.getDate() + args[0].options[0].value + week_add * 7);
-                    Embed.setTitle(`**Órák ${week_add} hét múlva ${onDay(time.getDay())}:**`);
+                    time.setDate(time.getDate() + args[0].options[0].value + args[0].options[1].value * 7);
+                    Embed.setTitle(`**Órák ${week_add === 0 ? "ezen a héten" : (Math.abs(week_add) === 1 ? (week_add === 1 ? "jövő hét" : "múlt hét") : (`${Math.abs(week_add)} ${week_add > 1 ? "hét múlva" : "héttel ezelőtt"}`))} ${onDay(time.getDay())} (${datePrint()}):**`);
                 } else {
                     switch (args[0].options[0].value) {
+                        case -2:
+                            time = now;
+                            time.setDate(time.getDate() - 2);
+                            Embed.setTitle(`**Órák tegnapelőtt (${datePrint()} ${day(time.getDay())}):**`);
+                            break;
+                        case -1:
+                            time = now;
+                            time.setDate(time.getDate() - 1);
+                            Embed.setTitle(`**Órák tegnap (${datePrint()} ${day(time.getDay())}):**`);
+                            break;
+                        case 0:
+                            time = now;
+                            Embed.setTitle(`**Órák ma (${datePrint()} ${day(time.getDay())}):**`);
+                            break;
                         case 1:
                             time = now;
                             time.setDate(time.getDate() + 1);
-                            Embed.setTitle(`**Órák holnap, ${onDay(time.getDay())}:**`);
+                            Embed.setTitle(`**Órák holnap (${datePrint()} ${day(time.getDay())}):**`);
                             break;
                         case 2:
                             time = now;
                             time.setDate(time.getDate() + 2);
-                            Embed.setTitle(`**Órák holnapután, ${onDay(time.getDay())}:**`);
+                            Embed.setTitle(`**Órák holnapután (${datePrint()} ${day(time.getDay())}):**`);
                             break;
                         default:
-                            time = now;
-                            time.setDate(time.getDate() + args[0].options[0].value);
-                            Embed.setTitle(`**Órák ${args[0].options[0].value} nap múlva, ${onDay(time.getDay())}:**`);
+                            if (Math.abs(args[0].options[0].value) >= 7) {
+                                time = now;
+                                time.setDate(time.getDate() + args[0].options[0].value);
+                                Embed.setTitle(`**Órák ${Math.floor(args[0].options[0].value / 7) === 0 ? "ezen a héten" : (Math.abs(Math.floor(args[0].options[0].value / 7)) === 1 ? (Math.floor(args[0].options[0].value / 7) === 1 ? "jövő hét" : "múlt hét") : (`${Math.abs(Math.floor(args[0].options[0].value / 7))} ${Math.floor(args[0].options[0].value / 7) > 1 ? "hét múlva" : "héttel ezelőtt"}`))} ${onDay(time.getDay())} (${datePrint()}):**`);
+                            } else {
+                                time = now;
+                                time.setDate(time.getDate() + args[0].options[0].value);
+                                Embed.setTitle(`**Órák ${Math.abs(args[0].options[0].value)} ${args[0].options[0].value > 0 ? "nap múlva" : "nappal ezelőtt"}, ${datePrint()}:**`);
+                            }
                             break;
                     }
                 }
                 break;
             case "dátum":
                 time = new Date(args[0].options[0].value, args[0].options[1].value - 1, args[0].options[2].value);
-                Embed.setTitle(`**Órák ekkor: ${args[0].options[0].value}. ${args[0].options[1].value < 10 ? "0" : ""}${args[0].options[1].value}. ${args[0].options[2].value < 10 ? "0" : ""}${args[0].options[2].value}. ${day(time.getDay())}:**`);
+                console.log(Number(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)))
+                console.log(Number(time))
+                console.log(Number(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)) === Number(time))
+                const diff = (n) => { return Number(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + n)) };
+                switch (Number(time)) {
+                    case diff(-2):
+                        Embed.setTitle(`**Órák tegnapelőtt (${datePrint()} ${day(time.getDay())}):**`);
+                        break;
+                    case diff(-1):
+                        Embed.setTitle(`**Órák tegnap (${datePrint()} ${day(time.getDay())}):**`);
+                        break;
+                    case diff(0):
+                        Embed.setTitle(`**Órák ma (${datePrint()} ${day(time.getDay())}):**`);
+                        break;
+                    case diff(1):
+                        Embed.setTitle(`**Órák holnap (${datePrint()} ${day(time.getDay())}):**`);
+                        break;
+                    case diff(2):
+                        Embed.setTitle(`**Órák holnapután (${datePrint()} ${day(time.getDay())}):**`);
+                        break;
+                    default:
+                        Embed.setTitle(`**Órák ekkor: ${args[0].options[0].value}. ${args[0].options[1].value < 10 ? "0" : ""}${args[0].options[1].value}. ${args[0].options[2].value < 10 ? "0" : ""}${args[0].options[2].value}. ${day(time.getDay())}:**`);
+                        break;
+
+                }
                 console.log(time);
                 break;
         }
