@@ -57,7 +57,7 @@ module.exports = {
 
         function whichDay() {
             if (getWeekNumber(date) % 2 === week) {
-                if (date.getDay() === 2) {
+                if (date.getDay() === 1) {
                     if (groups === 1) {
                         count++
                         return date;
@@ -69,7 +69,7 @@ module.exports = {
                     }
                 }
             } else {
-                if (date.getDay() === 1) {
+                if (date.getDay() === 2) {
                     if (groups === 1) {
                         count++
                         return date;
