@@ -13,6 +13,8 @@ let database = require(setup.DATABASE_PATH);
 let timetable = require(setup.TIMETABLE_PATH);
 let commands = require(setup.COMMANDS_DB_PATH);
 let slash_commands = require(setup.SLASH_COMMANDS_PATH);
+//let googleapi = require(setup.GOOGLEAPI_PATH);
+//let googlecredentials = require(setup.GOOGLECREDENTIALS_PATH);
 const status = `/${setup.HELP_COMMAND}`;
 const childProcess = require('child_process');
 const fs = require('fs');
@@ -433,8 +435,8 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
         case "random":
             bot.commands.get('random').execute(interaction, args, users, bot);
             break;
-        case "csapat":
-            bot.commands.get('csapat').execute(await interaction, args, database, users, bot);
+        case "csapat": case "parok":
+            bot.commands.get('csapat').execute(await interaction, args, database, users, bot, command);
             break;
         case "orarend":
             bot.commands.get('orarend').execute(await interaction, args, setup, bot);
@@ -445,11 +447,8 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
         case "orak":
             bot.commands.get('orak').execute(await interaction, args, users, timetable, bot);
             break;
-        case "jon":
-            bot.commands.get('ora').execute(await interaction, args, users, timetable, bot, "jon");
-            break;
-        case "most":
-            bot.commands.get('ora').execute(await interaction, args, users, timetable, bot, "most");
+        case "jon": case "most":
+            bot.commands.get('ora').execute(await interaction, args, users, timetable, bot, command);
             break;
         case "szin":
             bot.commands.get('szin').execute(await interaction, args, users, database, bot);
@@ -469,11 +468,8 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
         case "email":
             bot.commands.get('email').execute(await interaction, args, users, bot);
             break;
-        case "classroom":
-            bot.commands.get('link').execute(await interaction, args, users, timetable, bot, "classroom");
-            break;
-        case "meet":
-            bot.commands.get('link').execute(await interaction, args, users, timetable, bot, "meet");
+        case "classroom": case "meet":
+            bot.commands.get('link').execute(await interaction, args, users, timetable, bot, command);
             break;
         case "meeten":
             bot.commands.get('meeten').execute(interaction, args, users, database, bot);
@@ -483,6 +479,12 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
             break;
         case "jegyek":
             bot.commands.get('jegyek').execute(await interaction, args, bot);
+            break;
+        case "szobak":
+            bot.commands.get('szobak').execute(await interaction, args, setup, /*googleapi, googlecredentials,*/ bot);
+            break;
+        case "update":
+            bot.commands.get('update').execute(await interaction, args, setup, slash_commands, bot);
             break;
         /*default:
             bot.api.interactions(interaction.id, interaction.token).callback.post({ data: { type: 4, data: {
