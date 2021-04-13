@@ -135,17 +135,18 @@ module.exports = {
         }
 
         function weekDay (d) {
+            const day = now.getDay() === 0 ? 7 : now.getDay();
             switch (d) {
                 case "hétfő":
-                    return 1 - now.getDay();
+                    return 1 - day;
                 case "kedd":
-                    return 2 - now.getDay();
+                    return 2 - day;
                 case "szerda":
-                    return 3 - now.getDay();
+                    return 3 - day;
                 case "csütörtök":
-                    return 4 - now.getDay();
+                    return 4 - day;
                 case "péntek":
-                    return 5 - now.getDay();
+                    return 5 - day;
             }
         }
 
