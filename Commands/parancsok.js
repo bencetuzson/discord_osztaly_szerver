@@ -187,7 +187,7 @@ module.exports = {
                 case "meet új (user)": case "jon (user)": case "most (user)":
                     valueReplace(1, random(6));
                     break;
-                case "meeten (csoport)": case "parok (csoport)":
+                case "meeten (csoport)": case "parok (csoport)": case "sorrend (csoport)":
                     valueReplace(1, team_opts[random(team_opts.length)])
                     break;
 
