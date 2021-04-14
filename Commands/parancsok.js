@@ -173,11 +173,16 @@ module.exports = {
                     }
                     valueReplace(1, name);
                     break;
-                case "classroom [tantárgy]": case "meet [tantárgy]":
+                case "classroom tantárgy [tantárgy]": case "meet tantárgy [tantárgy]":
                     rand = subjects[random(subjects.length)];
                     valueReplace(1, rand);
                     break;
-                case "meeten (csoport)":
+                case "classroom teendő [típus]":
+                    const types = ["Kiosztva", "Hiányzik", "Kész"]
+                    rand = types[random(types.length)];
+                    valueReplace(1, rand);
+                    break;
+                case "meeten (csoport)": case "parok (csoport)":
                     rand = team_opts[random(team_opts.length)];
                     valueReplace(1, rand)
                     break;
