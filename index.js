@@ -435,7 +435,7 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
         case "random":
             bot.commands.get('random').execute(interaction, args, users, bot);
             break;
-        case "csapat": case "parok":
+        case "csapat": case "parok": case "sorrend":
             bot.commands.get('csapat').execute(await interaction, args, database, users, bot, command);
             break;
         case "orarend":
