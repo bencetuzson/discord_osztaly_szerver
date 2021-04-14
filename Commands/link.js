@@ -9,22 +9,26 @@ module.exports = {
     guilds : [],
     execute: function (interaction, args, users, timetable, bot, command) {
         let link;
+        let user;
+        console.log(args[0].name);
         switch (args[0].name) {
             case "tantárgy":
+                console.log("test")
                 let subject;
                 let db;
                 const subjecr_arr = args[0].options[0].value.split(" ");
                 switch (command) {
                     case "classroom":
                         db = timetable.CLASSROOM;
-                        command = "Classroom";
+                        user = args[0].options[1] ? `/u/${args[0].options[1].value}/c/` : "/c/";
                         break;
                     case "meet":
                         db = timetable.MEET;
-                        command = "Meet";
+                        user = args[0].options[1] ? `?authuser=${args[0].options[1].value}` : "";
                         break;
                     default:return;
                 }
+                console.log("test2")
                 Object.keys(db).reduce((acc, key) => {
                     acc[key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")] = db[key];
                     if (key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === subjecr_arr[0].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) {
@@ -33,6 +37,7 @@ module.exports = {
                     }
                     return acc;
                 });
+                console.log("test3")
                 if (typeof link === 'object') {
                     switch (subjecr_arr[subjecr_arr.length - 1]) {
                         case "fiúk":
@@ -57,8 +62,20 @@ module.exports = {
                             break;
                     }
                 }
+                console.log("test4")
+                console.log(command);
+                switch (command) {
+                    case "classroom":
+                        link = link.replace("/c/", user)
+                        break;
+                    case "meet":
+                        link = `${link}${user}`
+                        break;
+                    default:return;
+                }
+                console.log("test5")
                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
-                    content: `**${subject} ${command} linkje:** ${link}`
+                    content: `**${subject} ${command.charAt(0).toUpperCase() + command.slice(1)} linkje:** ${link}`
                 }}});
                 break;
             default:
@@ -66,15 +83,16 @@ module.exports = {
                     case "classroom":
                         switch (args[0].name) {
                             case "teendő":
+                                user = args[0].options[1] ? `/u/${args[0].options[1].value}/` : "/";
                                 switch (args[0].options[0].value) {
                                     case "Kiosztva":
-                                        link = "https://classroom.google.com/a/not-turned-in/all";
+                                        link = `https://classroom.google.com${user}a/not-turned-in/all`;
                                         break;
                                     case "Hiányzik":
-                                        link = "https://classroom.google.com/a/missing/all";
+                                        link = `https://classroom.google.com${user}a/missing/all`;
                                         break;
                                     case "Kész":
-                                        link = "https://classroom.google.com/a/turned-in/all"
+                                        link = `https://classroom.google.com${user}a/turned-in/all`;
                                         break;
                                 }
                                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
@@ -86,8 +104,9 @@ module.exports = {
                     case "meet":
                         switch (args[0].name) {
                             case "új":
+                                user = args[0].options[0] ? `?authuser=${args[0].options[0].value}` : "";
                                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
-                                    content: `**Link az új meeting-hez:** https://meet.google.com/new`
+                                    content: `**Link az új meeting-hez:** https://meet.google.com/new${user}`
                                 }}});
                                 break;
                         }

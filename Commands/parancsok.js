@@ -113,7 +113,7 @@ module.exports = {
                     valueReplace(1, Boolean(random(2)) ? "abc" : "datum");
                     break;
                 case "bejonni [szám]": case "laptop [alkalom]":
-                    valueReplace(100, Math.floor(Math.random() * 100) + 1);
+                    valueReplace(100, random(100) + 1);
                     break;
                 case "orak dátum [év] [hónap] [nap]":
                     valueReplace(1, new Date().getFullYear());
@@ -122,18 +122,18 @@ module.exports = {
                     break;
 
                 case "orak múlva [nap] (hét)":
-                    valueReplace(100, Math.floor(Math.random() * 100) + 1);
-                    valueReplace(101, Math.floor(Math.random() * 100) + 1);
-                    valueReplace(102, Math.floor(Math.random() * 100) + 1);
+                    valueReplace(100, random(100) + 1);
+                    valueReplace(101, random(100) + 1);
+                    valueReplace(102, random(100) + 1);
                     break;
                 case "orak hét [nap] (hét)":
-                    valueReplace(102, Math.floor(Math.random() * 100) + 1);
+                    valueReplace(102, random(100) + 1);
                     valueReplace(100, wd[random(wd.length)]);
                     valueReplace(101, wd[random(wd.length)]);
                     break;
                 case "csapat [darab] (csoport)":
-                    valueReplace(15, Math.floor(Math.random() * 12) + 1);
-                    valueReplace(16, Math.floor(Math.random() * 12) + 1);
+                    valueReplace(15, random(12) + 1);
+                    valueReplace(16, random(12) + 1);
                     valueReplace(1, team_opts[random(team_opts.length)]);
                     break;
                 case "szin hex [hex] (teszt)":
@@ -173,18 +173,22 @@ module.exports = {
                     }
                     valueReplace(1, name);
                     break;
-                case "classroom tantárgy [tantárgy]": case "meet tantárgy [tantárgy]":
-                    rand = subjects[random(subjects.length)];
-                    valueReplace(1, rand);
+                case "classroom tantárgy [tantárgy] (user)": case "meet tantárgy [tantárgy] (user)":
+                    valueReplace(1, subjects[random(subjects.length)]);
+                    valueReplace(2, subjects[random(subjects.length)]);
+                    valueReplace(3, random(6));
                     break;
-                case "classroom teendő [típus]":
+                case "classroom teendő [típus] (user)":
                     const types = ["Kiosztva", "Hiányzik", "Kész"]
-                    rand = types[random(types.length)];
-                    valueReplace(1, rand);
+                    valueReplace(1, types[random(types.length)]);
+                    valueReplace(2, types[random(types.length)]);
+                    valueReplace(3, random(6));
+                    break;
+                case "meet új (user)": case "jon (user)": case "most (user)":
+                    valueReplace(1, random(6));
                     break;
                 case "meeten (csoport)": case "parok (csoport)":
-                    rand = team_opts[random(team_opts.length)];
-                    valueReplace(1, rand)
+                    valueReplace(1, team_opts[random(team_opts.length)])
                     break;
 
             }

@@ -114,7 +114,7 @@ module.exports = {
         }
 
         function whichArt(lesson) {
-            classroom = timetable.CLASSROOM[lesson];
+            classroom = timetable.CLASSROOM.Kommunikáció;
             let arr = lesson.split("/");
             if (getWeekNumber(now) % 2 === week_art) {
                 return arr[0];
@@ -226,6 +226,10 @@ module.exports = {
                         }
                     }
                     break;
+            }
+            if (args[0]) {
+                if (classroom) classroom = classroom.replace("/c/", `/u/${args[0].value}/c/`);
+                if (meet) meet = `${meet}&authuser=${args[0].value}`
             }
             if (index != null) {
                 const Embed = new Discord.MessageEmbed()
