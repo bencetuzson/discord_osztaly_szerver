@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 delete require.cache[require.resolve("../../database/timetable.json")];
 
 module.exports = {
-    name: 'ora',
-    description: 'writes out the next lesson',
+    name: 'jon-most',
+    description: 'writes out the next or the current lesson',
     admin : false,
     roles : [],
     guilds : [],

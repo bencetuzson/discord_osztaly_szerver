@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 delete require.cache[require.resolve("../../database/timetable.json")];
 
 module.exports = {
-    name: 'link',
-    description: 'writes out the link of the requested lesson\'s Classroom',
+    name: 'classroom-meet',
+    description: 'writes out the link of the requested lesson\'s Google Classroom or Google Meet link',
     admin : false,
     roles : [],
     guilds : [],

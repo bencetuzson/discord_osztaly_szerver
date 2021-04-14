@@ -436,7 +436,7 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
             bot.commands.get('random').execute(interaction, args, users, bot);
             break;
         case "csapat": case "parok": case "sorrend":
-            bot.commands.get('csapat').execute(await interaction, args, database, users, bot, command);
+            bot.commands.get('csapat-parok-sorrend').execute(await interaction, args, database, users, bot, command);
             break;
         case "orarend":
             bot.commands.get('orarend').execute(await interaction, args, setup, bot);
@@ -448,7 +448,7 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
             bot.commands.get('orak').execute(await interaction, args, users, timetable, bot);
             break;
         case "jon": case "most":
-            bot.commands.get('ora').execute(await interaction, args, users, timetable, bot, command);
+            bot.commands.get('jon-most').execute(await interaction, args, users, timetable, bot, command);
             break;
         case "szin":
             bot.commands.get('szin').execute(await interaction, args, users, database, bot);
@@ -469,7 +469,7 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
             bot.commands.get('email').execute(await interaction, args, users, bot);
             break;
         case "classroom": case "meet":
-            bot.commands.get('link').execute(await interaction, args, users, timetable, bot, command);
+            bot.commands.get('classroom-meet').execute(await interaction, args, users, timetable, bot, command);
             break;
         case "meeten":
             bot.commands.get('meeten').execute(interaction, args, users, database, bot);

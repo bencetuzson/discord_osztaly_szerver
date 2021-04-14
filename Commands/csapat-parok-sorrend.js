@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 
 module.exports = {
-    name: 'csapat',
-    description: 'makes teams',
+    name: 'csapat-parok-sorrend',
+    description: 'makes teams, pairs or an order',
     admin : false,
     roles : [],
     guilds : [],
