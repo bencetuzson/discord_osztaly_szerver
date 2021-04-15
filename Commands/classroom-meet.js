@@ -10,6 +10,7 @@ module.exports = {
     execute: function (interaction, args, users, timetable, bot, command) {
         let link;
         let user;
+        const userNum = args[0].options[1] ? ` (user ${args[0].options[1].value})` : "";
         switch (args[0].name) {
             case "tantárgy":
                 let subject;
@@ -68,7 +69,7 @@ module.exports = {
                     default:return;
                 }
                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
-                    content: `**${subject} ${command.charAt(0).toUpperCase() + command.slice(1)} linkje:** ${link}`
+                    content: `**${subject} ${command.charAt(0).toUpperCase() + command.slice(1)} linkje${userNum}:** ${link}`
                 }}});
                 break;
             default:
@@ -89,7 +90,7 @@ module.exports = {
                                         break;
                                 }
                                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
-                                        content: `**Teendők ${args[0].options[0].value} linkje:** ${link}`
+                                        content: `**Teendők ${args[0].options[0].value} linkje${userNum}:** ${link}`
                                     }}});
                                 break;
                         }
@@ -99,7 +100,7 @@ module.exports = {
                             case "új":
                                 user = args[0].options[0] ? `?authuser=${args[0].options[0].value}` : "";
                                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
-                                    content: `**Link az új meeting-hez:** https://meet.google.com/new${user}`
+                                    content: `**Link az új meeting-hez${userNum}:** https://meet.google.com/new${user}`
                                 }}});
                                 break;
                         }

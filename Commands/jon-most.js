@@ -205,19 +205,20 @@ module.exports = {
                     }
                     break;
             }
-            if (args && args[0]) {
-                if (classroom) classroom = classroom.replace("/c/", `/u/${args[0].value}/c/`);
-                if (meet) meet = `${meet}&authuser=${args[0].value}`
-            }
+
             if (index != null) {
                 const Embed = new Discord.MessageEmbed()
-                    .setTitle(type === "jon" ? '**A következő óra ma:**' : '**A most zajló óra:**')
+                    .setTitle(`**${type === "jon" ? `A következő óra ma` : `A most zajló óra`}${args && args[0] ? ` (user ${args[0].value})` : ""}:**`)
                     .setDescription(`**${nextLesson(timetable.TIMETABLE[now.getDay() - 1][index].LESSON, timetable.TIMETABLE[now.getDay()-1][index].TYPE)}**`)
                     .addField('Idő:', `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`)
                     .setColor('RANDOM')
                     .setFooter("Ha több óra is van párhuhamosan, akkor az aláhúzott lesz a tiéd.\nEzért nem is biztos, hogy ami másnak ki lett írva, az neked is jó!");
                 if (timetable.TIMETABLE[now.getDay() - 1][index].DESCRIPTION !== "") {
                     Embed.addField('Megjegyzés:', `${timetable.TIMETABLE[now.getDay() - 1][index].DESCRIPTION}`);
+                }
+                if (args && args[0]) {
+                    if (classroom) classroom = classroom.replace("/c/", `/u/${args[0].value}/c/`);
+                    if (meet) meet = `${meet}?authuser=${args[0].value}`;
                 }
                 if (meet) {
                     Embed.addField('Meet link:', `${meet}`);
