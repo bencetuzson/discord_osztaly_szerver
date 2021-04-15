@@ -18,7 +18,7 @@ let slash_commands = require(setup.SLASH_COMMANDS_PATH);
 const status = `/${setup.HELP_COMMAND}`;
 const childProcess = require('child_process');
 const fs = require('fs');
-
+const util = require('util');
 
 /*runScript(setup.TEST_PATH, function (err) {
     if (err) throw err;
@@ -422,7 +422,8 @@ function reVerifyRoleAdd(channel_id, message_id, reaction, user, role, local_rea
 bot.ws.on('INTERACTION_CREATE', async (interaction) => {
     const command = interaction.data.name.toLowerCase();
     const args = interaction.data.options;
-    console.log(interaction.data.options);
+    console.log(`i+ g: ${interaction.guild_id} c: ${interaction.channel_id} u: ${interaction.member.user.id}/${interaction.member.nick}`);
+    console.log(util.inspect(args, false, null, true));
 
     if (!isOnBlacklist(interaction.member.user.id))
     switch (command) {
