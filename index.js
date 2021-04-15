@@ -19,6 +19,7 @@ const status = `/${setup.HELP_COMMAND}`;
 const childProcess = require('child_process');
 const fs = require('fs');
 const util = require('util');
+const clock = require('date-events')();
 
 /*runScript(setup.TEST_PATH, function (err) {
     if (err) throw err;
@@ -1065,12 +1066,10 @@ bot.on('guildMemberRemove', async member => {
     removeReaction(setup.REACTION_ROLES.Verified.CHANNEL_ID, setup.REACTION_ROLES.Verified.MESSAGE_ID, setup.REACTION_ROLES.Verified.REACTION, member);
 });
 
-setInterval(function () {
+clock.on(`${setup.BIRTHDAY_NOTIFICATION_TIME.HOURS}:${setup.BIRTHDAY_NOTIFICATION_TIME.MINUTES}`, (date) => {
     now = new Date();
-    if (now.getHours() === setup.BIRTHDAY_NOTIFICATION_TIME.HOURS && now.getMinutes() === setup.BIRTHDAY_NOTIFICATION_TIME.MINUTES && now.getSeconds() === setup.BIRTHDAY_NOTIFICATION_TIME.SECONDS) {
-        birthday(now.getFullYear(), now.getMonth() + 1, now.getDate());
-    }
-}, 1000);
+    birthday(now.getFullYear(), now.getMonth() + 1, now.getDate());
+})
 
 const rl = readline.createInterface({
     input: process.stdin,
