@@ -185,10 +185,7 @@ function nicknameSearch(reaction, user) {
 
 function teamSearch(user) {
     for (let index = 0; index < users.USERS.length; index++) {
-        //console.log("comp " + users.USERS[index].USER_ID + " " + user.id);
-        //console.log(users.USERS[index].REAL);
         if (users.USERS[index].USER_ID === user.id && users.USERS[index].REAL === true) {
-            //console.log("data " + users.TEAMS[users.USERS[index].SUBJECTS.TEAM].ID)
             return users.TEAMS[users.USERS[index].SUBJECTS.TEAM].ID;
         }
     }
@@ -497,7 +494,7 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
 console.log("testMessage");
 bot.on('message', async (message) => {
     inappropriateGuild(message.guild);
-    //console.log(`m g: ${message.guild.id} c: ${message.channel.id} m: ${message.id} u: ${message.author.id}`);
+    //console.log(`m+ g: ${message.guild.id} c: ${message.channel.id} m: ${message.id} u: ${message.author.id}`);
 
     function hasAdmin() {return message.member.hasPermission("ADMINISTRATOR");}
     function isDM() {return message.guild === null;}
@@ -616,7 +613,7 @@ bot.on('message', async (message) => {
             break;
     }
 
-    if (message.author !== bot.user/* && message.author.id !== idByNickname("Tuzsi")/* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
+    if (message.author !== bot.user/* && message.author.id !== idByNickname("Tuzsi")*//* && message.member.user.id != users.USERS.Tuzsi.USER_ID*/) {
         let msg;
         let splitWord_exc;
         let splitMessage = message.content.replace(/[!-?{-¿\[-`÷ʹ-͢]/g, "").split(" ");
@@ -715,16 +712,6 @@ bot.on('message', async (message) => {
 
     function addRoleByID(id) {message.guild.members.cache.get(message.author.id).roles.add(id);}
 });
-
-/*bot.on('channelUpdate', (oldChannel, newChannel) => {onChannelChange(newChannel)});
-bot.on('channelCreate', (channel) => {onChannelChange(channel)});
-bot.on('channelDelete', (channel) => {onChannelChange(channel)});
-
-function onChannelChange(channel) {
-    if (channel.guild === null) return;
-    //console.log(channel.guild.channels.cache);
-    channel.fetch().then(channels => {console.log(channels)});
-}*/
 
 console.log("testReacted");
 bot.on('messageReactionAdd', async (reaction, user) => {
@@ -837,7 +824,6 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                     roleAdd("Verified");
                     roleAdd("Tag");
                     if (teamSearch(user)) addRoleByID(teamSearch(user));
-                    //if (isReal(user)) roleAdd("Tag");
                     removeRole("Ezek_erdekelnek");
                     if (genderSearch(reaction, user)) {
                         genderSearch(reaction, user).then(result => {
@@ -1027,19 +1013,15 @@ bot.on('guildMemberAdd', member => {
     console.log(`m+ ${member.id} in class: ${!!isInThisClass(member)} bot: ${!!member.user.bot} guest: ${!!isGuest(member)}`);
     inappropriateGuild(member.guild);
     if (isInThisClass(member)) {
-        console.log("class")
         const raw = setup.WELCOME_MESSAGE;
         const dm = raw.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
         member.send(dm);
         member.roles.add(setup.REACTION_ROLES.Unverified.ROLE_ID);
     } else if (member.user.bot) {
-        console.log("bot")
         member.roles.add(setup.REACTION_ROLES.Bot.ROLE_ID);
     } else if (isGuest(member)) {
-        console.log("guest")
         member.roles.add(setup.REACTION_ROLES.Vendeg.ROLE_ID);
     } else {
-        console.log("none")
         const raw = setup.NOT_IN_THIS_CLASS_MESSAGE;
         const dm = raw.replace(setup.USER_NAME, `${member.user}`).replace(setup.SERVER_NAME, `${member.guild.name}`);
         member.send(dm).then(() => {member.kick();});
