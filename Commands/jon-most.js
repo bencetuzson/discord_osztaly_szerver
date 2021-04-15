@@ -205,7 +205,7 @@ module.exports = {
                     }
                     break;
             }
-            if (args[0]) {
+            if (args && args[0]) {
                 if (classroom) classroom = classroom.replace("/c/", `/u/${args[0].value}/c/`);
                 if (meet) meet = `${meet}&authuser=${args[0].value}`
             }
