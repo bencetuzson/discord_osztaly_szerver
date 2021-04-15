@@ -424,7 +424,7 @@ bot.ws.on('INTERACTION_CREATE', async (interaction) => {
     const command = interaction.data.name.toLowerCase();
     const args = interaction.data.options;
     console.log(`i+ g: ${interaction.guild_id} c: ${interaction.channel_id} u: ${interaction.member.user.id}/${interaction.member.nick}`);
-    console.log(util.inspect(args, false, null, true));
+    console.log(util.inspect(interaction.data, false, null, true));
 
     if (!isOnBlacklist(interaction.member.user.id))
     switch (command) {
