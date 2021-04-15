@@ -7,7 +7,6 @@ module.exports = {
     roles : [],
     guilds : [],
     execute: function (message, args, users, timetable) {
-        console.log(parseInt(args[1]));
         if (args[1] > 100 || args[1] < 1 || args.length !== 2) {
             message.channel.send("Érvénytelen paraméter!");
             return;
@@ -78,5 +77,4 @@ module.exports = {
             }
         }
     }
-    
 }

@@ -150,16 +150,6 @@ module.exports = {
             return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
         }
 
-        /*function whichLesson(day, fromDatabase, ...[lesson1, lesson2, lessonPrefix]) {
-            if (getWeekNumber(now) % 2 === 0) {
-                for (let i = 0; i < arguments.length; i++) {
-                    if (fromDatabase === `${arguments[i+2[0]]}/${i+2[1]}`) {
-
-                    }
-                }
-            }
-        }*/
-
         function whichLanguage(lesson) {
             let arr = lesson.split("/");
             for (let i = 0; i < arr.length; i++) {

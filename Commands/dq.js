@@ -17,7 +17,6 @@ module.exports = {
         for (let i = 0; i < users.USERS.length; i++) {
             if (users.USERS[i].SUBJECTS.TEAM === index) ++count;
         }
-        //console.log("index: " + index + "\nsize: " + count);
         Embed = new Discord.MessageEmbed()
             .setTitle('A random asztal és betű nem más, mint...')
             .addField(`${randomRole.name}`, `*${randomLetter(count)}*`)
@@ -33,17 +32,5 @@ module.exports = {
         function numToLetter(num) {
             return String.fromCharCode(65 + num);
         }
-
-        /*
-        teams = database.DQ;
-        const randomElement = teams[Math.floor(Math.random() * teams.length)];
-        Embed = new Discord.MessageEmbed()
-            .setTitle('A random asztal és betű nem más, mint...')
-            .addField(`${randomElement.NAME}`, `*${randomLetter(randomElement.PEOPLE)}*`)
-            .setColor('RANDOM');
-        bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
-            embeds: [Embed]
-        }}});
-        */
     }
 }

@@ -44,7 +44,6 @@ module.exports = {
                 .setTitle(`Névsor ${args[0].value} szerint rendezve`)
                 .setDescription(namesString)
                 .setColor('RANDOM');
-            console.log(namesString);
         bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
             embeds: [Embed]
         }}});

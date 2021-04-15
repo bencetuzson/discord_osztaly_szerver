@@ -10,10 +10,8 @@ module.exports = {
     execute: function (interaction, args, users, timetable, bot, command) {
         let link;
         let user;
-        console.log(args[0].name);
         switch (args[0].name) {
             case "tantárgy":
-                console.log("test")
                 let subject;
                 let db;
                 const subjecr_arr = args[0].options[0].value.split(" ");
@@ -28,7 +26,6 @@ module.exports = {
                         break;
                     default:return;
                 }
-                console.log("test2")
                 Object.keys(db).reduce((acc, key) => {
                     acc[key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")] = db[key];
                     if (key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === subjecr_arr[0].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) {
@@ -37,7 +34,6 @@ module.exports = {
                     }
                     return acc;
                 });
-                console.log("test3")
                 if (typeof link === 'object') {
                     switch (subjecr_arr[subjecr_arr.length - 1]) {
                         case "fiúk":
@@ -62,8 +58,6 @@ module.exports = {
                             break;
                     }
                 }
-                console.log("test4")
-                console.log(command);
                 switch (command) {
                     case "classroom":
                         link = link.replace("/c/", user)
@@ -73,7 +67,6 @@ module.exports = {
                         break;
                     default:return;
                 }
-                console.log("test5")
                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
                     content: `**${subject} ${command.charAt(0).toUpperCase() + command.slice(1)} linkje:** ${link}`
                 }}});

@@ -40,7 +40,6 @@ module.exports = {
             for (let i = 0; i < commands.MAIN.length; i++) {
                 if (commands.MAIN[i].display && !command_arr.includes(commands.MAIN[i].name.split(' ')[0])) {
                     command_arr.push(commands.MAIN[i].name.split(' ')[0]);
-                    //Embed.addField(`${prefix}${commands.MAIN[i].name.split(' ')[0]}`, `\`${prefix}parancsok ${commands.MAIN[i].name.split(' ')[0]}\``, true);
                     if (commands.MAIN[i].command) {
                         if (commands.MAIN[i].done) {
                             blank++
@@ -55,7 +54,6 @@ module.exports = {
                     }
                 }
             }
-            //console.log(command_arr);
             bot.api.interactions(interaction.id, interaction.token).callback.post({data: {
                 type: 4,
                 data: { embeds: [Embed]
@@ -84,7 +82,6 @@ module.exports = {
                             usrs.push(user.NICKNAME);
                         }
                     }
-                    console.log(usrs);
                     valueReplace(1, usrs[random(usrs.length)]);
                     break;
                 case "szulinap név lány [név]": case "email név lány [név]":
@@ -109,7 +106,6 @@ module.exports = {
                     valueReplace(1, usr.nickname ? usr.nickname : usr.username);
                     break;
                 case "szulinap lista [rendezés]":
-                    console.log(Boolean(random(2)));
                     valueReplace(1, Boolean(random(2)) ? "abc" : "datum");
                     break;
                 case "bejonni [szám]": case "laptop [alkalom]":

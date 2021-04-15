@@ -1,12 +1,5 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-let inJSON;
-//const setup = JSON.parse(fs.readFileSync("../database/setup.json"));
-/*fs.readFile("../database/setup.json", (err, data) => {
-    if (err) throw err;
-    setup = JSON.parse(data);
-    console.log(setup);
-});*/
 
 module.exports = {
     name: 'verify',
@@ -19,6 +12,7 @@ module.exports = {
         let description = "";
         let reactEmoji = '';
         let argsSuccess = false;
+        let inJSON;
         const path = "../database/setup.json";
         switch (args[1]) {
             case "intro":
@@ -180,36 +174,13 @@ ${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.css)}
         }
         if(argsSuccess){
             const embed = new Discord.MessageEmbed()
-            .setTitle(title)
-            .setDescription(description)
-            .setColor('RANDOM');
+                .setTitle(title)
+                .setDescription(description)
+                .setColor('RANDOM');
             let msgEmbed = await message.channel.send(embed);
             msgEmbed.react(reactEmoji);
-            /*setup.REACTION_ROLES[inJSON].MESSAGE_ID = await msgEmbed.id;
-            fs.writeFile(path, JSON.stringify(setup, null, 4), function writeJSON(err) {
-                if (err) return console.log(err);
-                console.log(JSON.stringify(setup, null, 4));
-                console.log('writing to ' + path);
-            });*/
-
-            /*const options = {
-                files: "../database/setup.json",
-                from: `${setup.REACTION_ROLES[inJSON].MESSAGE_ID}`,
-                to: `${await msgEmbed.id}`,
-            };
-            replace(options)
-                .then(results => {
-                    console.log('Replacement results:', results);
-                })
-                .catch(error => {
-                    console.error('Error occurred:', error);
-                });
-            //return args[1];
-            */
-
-           await fs.readFile(path, 'utf8', function (err,data) {
+            await fs.readFile(path, 'utf8', function (err,data) {
             if (err) return console.log(err);
-            console.log(setup.REACTION_ROLES[inJSON].MESSAGE_ID)
             const result = data.replace(setup.REACTION_ROLES[inJSON].MESSAGE_ID, msgEmbed.id);
             fs.writeFile(path, result, 'utf8', function (err) {
                 if (err) return console.log(err);

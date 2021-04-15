@@ -76,7 +76,6 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space)}
                 break;
         }
         await message.channel.messages.fetch(messageID).then(msg => msg.edit(embed));
-        console.log("done");
 
         function getChannel(id) {return message.guild.channels.cache.get(id);}
     }

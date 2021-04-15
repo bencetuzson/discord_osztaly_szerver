@@ -29,16 +29,6 @@ module.exports = {
             return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
         }
 
-        /*function whichLesson(day, fromDatabase, ...[lesson1, lesson2, lessonPrefix]) {
-            if (getWeekNumber(now) % 2 === 0) {
-                for (let i = 0; i < arguments.length; i++) {
-                    if (fromDatabase === `${arguments[i+2[0]]}/${i+2[1]}`) {
-
-                    }
-                }
-            }
-        }*/
-
         function whichLanguage(lesson) {
             let arr = lesson.split("/");
             for (let i = 0; i < arr.length; i++) {
@@ -124,19 +114,14 @@ module.exports = {
         }
 
         function nextLesson(lesson, type) {
-            console.log(type);
             switch (type) {
                 case "L":
-                    console.log("L");
                     return whichLanguage(lesson);
                 case "I":
-                    console.log("I");
                     return whichLesson(lesson);
                 case "A":
-                    console.log("A");
                     return whichArt(lesson);
                 default:
-                    console.log("default");
                     if (lesson === "Tesi") {
                         switch (users.USERS[userSearch()].GENDER) {
                             case "M":
@@ -170,12 +155,8 @@ module.exports = {
         function languageSearch() {
             for (let index = 0; index < users.USERS.length; index++) {
                 if (users.USERS[index].USER_ID === interaction.member.user.id) {
-                    console.log(timetable.LANGUAGES.length);
                     for (let i = 0; i < timetable.LANGUAGES.length; i++) {
-                        console.log(timetable.LANGUAGES[i].CHAR);
-                        console.log(timetable.LANGUAGES[i].SUBJECT);
                         if (timetable.LANGUAGES[i].CHAR === users.USERS[index].SUBJECTS.LANGUAGE) {
-                            console.log("success");
                             return timetable.LANGUAGES[i].SUBJECT;
                         }
                     }
@@ -185,10 +166,7 @@ module.exports = {
 
         function typeSearch() {
             for (let index = 0; index < timetable.TIMETABLE[now.getDay()-1].length; index++) {
-                console.log(timetable.TIMETABLE[now.getDay()-1][index].TYPE);
-                console.log(timetable.TIMETABLE[now.getDay()-1][index].LESSON);
                 if (timetable.TIMETABLE[now.getDay()-1][index].TYPE !== null) {
-                    console.log(index);
                     return timetable.TIMETABLE[now.getDay()-1][index].TYPE;
                 }
             }
@@ -236,7 +214,6 @@ module.exports = {
                     .setTitle(type === "jon" ? '**A következő óra ma:**' : '**A most zajló óra:**')
                     .setDescription(`**${nextLesson(timetable.TIMETABLE[now.getDay() - 1][index].LESSON, timetable.TIMETABLE[now.getDay()-1][index].TYPE)}**`)
                     .addField('Idő:', `${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.FROM.MINUTE} - ${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.HOUR}:${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE < 10 ? 0 : ""}${timetable.TIMETABLE[now.getDay() - 1][index].TIME.TO.MINUTE}`)
-                    //.addField(timetable.TIMETABLE[now.getDay()-1][index].DESCRIPTION)
                     .setColor('RANDOM')
                     .setFooter("Ha több óra is van párhuhamosan, akkor az aláhúzott lesz a tiéd.\nEzért nem is biztos, hogy ami másnak ki lett írva, az neked is jó!");
                 if (timetable.TIMETABLE[now.getDay() - 1][index].DESCRIPTION !== "") {

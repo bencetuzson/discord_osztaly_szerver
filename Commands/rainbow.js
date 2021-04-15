@@ -9,7 +9,6 @@ module.exports = {
     execute(message, args, users) {
         const role = message.guild.roles.cache.find(r => r.id === users.USERS[0].ROLE_ID);
         const color = role.color.toString(16);
-        console.log(color);
         for (let index = 0; index < users.USERS.length; index++) {
             if (users.USERS[index].USER_ID === message.member.user.id) {
                 for (let i = 0; i < 360; i++) {
@@ -51,7 +50,6 @@ module.exports = {
 
         function componentToHex(c) {
             let hex = Number(c).toString(16);
-            console.log(hex);
             return hex.length === 1 ? "0" + hex : hex;
         }
     }

@@ -64,19 +64,15 @@ module.exports = {
                     break;
                 case "tesi fiúk":
                     names = [...database.GYHG2020.BOYS];
-                    console.log(names);
                     class_members.forEach(c => {
                         if(c.GENDER === "M"){names.push(c.NICKNAME);}
                     });
-                    console.log(names);
                     break;
                 case "tesi lányok":
                     names = [...database.GYHG2020.GIRLS];
-                    console.log(names);
                     class_members.forEach(c => {
                         if(c.GENDER === "F"){names.push(c.NICKNAME);}
                     });
-                    console.log(names);
                     break;
             }
         } else {
@@ -95,29 +91,18 @@ module.exports = {
                 number = names.length;
                 break;
         }
-        console.log(Math.floor(names.length / 2));
-        console.log(names.length)
         namesLength = names.length;
         if(number > 0 && number <= namesLength){
-
-            /*for (let i = 0; i < database.names.length; i++) {
-                names.push(database.names[i]);
-            }*/
             let cycle = namesLength;
             let teams = [];
             let left;
             for (let index2 = 0; index2 < number; index2++) {
                 teams.push(new Array);
                 teams[index2].push(`**${index2+1}.${type}:** `);
-                //teams[0] = index2+1 + ". csapat: ";
                 for (let index3 = 1; index3 < Math.floor(cycle/number)+1; index3++) {
                     let randomIndex = Math.floor(Math.random()*names.length)
                     const randomElement = names[randomIndex];
                     const index = names.indexOf(randomIndex);
-                    /*if (index > -1) {
-                        array.splice(index, 1);
-                    }*/
-                    //names.splice(names.indexOf(index), 1 );
                     names.splice(randomIndex, 1);
                     teams[index2].push(randomElement);
                 }
@@ -138,7 +123,6 @@ module.exports = {
                     break;
 
             }
-            //teams[Array] = teams[Array].join(", ");
             for (let index6 = 0; index6 < number; index6++) {
                 teams[index6] = teams[index6].join(", ").replace(":** , ", ":** ");
             }
@@ -156,4 +140,3 @@ module.exports = {
         }
     }
 }
-

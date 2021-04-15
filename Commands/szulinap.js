@@ -11,25 +11,13 @@ module.exports = {
         switch(args[0].name) {
             case "lista":
                 let allBD = [];
-                console.log(users.USERS.length);
                 for (ind = 0; ind < users.USERS.length; ++ind) {
                     if(users.USERS[ind].REAL){allBD.push({"NAME" : users.USERS[ind].NICKNAME, "DATE" : new Date(users.USERS[ind].BIRTHDAY.YEAR, users.USERS[ind].BIRTHDAY.MONTH-1, users.USERS[ind].BIRTHDAY.DAY, 0, 0, 0, 0)});}
                 }
-                console.log(allBD.length)
                 for (ind = 0; ind < allBD.length; ++ind) {
                     if (allBD[ind] === undefined) allBD.splice(ind, 1);
                 }
                 const sortedBD = allBD.sort(function (a, b) {switch(args[0].options[0].value) {case "abc": let nameA = a.NAME.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); let nameB = b.NAME.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); if (nameA < nameB) { return -1; } if (nameA > nameB) { return 1; } return 0; case "datum": return a.DATE - b.DATE;}})
-                /*
-                let NameSring = "";
-                for (ind = 0; ind < sortedBD.length; ++ind) {
-                    NameSring += `**${sortedBD[ind].NAME}**:${sortedBD.length !== ind ? "\n" : ""}`
-                }
-                let BDstring = "";
-                for (ind = 0; ind < sortedBD.length; ++ind) {
-                    BDstring += `${sortedBD[ind].DATE.getFullYear()}. ${monthToString(sortedBD[ind].DATE.getMonth()+1)} ${sortedBD[ind].DATE.getDate()}.${sortedBD.length !== ind ? "\n" : ""}`
-                }
-                */
                 let Embed = new Discord.MessageEmbed();
                 let BDstring = "";
                 for (ind = 0; ind < sortedBD.length; ++ind) {
@@ -38,17 +26,10 @@ module.exports = {
                 Embed
                 .setTitle("Születésnapok")
                 .addField(`${sortBy()} szerint rendezve`, BDstring)
-                /*.setFields(
-                    { name: '\u200B', value: NameSring, inline: true },
-		            { name: '\u200B', value: BDstring, inline: true }
-                )*/
                 .setColor('RANDOM');
                 bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
                     embeds: [Embed]
                 }}});
-                /*await bot.channels.cache.get(interaction.channel_id).messages.fetch({ limit: 1 }).then(messages => {
-                    bot.channels.cache.get(interaction.channel_id).bulkDelete(messages);
-                });*/
                 break;
             default:
                 switch (args[0].name) {

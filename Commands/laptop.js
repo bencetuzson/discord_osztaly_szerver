@@ -7,7 +7,6 @@ module.exports = {
     roles : [],
     guilds : [],
     execute: function (interaction, args, users, timetable, bot) {
-        console.log(parseInt(args[0].value));
         if (args[0].value > 100 || args[0].value < 1) {
             bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
                 content: "Érvénytelen paraméter!"
@@ -28,7 +27,6 @@ module.exports = {
         let count = 0;
         let date = new Date();
         const week = timetable.WEEK.ENG_IT;
-        console.log("week " + week)
         let day;
         let dates = "";
         
@@ -83,5 +81,4 @@ module.exports = {
             }
         }
     }
-    
 }
