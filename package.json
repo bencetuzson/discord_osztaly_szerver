@@ -20,6 +20,7 @@
   "homepage": "https://github.com/bencetuzson/GYH-Gimi-2019-Discord-BOT#readme",
   "dependencies": {
     "@types/node": "^14.14.14",
+    "date-events": "^1.0.1",
     "discord-welcome": "^2.0.2",
     "discord.js": "^12.5.3",
     "mongoose": "^5.10.0",
