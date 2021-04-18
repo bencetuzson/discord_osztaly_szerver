@@ -371,7 +371,7 @@ function nicknameById(id) {
 }
 
 function inappropriateGuild(guild) {
-    if (guild !== null && guild.id !== setup.GUILD_ID) {
+    if (guild !== null && guild.id !== setup.GUILD_ID && guild.id !== setup.EMOTE_GUILD_ID) {
             guild.leave();
             console.log(`Guild ${guild} left`);
     }
@@ -547,7 +547,7 @@ bot.on('message', async (message) => {
             break;
         case `${requiredPrefix}verify`:
             if (!isDM() && hasAdmin()) {
-                bot.commands.get('verify').execute(await message, args, setup);
+                bot.commands.get('verify').execute(await message, args, setup, bot);
                 setSetup();
             }
             break;
@@ -888,12 +888,100 @@ bot.on('messageReactionAdd', async (reaction, user) => {
         default:
             break;
     }
+    switch (reaction.emoji.id) {
+        case setup.REACTION_ROLES.Gaming.CHANNELS.minecraft.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "minecraft");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.paladins.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "paladins");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.rocket_league.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "rocket_league");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.pubg.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "pubg");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.csgo.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "csgo");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.r6s.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "r6s");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.among_us.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "among_us");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.windows.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "windows");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.mac.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "mac");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.linux.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "linux");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.git.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "git");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.c_cpp.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "c_cpp");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.java.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "java");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.python.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "python");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.c_sharp.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "c_sharp");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.web.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "web");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.javascript.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Programozas", "javascript");
+            }
+            break;
+    }
 
     function reVerifyReactionRoleAdd(object) {
         reVerifyRoleAdd(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID, setup.REACTION_ROLES[object].MESSAGE_ID, setup.REACTION_ROLES[object].REACTION, user, setup.REACTION_ROLES[object].ROLE_ID, reaction)
     }
     function fetchReactionRolesReactions(object) {return fetchReactions(setup.REACTION_ROLES.Ezek_erdekelnek.CHANNEL_ID, setup.REACTION_ROLES[object].MESSAGE_ID, setup.REACTION_ROLES[object].REACTION, user);}
     async function roleAdd(object) {await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES[object].ROLE_ID);}
+    async function interestRoleAdd(object, interest) {await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES[object].CHANNELS[interest].ROLE_ID);}
     async function removeRole(object) {await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES[object].ROLE_ID);}
     function hasRole(object) {return reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES[object].ROLE_ID);}
     function addRoleByID(id) {reaction.message.guild.members.cache.get(user.id).roles.add(id);}
@@ -974,6 +1062,14 @@ bot.on('messageReactionRemove', async (reaction, user) => {
             if (reaction.message.id === setup.REACTION_ROLES.Gaming.MESSAGE_ID) {
                 if (await hasRole("Verified")) {
                     removeRole("Gaming");
+                    interestReactionRoleReset("Gaming", "minecraft");
+                    interestReactionRoleReset("Gaming", "paladins");
+                    interestReactionRoleReset("Gaming", "rocket_league");
+                    interestReactionRoleReset("Gaming", "pubg");
+                    interestReactionRoleReset("Gaming", "csgo");
+                    interestReactionRoleReset("Gaming", "r6s");
+                    interestReactionRoleReset("Gaming", "among_us");
+
                 }
             }
             break;
@@ -994,19 +1090,119 @@ bot.on('messageReactionRemove', async (reaction, user) => {
             }
             break;
 
-            case setup.REACTION_ROLES.Programozas.REACTION :
-                if (reaction.message.id === setup.REACTION_ROLES.Programozas.MESSAGE_ID) {
-                    if (await hasRole("Verified")) {
-                        removeRole("Programozas");
-                    }
+        case setup.REACTION_ROLES.Programozas.REACTION :
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.MESSAGE_ID) {
+                if (await hasRole("Verified")) {
+                    removeRole("Programozas");
+                    interestReactionRoleReset("Programozas", "windows");
+                    interestReactionRoleReset("Programozas", "mac");
+                    interestReactionRoleReset("Programozas", "linux");
+                    interestReactionRoleReset("Programozas", "git");
+                    interestReactionRoleReset("Programozas", "c_cpp");
+                    interestReactionRoleReset("Programozas", "java");
+                    interestReactionRoleReset("Programozas", "python");
+                    interestReactionRoleReset("Programozas", "c_sharp");
+                    interestReactionRoleReset("Programozas", "web");
+                    interestReactionRoleReset("Programozas", "javascript");
+
                 }
-                break;
+            }
+            break;
+    }
+    switch (reaction.emoji.id) {
+        case setup.REACTION_ROLES.Gaming.CHANNELS.minecraft.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "minecraft");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.paladins.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "paladins");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.rocket_league.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "rocket_league");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.pubg.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "pubg");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.csgo.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "csgo");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.r6s.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "r6s");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.among_us.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "among_us");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.windows.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "windows");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.mac.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "mac");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.linux.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "linux");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.git.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "git");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.c_cpp.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "c_cpp");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.java.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "java");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.python.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "python");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.c_sharp.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "c_sharp");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.web.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "web");
+            }
+            break;
+        case setup.REACTION_ROLES.Programozas.CHANNELS.javascript.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Programozas", "javascript");
+            }
+            break;
     }
     async function removeRole(object) {await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES[object].ROLE_ID);}
+    async function interestRemoveRole(object, interest) {await reaction.message.guild.members.cache.get(user.id).roles.remove(setup.REACTION_ROLES[object].CHANNELS[interest].ROLE_ID);}
     async function roleAdd(object) {await reaction.message.guild.members.cache.get(user.id).roles.add(setup.REACTION_ROLES[object].ROLE_ID);}
     function hasRole(object) {return reaction.message.guild.members.cache.get(user.id).roles.cache.has(setup.REACTION_ROLES[object].ROLE_ID)}
     function userFound() {return !!reaction.message.guild.members.cache.get(user.id);}
     function removeRoleByID(id) {reaction.message.guild.members.cache.get(user.id).roles.remove(id);}
+    function interestReactionRoleReset(object, interest) {console.log(setup.REACTION_ROLES[object].CHANNELS_MESSAGE_ID); removeReaction(setup.REACTION_ROLES[object].CHANNELS_CHANNEL_ID, setup.REACTION_ROLES[object].CHANNELS_MESSAGE_ID, setup.REACTION_ROLES[object].CHANNELS[interest].EMOTE_ID, user);}
 
 
 });
