@@ -46,7 +46,7 @@ module.exports = {
                 break;
         }
         bot.api.interactions(interaction.id, interaction.token).callback.post({data: { type: 4, data: {
-            content: `$**{name} email címe:** ${email}@gyermekekhaza.hu`
+            content: `**${name} email címe:** ${email}@gyermekekhaza.hu`
         }}});
     }
 }
