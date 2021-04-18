@@ -568,7 +568,7 @@ bot.on('message', async (message) => {
             break;
         case `${requiredPrefix}modify`:
             if (!isDM() && hasAdmin()) {
-                bot.commands.get('modify').execute(await message, args, setup);
+                bot.commands.get('modify').execute(await message, args, setup, bot);
             }
             break;
         case `${requiredPrefix}leave`:
@@ -727,6 +727,14 @@ bot.on('messageReactionAdd', async (reaction, user) => {
     if (!reaction.message.guild) return;
 
     switch (reaction.emoji.name) {
+        case setup.REACTION_ROLES.Gaming.CHANNELS.sim_racing.EMOTE_ID:
+            console.log("test");
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                console.log("test2");
+                interestRoleAdd("Gaming", "sim_racing");
+            }
+            break;
+
         case setup.REACTION_ROLES.BOT.REACTION :
             if (reaction.message.id === setup.REACTION_ROLES.BOT.MESSAGE_ID) {
                 if (await hasRole("Verified")) {
@@ -924,6 +932,36 @@ bot.on('messageReactionAdd', async (reaction, user) => {
                 interestRoleAdd("Gaming", "among_us");
             }
             break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.fortnite.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "fortnite");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.ark.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "ark");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.fall_guys.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "fall_guys");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.gta.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "gta");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.league_of_legends.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "league_of_legends");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.lego.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRoleAdd("Gaming", "lego");
+            }
+            break;
         case setup.REACTION_ROLES.Programozas.CHANNELS.windows.EMOTE_ID:
             if (reaction.message.id === setup.REACTION_ROLES.Programozas.CHANNELS_MESSAGE_ID) {
                 interestRoleAdd("Programozas", "windows");
@@ -1069,6 +1107,13 @@ bot.on('messageReactionRemove', async (reaction, user) => {
                     interestReactionRoleReset("Gaming", "csgo");
                     interestReactionRoleReset("Gaming", "r6s");
                     interestReactionRoleReset("Gaming", "among_us");
+                    interestReactionRoleReset("Gaming", "fortnite");
+                    interestReactionRoleReset("Gaming", "ark");
+                    interestReactionRoleReset("Gaming", "fall_guys");
+                    interestReactionRoleReset("Gaming", "gta");
+                    interestReactionRoleReset("Gaming", "league_of_legends");
+                    interestReactionRoleReset("Gaming", "lego");
+                    interestReactionRoleReset("Gaming", "sim_racing");
 
                 }
             }
@@ -1108,6 +1153,12 @@ bot.on('messageReactionRemove', async (reaction, user) => {
                 }
             }
             break;
+
+        case setup.REACTION_ROLES.Gaming.CHANNELS.sim_racing.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "sim_racing");
+            }
+            break;
     }
     switch (reaction.emoji.id) {
         case setup.REACTION_ROLES.Gaming.CHANNELS.minecraft.EMOTE_ID:
@@ -1143,6 +1194,36 @@ bot.on('messageReactionRemove', async (reaction, user) => {
         case setup.REACTION_ROLES.Gaming.CHANNELS.among_us.EMOTE_ID:
             if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
                 interestRemoveRole("Gaming", "among_us");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.fortnite.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "fortnite");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.ark.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "ark");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.fall_guys.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "fall_guys");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.gta.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "gta");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.league_of_legends.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "league_of_legends");
+            }
+            break;
+        case setup.REACTION_ROLES.Gaming.CHANNELS.lego.EMOTE_ID:
+            if (reaction.message.id === setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID) {
+                interestRemoveRole("Gaming", "lego");
             }
             break;
         case setup.REACTION_ROLES.Programozas.CHANNELS.windows.EMOTE_ID:

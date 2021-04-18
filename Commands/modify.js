@@ -6,7 +6,7 @@ module.exports = {
     admin : true,
     roles : [],
     guilds : [],
-    async execute(message, args, setup){
+    async execute(message, args, setup, bot){
         const embed = new Discord.MessageEmbed()
 
         //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
@@ -26,6 +26,7 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space)}
 
         .setColor("RANDOM");
         let messageID;
+        let description = "";
         switch (args[1].toLowerCase()) {
             case "intro":
                 embed.setTitle("BOT");
@@ -70,6 +71,17 @@ ${getChannel(setup.REACTION_CHANNELS.Spam.null_width_space)}
             case "test":
                 embed.setTitle("Test");
                 messageID = setup.REACTION_ROLES.Gaming.MESSAGE_ID;
+                break;
+            case "iprogramozas":
+                embed.setTitle("Ezek közül melyeket használod?");
+                description = "";
+                for (const [key, value] of Object.entries(setup.REACTION_ROLES.Programozas.CHANNELS)) {description += `${value.CUSTOM_EMOTE ? bot.emojis.cache.get(value.EMOTE_ID) : value.EMOTE_ID}: ${value.NAME}\n`;}
+                break;
+            case "igaming":
+                embed.setTitle("Ezek közül melyekkel játszol?");
+                for (const [key, value] of Object.entries(setup.REACTION_ROLES.Gaming.CHANNELS)) {description += `${value.CUSTOM_EMOTE ? bot.emojis.cache.get(value.EMOTE_ID) : value.EMOTE_ID}: ${value.NAME}\n`;}
+                embed.setDescription(description)
+                messageID = setup.REACTION_ROLES.Gaming.CHANNELS_MESSAGE_ID;
                 break;
             default:
                 console.error("Invalid parameter!");

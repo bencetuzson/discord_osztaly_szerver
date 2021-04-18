@@ -191,7 +191,7 @@ ${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.css)}
                     title = "Ezek közül melyeket használod?";
                     description = "";
                     reactEmoji = [];
-                    for (const [key, value] of Object.entries(setup.REACTION_ROLES.Programozas.CHANNELS)) {description += `${bot.emojis.cache.get(value.EMOTE_ID)}: ${value.NAME}\n`; reactEmoji.push(value.EMOTE_ID)};
+                    for (const [key, value] of Object.entries(setup.REACTION_ROLES.Programozas.CHANNELS)) {description += `${value.CUSTOM_EMOTE ? bot.emojis.cache.get(value.EMOTE_ID) : value.EMOTE_ID}: ${value.NAME}\n`; reactEmoji.push(value.EMOTE_ID)};
                     argsSuccess = true;
                     multiEmoji = true;
                     break;
@@ -200,7 +200,7 @@ ${getChannel(setup.REACTION_CHANNELS.PROGRAMOZAS.css)}
                     title = "Ezek közül melyekkel játszol?";
                     description = "";
                     reactEmoji = [];
-                    for (const [key, value] of Object.entries(setup.REACTION_ROLES.Gaming.CHANNELS)) {description += `${bot.emojis.cache.get(value.EMOTE_ID)}: ${value.NAME}\n`; reactEmoji.push(value.EMOTE_ID)};
+                    for (const [key, value] of Object.entries(setup.REACTION_ROLES.Gaming.CHANNELS)) {description += `${value.CUSTOM_EMOTE ? bot.emojis.cache.get(value.EMOTE_ID) : value.EMOTE_ID}: ${value.NAME}\n`; reactEmoji.push(value.EMOTE_ID)};
                     argsSuccess = true;
                     multiEmoji = true;
                     break;
