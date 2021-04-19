@@ -508,26 +508,6 @@ bot.on('message', async (message) => {
     let args = message.content.split(' ');
     let requiredPrefix = isDM() ? "" : prefix;
 
-    if (message.content.toLowerCase() === "nem kellett volna még egyszer felköszöntened" && message.author.id === idByNickname("Lilko") && isDM()) {
-        message.channel.startTyping();
-        setTimeout(function () {
-            message.channel.stopTyping();
-            message.channel.send("Jajj, bocsánat... Én voltam annyira búta, hogy elfelejtettem, hogy egyszer már felköszöntettelek:pensive: Meg tudsz nekem bocsátani? Igérem, többé nem fordul elő!");
-            setTimeout(function () {
-                message.channel.startTyping();
-                setTimeout(function () {
-                    message.channel.stopTyping();
-                    message.channel.send("Ki is törlöm azt a köszöntést, elég az az egy is")
-                    setTimeout(async function () {
-                        await message.channel.messages.fetch('773572268642664500').then(msg => {
-                            msg.delete();
-                        });
-                    }, 500)
-                }, 1000);
-            }, 500);
-        }, 2000);
-    }
-
     if (!isOnBlacklist(message.author.id))
     switch (args[0].toLowerCase()) {
         case `${requiredPrefix}rainbow`:
